@@ -10,5 +10,7 @@
             Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+
+        <Button Text="Click..." Command="{Binding TimeCountingButtonPressedCommand}" />
     </VerticalStackLayout>
 </ContentPage>
