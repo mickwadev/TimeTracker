@@ -8,12 +8,15 @@ using TimeTracker.Data;
 
 namespace TimeTracker.PageModels
 {
-    public class TimeTrackingPageModel : ObservableObject
+    public partial class TimeTrackingPageModel : ObservableObject
     {
         DatabaseFun db;
         public TimeTrackingPageModel(DatabaseFun db) 
         {
             this.db = db;
         }
+
+        [ObservableProperty]
+        private string _today = DateTime.Now.ToString("dddd");
     }
 }
