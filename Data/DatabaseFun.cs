@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimeTracker.Models;
 
 namespace TimeTracker.Data
 {
@@ -49,6 +50,26 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             await using var reader = await checkIfTableExistCmd.ExecuteReaderAsync();
             bool tableExists = await reader.ReadAsync();
             Trace.WriteLine($"Table {CurrentTable} exists: {tableExists}");
+        }
+
+        public WorkTime GetRandomWorkTime()
+        {
+            DateTime start = DateTime.Now;
+            return new WorkTime() {Title="Random 10 minute ;)", StartTime = start.ToString(), EndTime = (start + TimeSpan.FromMinutes(10)).ToString()}; 
+        }
+
+        public async Task<int> AddRandomWorkTimeAsync()
+        { 
+            var r = GetRandomWorkTime();
+            await using var connection = new SqliteConnection(DbConsts.connectionString);
+            await connection.OpenAsync();
+            var addWorkTimeCmd = connection.CreateCommand();
+            addWorkTimeCmd.CommandText = @$"
+            INSERT INTO {CurrentTable} (Title, StartTime, EndTime) VALUES (@Title, @StartTime, @EndTime)";
+            addWorkTimeCmd.Parameters.AddWithValue("@Title", r.Title);
+            addWorkTimeCmd.Parameters.AddWithValue("@StartTime", r.StartTime);
+            addWorkTimeCmd.Parameters.AddWithValue("@EndTime", r.EndTime);
+            return await addWorkTimeCmd.ExecuteNonQueryAsync();
         }
     }
 }

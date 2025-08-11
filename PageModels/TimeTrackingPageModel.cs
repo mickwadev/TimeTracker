@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimeTracker.Data;
- 
+using TimeTracker.Models;
+
 namespace TimeTracker.PageModels
 {
     public partial class TimeTrackingPageModel : ObservableObject
     {
-        DatabaseFun db;
-        private DateTime _startTime, _endTime;
+        DatabaseFun db;  
         private bool learningInProgress = false;
         IDispatcherTimer timer;
         int ticks = 0;
@@ -42,6 +42,18 @@ namespace TimeTracker.PageModels
         {
             Trace.WriteLine("Time counting...");
             StartWorkTimeCounting();
+        }
+
+        [RelayCommand]
+        private async Task AddRandomWorkTime()
+        {
+            await db.AddRandomWorkTimeAsync();
+        }
+
+        [RelayCommand]
+        private async Task CreateDatabase()
+        {
+            await db.AddTimesTableAsync();
         }
 
         private void StartWorkTimeCounting()
