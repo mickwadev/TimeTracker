@@ -55,12 +55,11 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
         public WorkTime GetRandomWorkTime()
         {
             DateTime start = DateTime.Now;
-            return new WorkTime() {Title="Random 10 minute ;)", StartTime = start.ToString(), EndTime = (start + TimeSpan.FromMinutes(10)).ToString()}; 
+            return new WorkTime() { Title = "Random 10 minute ;)", StartTime = start.ToString(), EndTime = (start + TimeSpan.FromMinutes(10)).ToString() };
         }
 
-        public async Task<int> AddRandomWorkTimeAsync()
-        { 
-            var r = GetRandomWorkTime();
+        public async Task<int> AddWorkTimeAsync(WorkTime r)
+        {
             await using var connection = new SqliteConnection(DbConsts.connectionString);
             await connection.OpenAsync();
             var addWorkTimeCmd = connection.CreateCommand();
@@ -71,5 +70,7 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             addWorkTimeCmd.Parameters.AddWithValue("@EndTime", r.EndTime);
             return await addWorkTimeCmd.ExecuteNonQueryAsync();
         }
+
+        public async Task<int> AddRandomWorkTimeAsync() => await AddWorkTimeAsync(GetRandomWorkTime());
     }
 }
