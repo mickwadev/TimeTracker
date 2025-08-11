@@ -72,5 +72,35 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
         }
 
         public async Task<int> AddRandomWorkTimeAsync() => await AddWorkTimeAsync(GetRandomWorkTime());
+
+        public async Task<List<WorkTime>> GetTodayWorkingEntriesAsync()
+        {
+            await using var connection = new SqliteConnection(DbConsts.connectionString);
+            await connection.OpenAsync();
+            var addWorkTimeCmd = connection.CreateCommand();
+            var today = DateTime.Now.ToString("yyyy-MM-dd");
+            Trace.WriteLine($"Today: {today}");
+            addWorkTimeCmd.CommandText = @$"SELECT ID, Title, StartTime, EndTime FROM {CurrentTable} WHERE date(StartTime) == date(@today);";
+            addWorkTimeCmd.Parameters.AddWithValue("@today", today);
+            await using var reader = await addWorkTimeCmd.ExecuteReaderAsync();
+            List<WorkTime> times = new List<WorkTime>();
+            Trace.WriteLine("Tu doszlo...");
+            while (await reader.ReadAsync())
+            {
+                Trace.WriteLine("Tu doszlo 2...");
+                var wt = new WorkTime()
+                {
+                    ID = reader.GetInt32(0),
+                    Title = reader.GetString(1),
+                    StartTime = reader.GetString(2),
+                    EndTime = reader.GetString(3),
+                };
+                times.Add(wt);
+                var time = DateTime.Parse(wt.EndTime) - DateTime.Parse(wt.StartTime);
+                Trace.WriteLine($"Time span: {time}");
+            }
+            return times;
+        }
+
     }
 }

@@ -60,10 +60,18 @@ namespace TimeTracker.PageModels
             await db.AddTimesTableAsync();
         }
 
+        [RelayCommand]
+        private async Task GetDates()
+        {
+            Trace.WriteLine("Dzisiejsze wpisy...");
+            await db.GetTodayWorkingEntriesAsync();
+        }
+
         private void StopWorkTimeCounting()
         {
             timer.Stop();
-            var wt = new WorkTime() { StartTime = startTime.ToString(), EndTime = DateTime.Now.ToString(), Title = WorkTimeComment };
+            var format = "yyyy-MM-dd HH:MM:ss"; // this format is required for sqlite date functions to work.
+            var wt = new WorkTime() { StartTime = startTime.ToString(format) , EndTime = DateTime.Now.ToString(format), Title = WorkTimeComment };
             Task.Run(async () => await db.AddWorkTimeAsync(wt));
         }
 
