@@ -10,9 +10,8 @@
             Text="{Binding TicksMsg}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-
-        <Button Text="Click..." Command="{Binding TimeCountingButtonPressedCommand}" />
+        <Entry Text="{Binding WorkTimeComment}" />
+        <Button Text="Time Update" Command="{Binding TimeCountingButtonPressedCommand}" />
         <Button Text="Create db" Command="{Binding CreateDatabaseCommand}" />
-        <Button Text="Add random 10 minutes..." Command="{Binding AddRandomWorkTimeCommand}" />
     </VerticalStackLayout>
 </ContentPage>

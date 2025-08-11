@@ -16,6 +16,7 @@ namespace TimeTracker.PageModels
         DatabaseFun db;
         IDispatcherTimer timer;
         int ticks = 0;
+        DateTime startTime;
 
         public TimeTrackingPageModel(DatabaseFun db)
         {
@@ -36,25 +37,23 @@ namespace TimeTracker.PageModels
         [ObservableProperty]
         private string _ticksMsg = $"Ticks: -1";
 
+        [ObservableProperty]
+        private string _workTimeComment = "";
+
         [RelayCommand]
         private void TimeCountingButtonPressed()
         {
             Trace.WriteLine("Time counting button pressed...");
             if (timer.IsRunning)
             {
+                StopWorkTimeCounting();
             }
             else
             {
                 StartWorkTimeCounting();
             }
         }
-
-        [RelayCommand]
-        private async Task AddRandomWorkTime()
-        {
-            await db.AddRandomWorkTimeAsync();
-        }
-
+         
         [RelayCommand]
         private async Task CreateDatabase()
         {
@@ -64,11 +63,14 @@ namespace TimeTracker.PageModels
         private void StopWorkTimeCounting()
         {
             timer.Stop();
+            var wt = new WorkTime() { StartTime = startTime.ToString(), EndTime = DateTime.Now.ToString(), Title = WorkTimeComment };
+            Task.Run(async () => await db.AddWorkTimeAsync(wt));
         }
 
         private void StartWorkTimeCounting()
         {
             timer.Start();
+            startTime = DateTime.Now;
         }
     }
 }
