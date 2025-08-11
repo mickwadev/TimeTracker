@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Markup;
 using Microsoft.Extensions.Logging;
+using TimeTracker.Data;
+using TimeTracker.PageModels;
 
 namespace TimeTracker
 {
@@ -22,7 +24,8 @@ namespace TimeTracker
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-
+            builder.Services.AddSingleton<DatabaseFun>();
+            builder.Services.AddSingleton<TimeTrackingPageModel>();
             return builder.Build();
         }
     }
