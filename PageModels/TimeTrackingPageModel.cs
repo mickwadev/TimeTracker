@@ -13,12 +13,11 @@ namespace TimeTracker.PageModels
 {
     public partial class TimeTrackingPageModel : ObservableObject
     {
-        DatabaseFun db;  
-        private bool learningInProgress = false;
+        DatabaseFun db;
         IDispatcherTimer timer;
         int ticks = 0;
 
-        public TimeTrackingPageModel(DatabaseFun db) 
+        public TimeTrackingPageModel(DatabaseFun db)
         {
             timer = Application.Current!.Dispatcher.CreateTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -40,8 +39,14 @@ namespace TimeTracker.PageModels
         [RelayCommand]
         private void TimeCountingButtonPressed()
         {
-            Trace.WriteLine("Time counting...");
-            StartWorkTimeCounting();
+            Trace.WriteLine("Time counting button pressed...");
+            if (timer.IsRunning)
+            {
+            }
+            else
+            {
+                StartWorkTimeCounting();
+            }
         }
 
         [RelayCommand]
@@ -56,10 +61,14 @@ namespace TimeTracker.PageModels
             await db.AddTimesTableAsync();
         }
 
+        private void StopWorkTimeCounting()
+        {
+            timer.Stop();
+        }
+
         private void StartWorkTimeCounting()
         {
-            if(!timer.IsRunning)
-            timer.Start(); 
+            timer.Start();
         }
     }
 }

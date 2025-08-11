@@ -26,6 +26,7 @@ namespace TimeTracker
 #endif
             builder.Services.AddSingleton<DatabaseFun>();
             builder.Services.AddSingleton<TimeTrackingPageModel>();
+            builder.Services.AddSingleton<WorkTimeModel>();
             return builder.Build();
         }
     }
