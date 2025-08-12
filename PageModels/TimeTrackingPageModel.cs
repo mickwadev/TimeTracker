@@ -65,12 +65,17 @@ namespace TimeTracker.PageModels
         {
             Trace.WriteLine("Dzisiejsze wpisy...");
             var todayWorkEntries = await db.GetTodayWorkingEntriesAsync();
+            WorkTimeComment = SumTimeSpans(todayWorkEntries);
+        }
+
+        private string SumTimeSpans(List<WorkTime> todayWorkEntries)
+        {
             TimeSpan todayWorkTime = TimeSpan.FromSeconds(0);
             foreach (var todayWorkEntry in todayWorkEntries)
             {
                 todayWorkTime += todayWorkEntry.Duration();
             }
-            WorkTimeComment = $"You worked today: {todayWorkTime.ToString(@"hh\:mm\:ss")}";
+            return $"You worked today: {todayWorkTime.ToString(@"hh\:mm\:ss")}";
         }
 
         private void StopWorkTimeCounting()
