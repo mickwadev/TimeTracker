@@ -11,4 +11,9 @@
         ContentTemplate="{DataTemplate local:TimeTrackingPage}"
         Route="TimeTracking" />
 
+    <ShellContent
+        Title="Dashboard"
+        ContentTemplate="{DataTemplate local:WorkTimeDashboard}"
+        Route="Dashboard"/>
+
 </Shell>

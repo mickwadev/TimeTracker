@@ -75,6 +75,9 @@
 	  <MauiXaml Update="Pages\TimeTrackingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\WorkTimeDashboard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\MyColors.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

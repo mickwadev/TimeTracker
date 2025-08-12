@@ -84,10 +84,10 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             addWorkTimeCmd.Parameters.AddWithValue("@today", today);
             await using var reader = await addWorkTimeCmd.ExecuteReaderAsync();
             List<WorkTime> times = new List<WorkTime>();
-            Trace.WriteLine("Tu doszlo...");
+             
             while (await reader.ReadAsync())
             {
-                Trace.WriteLine("Tu doszlo 2...");
+                
                 var wt = new WorkTime()
                 {
                     ID = reader.GetInt32(0),
