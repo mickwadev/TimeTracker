@@ -42,6 +42,7 @@ namespace TimeTracker.PageModels
             Trace.WriteLine($"Check db for:{Day} {Month}");
             DateTime d = new DateTime(2025, int.Parse(Month), int.Parse(Day));
             var times = await db.GetWorkingEntriesForTimePeriodAsync(d, d);
+            TimeLabel = db.SumTimeSpans(times);
         }
     }
 }
