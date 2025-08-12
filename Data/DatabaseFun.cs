@@ -73,15 +73,20 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
 
         public async Task<int> AddRandomWorkTimeAsync() => await AddWorkTimeAsync(GetRandomWorkTime());
 
-        public async Task<List<WorkTime>> GetTodayWorkingEntriesAsync()
+        public async Task<List<WorkTime>> GetTodayWorkingEntriesAsync() => await GetWorkingEntriesForTimePeriodAsync(DateTime.Now,DateTime.Now);
+       
+        public async Task<List<WorkTime>> GetWorkingEntriesForTimePeriodAsync(DateTime startDate, DateTime endDate)
         {
+            string format = "yyyy-MM-dd";
             await using var connection = new SqliteConnection(DbConsts.connectionString);
             await connection.OpenAsync();
             var addWorkTimeCmd = connection.CreateCommand();
-            var today = DateTime.Now.ToString("yyyy-MM-dd");
-            Trace.WriteLine($"Today: {today}");
-            addWorkTimeCmd.CommandText = @$"SELECT ID, Title, StartTime, EndTime FROM {CurrentTable} WHERE date(StartTime) == date(@today);";
-            addWorkTimeCmd.Parameters.AddWithValue("@today", today);
+            var start = startDate.ToString(format);
+            var end = endDate.ToString(format);
+            Trace.WriteLine($"Time period: {start} to {end}");
+            addWorkTimeCmd.CommandText = @$"SELECT ID, Title, StartTime, EndTime FROM {CurrentTable} WHERE date(StartTime) >= date(@start) AND date(StartTime) <= date(@end);";
+            addWorkTimeCmd.Parameters.AddWithValue("@start", start);
+            addWorkTimeCmd.Parameters.AddWithValue("@end", end);
             await using var reader = await addWorkTimeCmd.ExecuteReaderAsync();
             List<WorkTime> times = new List<WorkTime>();
              

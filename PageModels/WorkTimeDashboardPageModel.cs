@@ -32,6 +32,11 @@ namespace TimeTracker.PageModels
         // Cool! This updates when Day or Month changes ^_^
         public string ButtonText => $"Get learning time for {Day} {Month}";
 
-       
+        [RelayCommand]
+        public async Task GetDatabaseEntriesForDate()
+        {
+            Trace.WriteLine($"Check db for:{Day} {Month}");
+
+        }
     }
 }
