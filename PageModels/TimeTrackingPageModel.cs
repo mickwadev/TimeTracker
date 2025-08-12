@@ -64,7 +64,13 @@ namespace TimeTracker.PageModels
         private async Task GetDates()
         {
             Trace.WriteLine("Dzisiejsze wpisy...");
-            await db.GetTodayWorkingEntriesAsync();
+            var todayWorkEntries = await db.GetTodayWorkingEntriesAsync();
+            TimeSpan todayWorkTime = TimeSpan.FromSeconds(0);
+            foreach (var todayWorkEntry in todayWorkEntries)
+            {
+                todayWorkTime += todayWorkEntry.Duration();
+            }
+            WorkTimeComment = $"You worked today: {todayWorkTime.ToString(@"hh\:mm\:ss")}";
         }
 
         private void StopWorkTimeCounting()
