@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TimeTracker.Pages.ChartTestPage"
+             xmlns:local="clr-namespace:TimeTracker.PageModels"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             x:DataType="local:ChartTestPageModel"
+             Title="ChartTestPage">
+    <ContentPage.BindingContext>
+        <local:ChartTestPageModel/>
+    </ContentPage.BindingContext>
+    <VerticalStackLayout>
+        <Label 
+            Text="Chart test ^_^"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Grid WidthRequest="333" HeightRequest="333">
+            <lvc:CartesianChart
+                Series="{Binding Series}">
+            </lvc:CartesianChart>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>
