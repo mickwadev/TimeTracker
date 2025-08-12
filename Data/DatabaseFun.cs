@@ -108,6 +108,16 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             }
             return times;
         }
+        public string SumTimeSpans(List<WorkTime> todayWorkEntries)
+        {
+            TimeSpan todayWorkTime = TimeSpan.FromSeconds(0);
+            foreach (var todayWorkEntry in todayWorkEntries)
+            {
+                todayWorkTime += todayWorkEntry.Duration();
+            }
+            return $"You worked today: {todayWorkTime.ToString(@"hh\:mm\:ss")}";
+        }
+
 
     }
 }
