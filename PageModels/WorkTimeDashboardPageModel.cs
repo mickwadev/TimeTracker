@@ -32,11 +32,16 @@ namespace TimeTracker.PageModels
         // Cool! This updates when Day or Month changes ^_^
         public string ButtonText => $"Get learning time for {Day} {Month}";
 
+
+        [ObservableProperty]
+        private string _timeLabel = "";
+
         [RelayCommand]
         public async Task GetDatabaseEntriesForDate()
         {
             Trace.WriteLine($"Check db for:{Day} {Month}");
-
+            DateTime d = new DateTime(2025, int.Parse(Month), int.Parse(Day));
+            var times = await db.GetWorkingEntriesForTimePeriodAsync(d, d);
         }
     }
 }

@@ -6,8 +6,11 @@
              x:DataType="model:WorkTimeDashboardPageModel"
              Title="WorkTimeDashboard">
     <VerticalStackLayout>
-        <Entry x:Name="DayEntry" Text="{Binding Day}"/>
-        <Entry x:Name="MonthEntry" Text="{Binding Month}"/>
-        <Button x:Name="SubmitButton" Text="{Binding ButtonText}"/>
+        <HorizontalStackLayout>
+            <Entry x:Name="DayEntry" Text="{Binding Day}"/>
+            <Entry x:Name="MonthEntry" Text="{Binding Month}"/>
+        </HorizontalStackLayout>
+        <Button x:Name="SubmitButton" Text="{Binding ButtonText}" Command="{Binding GetDatabaseEntriesForDateCommand}"/>
+        <Label x:Name="TimeLabel" Text="{Binding TimeLabel}"/>
     </VerticalStackLayout>
 </ContentPage>

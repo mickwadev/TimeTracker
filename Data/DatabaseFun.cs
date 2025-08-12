@@ -75,6 +75,8 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
 
         public async Task<List<WorkTime>> GetTodayWorkingEntriesAsync() => await GetWorkingEntriesForTimePeriodAsync(DateTime.Now,DateTime.Now);
        
+
+
         public async Task<List<WorkTime>> GetWorkingEntriesForTimePeriodAsync(DateTime startDate, DateTime endDate)
         {
             string format = "yyyy-MM-dd";
