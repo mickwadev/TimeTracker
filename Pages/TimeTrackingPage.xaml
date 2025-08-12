@@ -5,7 +5,7 @@
              xmlns:pageModel="clr-namespace:TimeTracker.PageModels"
              x:DataType="pageModel:TimeTrackingPageModel"
              Title="{Binding Today}">
-    <VerticalStackLayout>
+    <VerticalStackLayout Spacing="10" Padding="10" >
         <Label 
             Text="{Binding TicksMsg}"
             VerticalOptions="Center" 
@@ -13,6 +13,6 @@
         <Entry Text="{Binding WorkTimeComment}" />
         <Button Text="Count working time" Command="{Binding TimeCountingButtonPressedCommand}" />
         <Button Text="Create db" Command="{Binding CreateDatabaseCommand}" />
-        <Button Text="Todays working" Command="{Binding GetDatesCommand}" />
+        <Button Text="Todays working" Command="{Binding GetDatesCommand}" BackgroundColor="{StaticResource MyOrange}" />
     </VerticalStackLayout>
 </ContentPage>
