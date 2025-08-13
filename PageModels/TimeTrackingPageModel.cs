@@ -29,6 +29,7 @@ namespace TimeTracker.PageModels
                 TicksMsg = $"Ticks: {ticks}";
             };
             this.db = db;
+            UpdateTimeButtonText();
         }
 
         [ObservableProperty]
@@ -39,6 +40,9 @@ namespace TimeTracker.PageModels
 
         [ObservableProperty]
         private string _workTimeComment = "";
+
+        [ObservableProperty]
+        private string _countTimeButtonText;
 
         [RelayCommand]
         private void TimeCountingButtonPressed()
@@ -52,6 +56,7 @@ namespace TimeTracker.PageModels
             {
                 StartWorkTimeCounting();
             }
+            UpdateTimeButtonText();
         }
          
         [RelayCommand]
@@ -74,12 +79,19 @@ namespace TimeTracker.PageModels
             var format = "yyyy-MM-dd HH:MM:ss"; // this format is required for sqlite date functions to work.
             var wt = new WorkTime() { StartTime = startTime.ToString(format) , EndTime = DateTime.Now.ToString(format), Title = WorkTimeComment };
             Task.Run(async () => await db.AddWorkTimeAsync(wt));
+             
         }
 
         private void StartWorkTimeCounting()
         {
             timer.Start();
             startTime = DateTime.Now;
+             
+        }
+
+        private void UpdateTimeButtonText()
+        {
+            CountTimeButtonText = (timer.IsRunning ? "Stop" : "Start") + " counting time";
         }
     }
 }

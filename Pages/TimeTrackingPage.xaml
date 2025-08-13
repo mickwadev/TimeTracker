@@ -11,7 +11,7 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
         <Entry Text="{Binding WorkTimeComment}" />
-        <Button Text="Count working time" Command="{Binding TimeCountingButtonPressedCommand}" />
+        <Button Text="{Binding CountTimeButtonText}" Command="{Binding TimeCountingButtonPressedCommand}" />
         <Button Text="Create db" Command="{Binding CreateDatabaseCommand}" />
         <Button Text="Todays working time" Command="{Binding GetDatesCommand}" BackgroundColor="{StaticResource MyOrange}" />
     </VerticalStackLayout>
