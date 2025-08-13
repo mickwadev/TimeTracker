@@ -13,6 +13,8 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
+        <Label Text="{Binding Ints.Count}"/>
+        <Label Text="{Binding Ints2.Count}"/>
         <Grid WidthRequest="333" HeightRequest="333">
             <lvc:CartesianChart
             Series="{Binding Series}"

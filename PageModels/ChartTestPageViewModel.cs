@@ -5,12 +5,16 @@ using LiveChartsCore.Defaults;
 using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Drawing.Geometries;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace TimeTracker.PageModels
 {
     public partial class ChartTestPageViewModel : ObservableObject
     {
+        [ObservableProperty]
+        ObservableCollection<int> _ints =new ObservableCollection<int>() {1,2,3};
+         
         public ISeries[] Series { get; set; } = 
             [
                 new ColumnSeries<DateTimePoint>
@@ -32,6 +36,8 @@ namespace TimeTracker.PageModels
         public void AddValueButton()
         {
             Trace.WriteLine("Add value to chart...");
+            Ints.Add(0);
+             
             var d = new ColumnSeries<DateTimePoint>
             {
                 Values = [
