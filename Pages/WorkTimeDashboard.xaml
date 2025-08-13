@@ -4,6 +4,7 @@
              x:Class="TimeTracker.Pages.WorkTimeDashboard"
              xmlns:model="clr-namespace:TimeTracker.PageModels"
              x:DataType="model:WorkTimeDashboardPageModel"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              Title="WorkTimeDashboard">
     <VerticalStackLayout>
         <HorizontalStackLayout>
@@ -12,5 +13,14 @@
         </HorizontalStackLayout>
         <Button x:Name="SubmitButton" Text="{Binding ButtonText}" Command="{Binding GetDatabaseEntriesForDateCommand}"/>
         <Label x:Name="TimeLabel" Text="{Binding TimeLabel}"/>
+
+        <Button Text="Load data to chart" Command="{Binding LoadAllWorkingHistoryCommand}" />
+        <Grid WidthRequest="333" HeightRequest="333">
+        <lvc:CartesianChart
+             Series="{Binding Series}"
+             YAxes="{Binding YAxes}"
+             XAxes="{Binding XAxes}">       
+        </lvc:CartesianChart>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

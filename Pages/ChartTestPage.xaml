@@ -4,11 +4,9 @@
              x:Class="TimeTracker.Pages.ChartTestPage"
              xmlns:local="clr-namespace:TimeTracker.PageModels"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
-             x:DataType="local:ChartTestPageModel"
+             x:DataType="local:ChartTestPageViewModel"
              Title="ChartTestPage">
-    <ContentPage.BindingContext>
-        <local:ChartTestPageModel/>
-    </ContentPage.BindingContext>
+    
     <VerticalStackLayout>
         <Label 
             Text="Chart test ^_^"
@@ -22,5 +20,7 @@
             XAxes="{Binding XAxes}">
             </lvc:CartesianChart>
         </Grid>
+
+        <Button Text="Add value to chart" Command="{Binding AddValueButtonCommand}" />
     </VerticalStackLayout>
 </ContentPage>
