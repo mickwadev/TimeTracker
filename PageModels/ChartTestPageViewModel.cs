@@ -6,6 +6,8 @@ using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.SkiaSharpView;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using TimeTracker.Data;
+using TimeTracker.Models;
 
 namespace TimeTracker.PageModels
 {
@@ -40,10 +42,12 @@ namespace TimeTracker.PageModels
         //    ];
          
         int kulfon = 15;
-         
 
-        public ChartTestPageViewModel()
+        DatabaseFun database;
+
+        public ChartTestPageViewModel(DatabaseFun db)
         {
+            database = db;
             MyWorkingHours = new ISeries[] { new ColumnSeries<DateTimePoint>() { Values = DateTimePoints } };
             for (int i = 0; i < 6; i++)
             {
@@ -92,9 +96,23 @@ namespace TimeTracker.PageModels
             }
 
             [RelayCommand]
-            public void DodajDoDat()
+            public async Task DodajDoDat()
             {
+            await Task.Delay(1000);
                 DateTimePoints.Add(new DateTimePoint() { DateTime = new DateTime(2025, 8, kulfon), Value = kulfon++ });
+            }
+
+            [RelayCommand]
+            public async Task LoadTimeFromDb()
+            {
+                List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(new DateTime(2025, 8, 1), new DateTime(2025, 8, 30));
+                var group = d.GroupBy(wt => DateTime.Parse(wt.StartTime).ToString("yyyy MM dd"));
+                DateTimePoints.Clear();
+                foreach (var w in group)
+                {
+                    Trace.WriteLine($"{w.Key} {w.Count()}"); 
+                    DateTimePoints.Add(new DateTimePoint() {DateTime = DateTime.Parse(w.Key) , Value = w.Aggregate(0, (sum, wt) => sum += (int)wt.Duration().TotalSeconds) });
+                }
             }
 
         }

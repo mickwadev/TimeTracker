@@ -39,5 +39,6 @@
         <Button Text="Add single value to chart" Command="{Binding AddValueButtonCommand}" />
         <Button Text="Add some values async" Command="{Binding AddSomeValuesCommand}" />
         <Button Text="Dodaj do dat" Command="{Binding DodajDoDatCommand}"/>
+        <Button Text="Load from db" Command="{Binding LoadTimeFromDbCommand}"/>
     </VerticalStackLayout>
 </ContentPage>
