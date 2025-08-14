@@ -13,24 +13,16 @@ namespace TimeTracker.PageModels
     {
         // https://livecharts.dev/docs/maui/2.0.0-rc5.4/Overview.Automatic%20updates
         [ObservableProperty]
-        ObservableCollection<int> _ints =new ObservableCollection<int>() {1,2,3};
+        ObservableCollection<int> _ints =new ObservableCollection<int>() {1,2,3}; // with List<int> this won't work.
         Random random = new Random();
 
+
         public ISeries[] Series2 { get;}
+        public ISeries[] ColumnSeries { get; }
 
-        public ChartTestPageViewModel()
-        {
-            // since _ints is of type ObservableCollection 
-            // LiveCharts will update when you add, remove, replace or clear the collection
-            LineSeries<int> lineSeries = new LineSeries<int>();
-            lineSeries.Values = Ints;
-
-
-            Series2 = new ISeries[] { new LineSeries<int>() { Values = Ints} };
-        }
-
-        public ISeries[] Series { get; set; } = 
+        public ISeries[] DateSeries { get; set; } =
             [
+                // Both ColumnSeries and DataTimePoint implement INotifyPropertyChanged
                 new ColumnSeries<DateTimePoint>
                     {
                         Values = [
@@ -39,40 +31,48 @@ namespace TimeTracker.PageModels
                             new() { DateTime = new(2025, 8, 14), Value = 5 }
                                 ]
                     }
-                    ];
+            ];
 
-        public ICartesianAxis[] XAxes { get; set; } =
-        [
-            new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("dd MM")),
-        ];
-
-        [RelayCommand]
-        public async Task AddSomeValuesAsync()
+        public void AddToDateSeries()
         {
-            for (int i = 0; i < 5; i++)
-            { 
-                await Task.Delay(1000);
-                Ints.Add(random.Next(1, 10));
-            }
+            ISeries? d =DateSeries[0];
+            
+        
         }
 
-        [RelayCommand]
-        public void AddValueButton()
+        public ChartTestPageViewModel()
         {
-            Trace.WriteLine("Add value to chart...");
-            Ints.Add(random.Next(0,10));
+            // since _ints is of type ObservableCollection 
+            // LiveCharts will update when you add, remove, replace or clear the collection
              
-            var d = new ColumnSeries<DateTimePoint>
-            {
-                Values = [
-                            new() { DateTime = new(2025, 8, 12), Value = 1 },
-                            new() { DateTime = new(2025, 8, 13), Value = 1 },
-                            new() { DateTime = new(2025, 8, 14), Value = 1 }
-                                ]
-            };
-                   
-            Series.SetValue(d, 0);
+            Series2 = new ISeries[] { new LineSeries<int>() { Values = Ints} };
+            ColumnSeries = new ISeries[] {new ColumnSeries<int>() { Values = Ints} };
+            AddToDateSeries();
         }
+
+        
+
+            public ICartesianAxis[] XAxes { get; set; } =
+            [
+                new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("dd MM")),
+            ];
+
+            [RelayCommand]
+            public async Task AddSomeValuesAsync()
+            {
+                for (int i = 0; i < 5; i++)
+                { 
+                    await Task.Delay(1000);
+                    Ints.Add(random.Next(1, 10));
+                }
+            }
+
+            [RelayCommand]
+            public void AddValueButton()
+            {
+                Trace.WriteLine("Add value to chart...");
+                Ints.Add(random.Next(0,10));
+            }
 
         }
 }

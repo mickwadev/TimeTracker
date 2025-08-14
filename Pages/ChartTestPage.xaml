@@ -6,7 +6,7 @@
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:DataType="local:ChartTestPageViewModel"
              Title="ChartTestPage">
-    
+
     <VerticalStackLayout>
         <Label 
             Text="Chart test ^_^"
@@ -15,20 +15,26 @@
 
         <Label Text="{Binding Ints.Count}"/>
         <Label Text="{Binding Ints2.Count}"/>
-        <Grid WidthRequest="233" HeightRequest="233">
+        <Grid ColumnDefinitions="*,*,*" RowDefinitions="222,222">
             <lvc:CartesianChart
-            Series="{Binding Series}"
-            YAxes="{Binding YAxes}"
-            XAxes="{Binding XAxes}">
+                Grid.Column="0"
+                Series="{Binding DateSeries}"
+                YAxes="{Binding YAxes}"
+                XAxes="{Binding XAxes}">
             </lvc:CartesianChart>
-        </Grid>
-
-        <Grid WidthRequest="633" HeightRequest="233">
             <lvc:CartesianChart
+                Grid.Column="1"
                 Series="{Binding Series2}">
-
             </lvc:CartesianChart>
+            <lvc:CartesianChart
+                Grid.Column="2"
+                Series="{Binding ColumnSeries}">
+            </lvc:CartesianChart>
+
+
         </Grid>
+
+
 
         <Button Text="Add single value to chart" Command="{Binding AddValueButtonCommand}" />
         <Button Text="Add some values async" Command="{Binding AddSomeValuesCommand}" />
