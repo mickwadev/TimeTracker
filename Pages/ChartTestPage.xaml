@@ -18,7 +18,7 @@
         <Grid ColumnDefinitions="*,*,*" RowDefinitions="222,222">
             <lvc:CartesianChart
                 Grid.Column="0"
-                Series="{Binding DateSeries}"
+                Series="{Binding MyWorkingHours}"
                 YAxes="{Binding YAxes}"
                 XAxes="{Binding XAxes}">
             </lvc:CartesianChart>
@@ -28,7 +28,7 @@
             </lvc:CartesianChart>
             <lvc:CartesianChart
                 Grid.Column="2"
-                Series="{Binding ColumnSeries}">
+                Series="{Binding MyIntsSeries}">
             </lvc:CartesianChart>
 
 
@@ -38,5 +38,6 @@
 
         <Button Text="Add single value to chart" Command="{Binding AddValueButtonCommand}" />
         <Button Text="Add some values async" Command="{Binding AddSomeValuesCommand}" />
+        <Button Text="Dodaj do dat" Command="{Binding DodajDoDatCommand}"/>
     </VerticalStackLayout>
 </ContentPage>
