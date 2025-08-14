@@ -30,6 +30,7 @@
             </lvc:CartesianChart>
         </Grid>
 
-        <Button Text="Add value to chart" Command="{Binding AddValueButtonCommand}" />
+        <Button Text="Add single value to chart" Command="{Binding AddValueButtonCommand}" />
+        <Button Text="Add some values async" Command="{Binding AddSomeValuesCommand}" />
     </VerticalStackLayout>
 </ContentPage>

@@ -47,6 +47,16 @@ namespace TimeTracker.PageModels
         ];
 
         [RelayCommand]
+        public async Task AddSomeValuesAsync()
+        {
+            for (int i = 0; i < 5; i++)
+            { 
+                await Task.Delay(1000);
+                Ints.Add(random.Next(1, 10));
+            }
+        }
+
+        [RelayCommand]
         public void AddValueButton()
         {
             Trace.WriteLine("Add value to chart...");
