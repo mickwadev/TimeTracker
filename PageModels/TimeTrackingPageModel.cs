@@ -15,7 +15,6 @@ namespace TimeTracker.PageModels
     {
         DatabaseFun db;
         IDispatcherTimer timer;
-        int ticks = 0;
         DateTime startTime;
 
         public TimeTrackingPageModel(DatabaseFun db)
@@ -25,8 +24,8 @@ namespace TimeTracker.PageModels
             timer.IsRepeating = true;
             timer.Tick += (s, e) =>
             {
-                ticks++;
-                TicksMsg = $"Ticks: {ticks}";
+                TimeSpan sp = (DateTime.Now - startTime); 
+                TicksMsg = $"Ticks: {(int)sp.TotalSeconds}";
             };
             this.db = db;
             UpdateTimeButtonText();
@@ -84,9 +83,8 @@ namespace TimeTracker.PageModels
 
         private void StartWorkTimeCounting()
         {
-            timer.Start();
             startTime = DateTime.Now;
-             
+            timer.Start();
         }
 
         private void UpdateTimeButtonText()
