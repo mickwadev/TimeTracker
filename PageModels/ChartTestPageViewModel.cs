@@ -1,9 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore;
+using LiveChartsCore.ConditionalDraw;
 using LiveChartsCore.Defaults;
+using LiveChartsCore.Kernel;
 using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using TimeTracker.Data;
@@ -45,10 +49,38 @@ namespace TimeTracker.PageModels
 
         DatabaseFun database;
 
+
+        private void ChartTestPageViewModel_PointMeasured(LiveChartsCore.Kernel.ChartPoint<DateTimePoint, LiveChartsCore.SkiaSharpView.Drawing.Geometries.RoundedRectangleGeometry, LiveChartsCore.SkiaSharpView.Drawing.Geometries.LabelGeometry> obj)
+        {
+
+        }
+
         public ChartTestPageViewModel(DatabaseFun db)
         {
             database = db;
-            MyWorkingHours = new ISeries[] { new ColumnSeries<DateTimePoint>() { Values = DateTimePoints } };
+
+            var cc = new ColumnSeries<DateTimePoint>()
+            {
+                Values = DateTimePoints,
+                Name = "Kokoszka",
+             //   Fill = new SolidColorPaint(SKColors.Beige),
+             //   Rx = 23,
+            //    Ry = 23,
+             //   Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 4 },
+            };
+            cc.PointMeasured += (chartPoint) => {
+                double y = chartPoint.Coordinate.PrimaryValue;
+                Trace.WriteLine($"value y {y}");
+                double t = Math.Clamp( y / 36.0, 0, 1);  // normalize 0..6 → 0..1
+                byte r = (byte)(255 * (1 - t));
+                byte g = (byte)(255 * t);
+                var color = new SKColor(r, g, 0);
+
+                chartPoint.Visual.Fill = new SolidColorPaint(color);
+                chartPoint.Visual.Stroke = new SolidColorPaint(color) { StrokeThickness = 4 };
+            };
+            MyWorkingHours = new ISeries[]{cc};
+
             for (int i = 0; i < 6; i++)
             {
                 DateTimePoints.Add(new DateTimePoint() { DateTime = new(2025, 8, kulfon), Value = kulfon });
