@@ -30,11 +30,7 @@
                 Grid.Column="2"
                 Series="{Binding MyIntsSeries}">
             </lvc:CartesianChart>
-
-
         </Grid>
-
-
 
         <Button Text="Add single value to chart" Command="{Binding AddValueButtonCommand}" />
         <Button Text="Add some values async" Command="{Binding AddSomeValuesCommand}" />
