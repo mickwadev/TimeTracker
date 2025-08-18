@@ -30,9 +30,20 @@ namespace TimeTracker.PageModels
         };
 
         [RelayCommand]
-        public void TimeRange_SelectionChanged(Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
+        public async Task TimeRange_SelectionChanged(Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
         {
             Trace.WriteLine($"zmiana: {e.OldIndex} ==> {e.NewIndex}  {Segments[(int)e.NewIndex!].Text}");
+
+            var p = Segments[(int)e.NewIndex!].Text switch
+            {
+                "Today" => Dates.Today,
+                "Week" => Dates.ThisWeek,
+                "Month" => Dates.ThisMonth,
+                "All" => Dates.All,
+                _ => Dates.All
+            };
+            await LoadTimeFromDb(p.start, p.end);
+            TimePeriod = $"From {p.start.ToString("yyyy-MM-dd")} to {p.end.ToString("yyyy-MM-dd")}";
         }
         #endregion
 
@@ -51,6 +62,9 @@ namespace TimeTracker.PageModels
         public ISeries[] MyWorkingHours { get; }
 
         int kulfon = 15;
+
+        [ObservableProperty]
+        private string _timePeriod = "";
 
         DatabaseFun database;
 
@@ -145,7 +159,19 @@ namespace TimeTracker.PageModels
                 DateTimePoints.Add(new DateTimePoint() { DateTime = new DateTime(2025, 8, kulfon), Value = kulfon++ });
             }
 
-            [RelayCommand]
+        public async Task LoadTimeFromDb(DateTime start, DateTime end)
+        {
+            List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(start, end);
+            var group = d.GroupBy(wt => DateTime.Parse(wt.StartTime).ToString("yyyy MM dd"));
+            DateTimePoints.Clear();
+            foreach (var w in group)
+            {
+                Trace.WriteLine($"{w.Key} {w.Count()}");
+                DateTimePoints.Add(new DateTimePoint() { DateTime = DateTime.Parse(w.Key), Value = w.Aggregate(0, (sum, wt) => sum += (int)wt.Duration().TotalSeconds) });
+            }
+        }
+
+        [RelayCommand]
             public async Task LoadTimeFromDb()
             {
                 List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(new DateTime(2025, 8, 1), new DateTime(2025, 8, 30));

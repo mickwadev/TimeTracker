@@ -23,7 +23,7 @@
 
         <Label Text="{Binding Ints.Count}"/>
         <Label Text="{Binding Ints2.Count}"/>
-        <Grid ColumnDefinitions="*" RowDefinitions="auto,222">
+        <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,222">
 
             <sf:SfSegmentedControl  x:Name="TimeRange" Grid.Column="0" Grid.Row="0" BackgroundColor="AliceBlue" ItemsSource="{Binding Segments}">
                 <sf:SfSegmentedControl.Behaviors>
@@ -35,8 +35,9 @@
 
                 </sf:SfSegmentedControl.Behaviors>
             </sf:SfSegmentedControl>
+            <Label HorizontalOptions="Center" Grid.Column="0" Grid.Row="1" x:Name="TimePeriodLabel" Text="{Binding TimePeriod}" />
             <lvc:CartesianChart
-                Grid.Column="0" Grid.Row="1"
+                Grid.Column="0" Grid.Row="2"
                 Series="{Binding MyWorkingHours}"
                 YAxes="{Binding YAxes}"
                 XAxes="{Binding XAxes}">
