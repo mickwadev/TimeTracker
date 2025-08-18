@@ -32,7 +32,7 @@ namespace TimeTracker.PageModels
         [RelayCommand]
         public void TimeRange_SelectionChanged(Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
         {
-            Trace.WriteLine($"zmiana: {e.OldIndex} ==> {e.NewIndex}");
+            Trace.WriteLine($"zmiana: {e.OldIndex} ==> {e.NewIndex}  {Segments[(int)e.NewIndex!].Text}");
         }
         #endregion
 
