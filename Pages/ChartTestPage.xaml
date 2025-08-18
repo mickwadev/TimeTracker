@@ -4,6 +4,7 @@
              x:Class="TimeTracker.Pages.ChartTestPage"
              xmlns:local="clr-namespace:TimeTracker.PageModels"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit" 
              x:DataType="local:ChartTestPageViewModel"
              Title="ChartTestPage">
 
@@ -15,9 +16,11 @@
 
         <Label Text="{Binding Ints.Count}"/>
         <Label Text="{Binding Ints2.Count}"/>
-        <Grid ColumnDefinitions="*" RowDefinitions="222">
+        <Grid ColumnDefinitions="*" RowDefinitions="auto,222">
+
+            <sf:SfSegmentedControl Grid.Column="0" Grid.Row="0" BackgroundColor="AliceBlue"  ItemsSource="{Binding Segments}"></sf:SfSegmentedControl>
             <lvc:CartesianChart
-                Grid.Column="0"
+                Grid.Column="0" Grid.Row="1"
                 Series="{Binding MyWorkingHours}"
                 YAxes="{Binding YAxes}"
                 XAxes="{Binding XAxes}">

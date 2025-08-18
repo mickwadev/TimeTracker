@@ -12,11 +12,26 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using TimeTracker.Data;
 using TimeTracker.Models;
+using Syncfusion.Maui.Toolkit.Buttons;
+using Syncfusion.Maui.Toolkit.SegmentedControl;
 
 namespace TimeTracker.PageModels
 {
     public partial class ChartTestPageViewModel : ObservableObject
     {
+        #region SEGMENT
+
+        public List<SfSegmentItem> Segments { get; } = new List<SfSegmentItem>() 
+        {
+            new SfSegmentItem(){Text = "Today"},
+            new SfSegmentItem(){Text = "Week"},
+            new SfSegmentItem(){Text = "Month"},
+            new SfSegmentItem(){Text = "All"}
+        };
+
+        
+        #endregion
+
         // https://livecharts.dev/docs/maui/2.0.0-rc5.4/Overview.Automatic%20updates
         [ObservableProperty]
         private ObservableCollection<int> _ints =new ObservableCollection<int>() {1,2,3}; // with List<int> this won't work.
@@ -62,7 +77,7 @@ namespace TimeTracker.PageModels
             var cc = new ColumnSeries<DateTimePoint>()
             {
                 Values = DateTimePoints,
-                Name = "Kokoszka",
+              //  Name = "Kokoszka",
              //   Fill = new SolidColorPaint(SKColors.Beige),
              //   Rx = 23,
             //    Ry = 23,
@@ -83,7 +98,7 @@ namespace TimeTracker.PageModels
             cc.ChartPointPointerHover += (sender, chartPoint) => {
                 var color = SKColors.Beige;
                 chartPoint.Visual.Stroke = new SolidColorPaint(color) { StrokeThickness = 4 };
-                chartPoint.Context.Series.Name = chartPoint.Coordinate.PrimaryValue.ToString();
+           //     chartPoint.Context.Series.Name = chartPoint.Coordinate.PrimaryValue.ToString();
             };
 
             cc.ChartPointPointerHoverLost += (sender, chartPoint) =>

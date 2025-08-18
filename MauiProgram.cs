@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Markup;
 using LiveChartsCore.SkiaSharpView.Maui;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using Syncfusion.Maui.Toolkit.Hosting;
 using TimeTracker.Data;
 using TimeTracker.PageModels;
 
@@ -17,6 +18,7 @@ namespace TimeTracker
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .UseMauiCommunityToolkitMarkup()
+                .ConfigureSyncfusionToolkit()
                 .UseSkiaSharp()
                 .UseLiveCharts()
                 .ConfigureFonts(fonts =>
