@@ -15,20 +15,12 @@
 
         <Label Text="{Binding Ints.Count}"/>
         <Label Text="{Binding Ints2.Count}"/>
-        <Grid ColumnDefinitions="*,*,*" RowDefinitions="222,222">
+        <Grid ColumnDefinitions="*" RowDefinitions="222">
             <lvc:CartesianChart
                 Grid.Column="0"
                 Series="{Binding MyWorkingHours}"
                 YAxes="{Binding YAxes}"
                 XAxes="{Binding XAxes}">
-            </lvc:CartesianChart>
-            <lvc:CartesianChart
-                Grid.Column="1"
-                Series="{Binding Series2}">
-            </lvc:CartesianChart>
-            <lvc:CartesianChart
-                Grid.Column="2"
-                Series="{Binding MyIntsSeries}">
             </lvc:CartesianChart>
         </Grid>
 

@@ -66,7 +66,7 @@ namespace TimeTracker.PageModels
              //   Fill = new SolidColorPaint(SKColors.Beige),
              //   Rx = 23,
             //    Ry = 23,
-             //   Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 4 },
+                 Stroke = new SolidColorPaint(SKColors.Transparent) { StrokeThickness = 0 },
             };
             cc.PointMeasured += (chartPoint) => {
                 double y = chartPoint.Coordinate.PrimaryValue;
@@ -77,8 +77,20 @@ namespace TimeTracker.PageModels
                 var color = new SKColor(r, g, 0);
 
                 chartPoint.Visual.Fill = new SolidColorPaint(color);
-                chartPoint.Visual.Stroke = new SolidColorPaint(color) { StrokeThickness = 4 };
+            
             };
+
+            cc.ChartPointPointerHover += (sender, chartPoint) => {
+                var color = SKColors.Beige;
+                chartPoint.Visual.Stroke = new SolidColorPaint(color) { StrokeThickness = 4 };
+                chartPoint.Context.Series.Name = chartPoint.Coordinate.PrimaryValue.ToString();
+            };
+
+            cc.ChartPointPointerHoverLost += (sender, chartPoint) =>
+            {
+                chartPoint.Visual.Stroke = new SolidColorPaint(SKColors.Transparent) { StrokeThickness = 0 };
+            };
+
             MyWorkingHours = new ISeries[]{cc};
 
             for (int i = 0; i < 6; i++)
