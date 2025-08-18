@@ -50,29 +50,9 @@ namespace TimeTracker.PageModels
 
         public ISeries[] MyWorkingHours { get; }
 
-        // Do tego jakoś ciężko się dostać...
-        //public ISeries[] DateSeries { get; set; } =
-        //    [
-        //        // Both ColumnSeries and DataTimePoint implement INotifyPropertyChanged
-        //        new ColumnSeries<DateTimePoint>
-        //            {
-        //                Values = [
-        //                    new() { DateTime = new(2025, 8, 12), Value = 3 },
-        //                    new() { DateTime = new(2025, 8, 13), Value = 6 },
-        //                    new() { DateTime = new(2025, 8, 14), Value = 5 }
-        //                        ]
-        //            }
-        //    ];
-         
         int kulfon = 15;
 
         DatabaseFun database;
-
-
-        private void ChartTestPageViewModel_PointMeasured(LiveChartsCore.Kernel.ChartPoint<DateTimePoint, LiveChartsCore.SkiaSharpView.Drawing.Geometries.RoundedRectangleGeometry, LiveChartsCore.SkiaSharpView.Drawing.Geometries.LabelGeometry> obj)
-        {
-
-        }
 
         public ChartTestPageViewModel(DatabaseFun db)
         {
