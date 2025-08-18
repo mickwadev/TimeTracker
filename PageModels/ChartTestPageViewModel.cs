@@ -14,7 +14,7 @@ using TimeTracker.Data;
 using TimeTracker.Models;
 using Syncfusion.Maui.Toolkit.Buttons;
 using Syncfusion.Maui.Toolkit.SegmentedControl;
-
+ 
 namespace TimeTracker.PageModels
 {
     public partial class ChartTestPageViewModel : ObservableObject
@@ -29,7 +29,11 @@ namespace TimeTracker.PageModels
             new SfSegmentItem(){Text = "All"}
         };
 
-        
+        [RelayCommand]
+        public void TimeRange_SelectionChanged(Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
+        {
+            Trace.WriteLine($"zmiana: {e.OldIndex} ==> {e.NewIndex}");
+        }
         #endregion
 
         // https://livecharts.dev/docs/maui/2.0.0-rc5.4/Overview.Automatic%20updates
