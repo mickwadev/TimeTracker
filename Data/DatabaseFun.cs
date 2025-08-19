@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             var addWorkTimeCmd = connection.CreateCommand();
             var start = startDate.ToString(format);
             var end = endDate.ToString(format);
-            Trace.WriteLine($"Time period: {startDate.ToString(fullFormat)} to {endDate.ToString(fullFormat)}");
+            Trace.WriteLine($"Time period days: {start} to {end}");
             addWorkTimeCmd.CommandText = @$"SELECT ID, Title, StartTime, EndTime FROM {CurrentTable} WHERE date(StartTime) >= date(@start) AND date(StartTime) <= date(@end);";
             addWorkTimeCmd.Parameters.AddWithValue("@start", start);
             addWorkTimeCmd.Parameters.AddWithValue("@end", end);
@@ -95,7 +95,6 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
              
             while (await reader.ReadAsync())
             {
-                
                 var wt = new WorkTime()
                 {
                     ID = reader.GetInt32(0),
@@ -104,8 +103,11 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
                     EndTime = reader.GetString(3),
                 };
                 times.Add(wt);
-                var time = DateTime.Parse(wt.EndTime) - DateTime.Parse(wt.StartTime);
-                Trace.WriteLine($"Time span: {time}");
+                var startTime = DateTime.Parse(wt.StartTime);
+                var endTime = DateTime.Parse(wt.EndTime);
+                var time = endTime - startTime;
+                Trace.WriteLine($"Pure data: '{wt.StartTime}' '{wt.EndTime}'");
+                Trace.WriteLine($"Time span from activity: {time} ({startTime.ToString(fullFormat)} - {endDate.ToString(fullFormat)})");
             }
             return times;
         }
