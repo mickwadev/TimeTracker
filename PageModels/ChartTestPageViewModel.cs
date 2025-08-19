@@ -8,12 +8,13 @@ using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using TimeTracker.Data;
-using TimeTracker.Models;
 using Syncfusion.Maui.Toolkit.Buttons;
 using Syncfusion.Maui.Toolkit.SegmentedControl;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Globalization;
+using TimeTracker.Data;
+using TimeTracker.Models;
  
 namespace TimeTracker.PageModels
 {
@@ -70,6 +71,7 @@ namespace TimeTracker.PageModels
 
         public ChartTestPageViewModel(DatabaseFun db)
         {
+            ParsingTest();
             database = db;
 
             var cc = new ColumnSeries<DateTimePoint>()
@@ -190,5 +192,18 @@ namespace TimeTracker.PageModels
                 }
             }
 
+        private void ParsingTest()
+        {
+            string s1 = "2025-08-19 12:08:15";
+            string s2 = "2025-08-19 12:08:21"; // your problematic one
+
+           
+            // Try exact (no silent fallback)
+            DateTime d1 = DateTime.ParseExact(s1, DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
+            DateTime d2 = DateTime.ParseExact(s2, DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
+            Trace.WriteLine("KULFON");
+            Trace.WriteLine(d1.ToString(DbConsts.dbDateFormat));
+            Trace.WriteLine(d2.ToString(DbConsts.dbDateFormat));
+        }
         }
 }

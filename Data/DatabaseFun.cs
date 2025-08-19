@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,7 +81,7 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
         public async Task<List<WorkTime>> GetWorkingEntriesForTimePeriodAsync(DateTime startDate, DateTime endDate)
         {
             string format = "yyyy-MM-dd ";
-            string fullFormat = "yyyy-MM-dd HH mm ss";
+           
             await using var connection = new SqliteConnection(DbConsts.connectionString);
             await connection.OpenAsync();
             var addWorkTimeCmd = connection.CreateCommand();
@@ -102,12 +103,13 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
                     StartTime = reader.GetString(2),
                     EndTime = reader.GetString(3),
                 };
-                times.Add(wt);
-                var startTime = DateTime.Parse(wt.StartTime);
-                var endTime = DateTime.Parse(wt.EndTime);
-                var time = endTime - startTime;
                 Trace.WriteLine($"Pure data: '{wt.StartTime}' '{wt.EndTime}'");
-                Trace.WriteLine($"Time span from activity: {time} ({startTime.ToString(fullFormat)} - {endDate.ToString(fullFormat)})");
+                times.Add(wt);
+                var startTime = DateTime.ParseExact(wt.StartTime,  DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                var endTime = DateTime.ParseExact(wt.EndTime, DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                var time = endTime - startTime;
+                
+                Trace.WriteLine($"Time span from activity: {time} ({startTime.ToString(DbConsts.dbDateFormat)} - {endTime.ToString(DbConsts.dbDateFormat)})");
             }
             return times;
         }

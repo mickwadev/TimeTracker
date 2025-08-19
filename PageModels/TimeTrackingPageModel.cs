@@ -75,9 +75,9 @@ namespace TimeTracker.PageModels
         private void StopWorkTimeCounting()
         {
             timer.Stop();
-            var format = "yyyy-MM-dd HH:MM:ss"; // this format is required for sqlite date functions to work.
-            var st = startTime.ToString(format);
-            var et = DateTime.Now.ToString(format);
+            
+            var st = startTime.ToString(DbConsts.dbDateFormat);
+            var et = DateTime.Now.ToString(DbConsts.dbDateFormat);
             Trace.WriteLine($"Saving activity: '{st}'to '{et}'");
             var wt = new WorkTime() { StartTime = st , EndTime = et , Title = WorkTimeComment };
             Task.Run(async () => await db.AddWorkTimeAsync(wt));
