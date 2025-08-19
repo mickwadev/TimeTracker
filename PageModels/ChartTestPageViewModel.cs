@@ -166,8 +166,14 @@ namespace TimeTracker.PageModels
             DateTimePoints.Clear();
             foreach (var w in group)
             {
-                Trace.WriteLine($"{w.Key} {w.Count()}");
-                DateTimePoints.Add(new DateTimePoint() { DateTime = DateTime.Parse(w.Key), Value = w.Aggregate(0, (sum, wt) => sum += (int)wt.Duration().TotalSeconds) });
+                Trace.WriteLine($"For '{w.Key}' found {w.Count()} activities");
+                DateTimePoints.Add(new DateTimePoint() { DateTime = DateTime.Parse(w.Key), Value = w.Aggregate(0, (sum, wt) => 
+                {
+                    var v = (int)wt.Duration().TotalSeconds;
+                    Trace.WriteLine($"Adding total seconds: {v}");
+                    sum += v;
+                    return sum;
+                }) });
             }
         }
 
@@ -179,7 +185,7 @@ namespace TimeTracker.PageModels
                 DateTimePoints.Clear();
                 foreach (var w in group)
                 {
-                    Trace.WriteLine($"{w.Key} {w.Count()}"); 
+                    //Trace.WriteLine($"{w.Key} {w.Count()}"); 
                     DateTimePoints.Add(new DateTimePoint() {DateTime = DateTime.Parse(w.Key) , Value = w.Aggregate(0, (sum, wt) => sum += (int)wt.Duration().TotalSeconds) });
                 }
             }
