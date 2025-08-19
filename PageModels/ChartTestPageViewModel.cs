@@ -7,6 +7,7 @@ using LiveChartsCore.Kernel;
 using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using SkiaSharp;
 using Syncfusion.Maui.Toolkit.Buttons;
 using Syncfusion.Maui.Toolkit.SegmentedControl;
@@ -29,6 +30,8 @@ namespace TimeTracker.PageModels
             new SfSegmentItem(){Text = "Month"},
             new SfSegmentItem(){Text = "All"}
         };
+
+
 
         [RelayCommand]
         public async Task TimeRange_SelectionChanged(Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
@@ -68,6 +71,29 @@ namespace TimeTracker.PageModels
         private string _timePeriod = "";
 
         DatabaseFun database;
+
+        public Axis[] YAxes { get; } = new Axis[] {
+            new Axis() {
+                MinLimit = 0,
+                MinStep = 1,
+                Name = "Working hours",
+                    NamePaint = new SolidColorPaint(SKColors.Beige),
+                    
+                    LabelsPaint = new SolidColorPaint(SKColors.Beige),
+                    TextSize = 12,
+
+                    SeparatorsPaint = new SolidColorPaint(SKColors.DarkGray) { StrokeThickness = 1 }
+            }
+        };
+
+        public ICartesianAxis[] XAxes { get; set; } =
+            [
+                new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("dd MM")),
+            ];
+
+
+
+
 
         public ChartTestPageViewModel(DatabaseFun db)
         {
@@ -128,14 +154,7 @@ namespace TimeTracker.PageModels
                 new ScatterSeries<int>() {Values = Ints}
             };
         }
-
-        
-
-            public ICartesianAxis[] XAxes { get; set; } =
-            [
-                new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("dd MM")),
-            ];
-
+         
             [RelayCommand]
             public async Task AddSomeValuesAsync()
             {
