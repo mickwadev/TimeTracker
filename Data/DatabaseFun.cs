@@ -79,13 +79,14 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
 
         public async Task<List<WorkTime>> GetWorkingEntriesForTimePeriodAsync(DateTime startDate, DateTime endDate)
         {
-            string format = "yyyy-MM-dd";
+            string format = "yyyy-MM-dd ";
+            string fullFormat = "yyyy-MM-dd HH mm ss";
             await using var connection = new SqliteConnection(DbConsts.connectionString);
             await connection.OpenAsync();
             var addWorkTimeCmd = connection.CreateCommand();
             var start = startDate.ToString(format);
             var end = endDate.ToString(format);
-            Trace.WriteLine($"Time period: {start} to {end}");
+            Trace.WriteLine($"Time period: {startDate.ToString(fullFormat)} to {endDate.ToString(fullFormat)}");
             addWorkTimeCmd.CommandText = @$"SELECT ID, Title, StartTime, EndTime FROM {CurrentTable} WHERE date(StartTime) >= date(@start) AND date(StartTime) <= date(@end);";
             addWorkTimeCmd.Parameters.AddWithValue("@start", start);
             addWorkTimeCmd.Parameters.AddWithValue("@end", end);
