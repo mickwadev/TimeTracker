@@ -27,7 +27,7 @@ namespace TimeTracker.PageModels
             {
                 var startTime = DateTime.ParseExact(currentWorkTime!.StartTime,DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
                 TimeSpan sp = (DateTime.Now -  startTime); 
-                TicksMsg = $"Ticks: {(int)sp.TotalSeconds}";
+                TicksMsg = $"Current working: {sp.TotalSeconds.ToString(@"hh\:mm\:ss")}"; 
             };
             this.db = db;
             UpdateTimeButtonText();
@@ -37,7 +37,7 @@ namespace TimeTracker.PageModels
         private string _today = DateTime.Now.ToString("dddd");
 
         [ObservableProperty]
-        private string _ticksMsg = $"Ticks: -1";
+        private string _ticksMsg = $"";
 
         [ObservableProperty]
         private string _workTimeComment = "";

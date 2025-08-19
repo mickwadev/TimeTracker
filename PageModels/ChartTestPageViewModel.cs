@@ -71,7 +71,6 @@ namespace TimeTracker.PageModels
 
         public ChartTestPageViewModel(DatabaseFun db)
         {
-            ParsingTest();
             database = db;
 
             var cc = new ColumnSeries<DateTimePoint>()
@@ -191,19 +190,5 @@ namespace TimeTracker.PageModels
                     DateTimePoints.Add(new DateTimePoint() {DateTime = DateTime.Parse(w.Key) , Value = w.Aggregate(0, (sum, wt) => sum += (int)wt.Duration().TotalSeconds) });
                 }
             }
-
-        private void ParsingTest()
-        {
-            string s1 = "2025-08-19 12:08:15";
-            string s2 = "2025-08-19 12:08:21"; // your problematic one
-
-           
-            // Try exact (no silent fallback)
-            DateTime d1 = DateTime.ParseExact(s1, DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
-            DateTime d2 = DateTime.ParseExact(s2, DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
-            Trace.WriteLine("KULFON");
-            Trace.WriteLine(d1.ToString(DbConsts.dbDateFormat));
-            Trace.WriteLine(d2.ToString(DbConsts.dbDateFormat));
-        }
         }
 }
