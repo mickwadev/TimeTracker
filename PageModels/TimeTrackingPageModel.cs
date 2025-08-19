@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace TimeTracker.PageModels
     {
         DatabaseFun db;
         IDispatcherTimer timer;
-        DateTime startTime;
+        WorkTime currentWorkTime = null;
 
         public TimeTrackingPageModel(DatabaseFun db)
         {
@@ -24,7 +25,8 @@ namespace TimeTracker.PageModels
             timer.IsRepeating = true;
             timer.Tick += (s, e) =>
             {
-                TimeSpan sp = (DateTime.Now - startTime); 
+                var startTime = DateTime.ParseExact(currentWorkTime!.StartTime,DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                TimeSpan sp = (DateTime.Now -  startTime); 
                 TicksMsg = $"Ticks: {(int)sp.TotalSeconds}";
             };
             this.db = db;
@@ -65,6 +67,12 @@ namespace TimeTracker.PageModels
         }
 
         [RelayCommand]
+        private async Task DropTable()
+        { 
+           await db.DropTableAsync();
+        }
+
+        [RelayCommand]
         private async Task GetDates()
         {
             Trace.WriteLine("Dzisiejsze wpisy...");
@@ -75,18 +83,17 @@ namespace TimeTracker.PageModels
         private void StopWorkTimeCounting()
         {
             timer.Stop();
-            
-            var st = startTime.ToString(DbConsts.dbDateFormat);
             var et = DateTime.Now.ToString(DbConsts.dbDateFormat);
-            Trace.WriteLine($"Saving activity: '{st}'to '{et}'");
-            var wt = new WorkTime() { StartTime = st , EndTime = et , Title = WorkTimeComment };
-            Task.Run(async () => await db.AddWorkTimeAsync(wt));
-             
+            currentWorkTime.EndTime = et;
+            Trace.WriteLine($"Saving activity: '{currentWorkTime.StartTime}'to '{currentWorkTime.EndTime}'");
+            Task.Run(async () => await db.AddWorkTimeAsync(currentWorkTime));
         }
 
         private void StartWorkTimeCounting()
         {
-            startTime = DateTime.Now;
+            var st = DateTime.Now.ToString(DbConsts.dbDateFormat);
+            currentWorkTime = new WorkTime() { StartTime = st, EndTime = null, Title = WorkTimeComment };
+            Trace.WriteLine($"Starting new activity from: '{currentWorkTime.StartTime}'");
             timer.Start();
         }
 
