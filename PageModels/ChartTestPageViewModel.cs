@@ -102,11 +102,12 @@ namespace TimeTracker.PageModels
             var cc = new ColumnSeries<DateTimePoint>()
             {
                 Values = DateTimePoints,
-              //  Name = "Kokoszka",
-             //   Fill = new SolidColorPaint(SKColors.Beige),
-             //   Rx = 23,
-            //    Ry = 23,
-                 Stroke = new SolidColorPaint(SKColors.Transparent) { StrokeThickness = 0 },
+                //  Name = "Kokoszka",
+                //   Fill = new SolidColorPaint(SKColors.Beige),
+                //   Rx = 23,
+                //    Ry = 23,
+                Stroke = new SolidColorPaint(SKColors.Transparent) { StrokeThickness = 0 },
+                YToolTipLabelFormatter = p => TimeSpan.FromSeconds((int)(p.Model.Value)).ToString(@"hh\:mm\:ss")
             };
             cc.PointMeasured += (chartPoint) => {
                 double y = chartPoint.Coordinate.PrimaryValue;
