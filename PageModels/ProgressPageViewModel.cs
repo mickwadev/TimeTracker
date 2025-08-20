@@ -72,7 +72,8 @@ namespace TimeTracker.PageModels
 
         DatabaseFun database;
 
-       
+        [ObservableProperty]
+        private bool _hasAnyEntries = false;
 
         public Axis[] YAxes { get; } = new Axis[] {
             new Axis() {

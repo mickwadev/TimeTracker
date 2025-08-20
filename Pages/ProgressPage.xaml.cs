@@ -12,5 +12,8 @@ public partial class ProgressPage : ContentPage
 		BindingContext = model;
 	}
 
-
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+		model.HasAnyEntries = !model.HasAnyEntries;
+    }
 }

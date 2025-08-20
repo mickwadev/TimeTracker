@@ -13,7 +13,6 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <mct:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
-             
         </ResourceDictionary>
     </ContentPage.Resources>
     <VerticalStackLayout>
@@ -22,7 +21,9 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-        <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,222">
+        <Button Text="Toggle" Clicked="Button_Clicked"></Button>
+        
+        <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,222" IsVisible="{Binding HasAnyEntries}">
 
             <sf:SfSegmentedControl  x:Name="TimeRange" Grid.Column="0" Grid.Row="0" BackgroundColor="AliceBlue" ItemsSource="{Binding Segments}">
                 <sf:SfSegmentedControl.Behaviors>
