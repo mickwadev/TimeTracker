@@ -21,8 +21,6 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-        <Label Text="{Binding Ints.Count}"/>
-        <Label Text="{Binding Ints2.Count}"/>
         <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,222">
 
             <sf:SfSegmentedControl  x:Name="TimeRange" Grid.Column="0" Grid.Row="0" BackgroundColor="AliceBlue" ItemsSource="{Binding Segments}">
