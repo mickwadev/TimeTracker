@@ -13,6 +13,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <mct:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
+             
         </ResourceDictionary>
     </ContentPage.Resources>
     <VerticalStackLayout>

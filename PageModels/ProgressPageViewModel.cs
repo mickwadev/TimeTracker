@@ -72,17 +72,17 @@ namespace TimeTracker.PageModels
 
         DatabaseFun database;
 
+       
+
         public Axis[] YAxes { get; } = new Axis[] {
             new Axis() {
                 MinLimit = 0,
                 MinStep = 1,
                 Name = "Working hours",
-                    NamePaint = new SolidColorPaint(SKColors.Beige),
-                    
-                    LabelsPaint = new SolidColorPaint(SKColors.Beige),
-                    TextSize = 12,
-
-                    SeparatorsPaint = new SolidColorPaint(SKColors.DarkGray) { StrokeThickness = 1 }
+                NamePaint = new SolidColorPaint(SKColors.Beige),
+                LabelsPaint = new SolidColorPaint(DeviceInfo.Current.Platform == DevicePlatform.Android? SKColors.ForestGreen : SKColors.Beige),
+                TextSize = DeviceInfo.Current.Platform == DevicePlatform.Android? 9 : 12,
+                SeparatorsPaint = new SolidColorPaint(SKColors.DarkGray) { StrokeThickness = 1 }
             }
         };
 
@@ -91,12 +91,13 @@ namespace TimeTracker.PageModels
                 new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("dd MM")),
             ];
 
-
-
-
-
         public ProgressPageViewModel(DatabaseFun db)
         {
+            var yAxesLabelColors = new OnPlatform<SKColor>()
+            {
+                
+            };
+
             database = db;
 
             var cc = new ColumnSeries<DateTimePoint>()
