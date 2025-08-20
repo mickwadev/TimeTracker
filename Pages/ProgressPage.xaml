@@ -6,8 +6,8 @@
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:DataType="local:ChartTestPageViewModel"
-             Title="ChartTestPage"
+             x:DataType="local:ProgressPageViewModel"
+             Title="Progress Page :3="
              x:Name="Page">
 
     <ContentPage.Resources>
@@ -17,7 +17,7 @@
     </ContentPage.Resources>
     <VerticalStackLayout>
         <Label 
-            Text="Chart test ^_^"
+            Text="Keep up the good work ^_^"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 

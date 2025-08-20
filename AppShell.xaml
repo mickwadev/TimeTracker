@@ -7,8 +7,8 @@
     Title="TimeTracker">
 
     <ShellContent
-        Title="Chart sample"
-        ContentTemplate="{DataTemplate local:ChartTestPage}"
+        Title="My progress"
+        ContentTemplate="{DataTemplate local:ProgressPage}"
         />
 
     <ShellContent

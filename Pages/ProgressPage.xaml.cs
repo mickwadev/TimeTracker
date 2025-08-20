@@ -2,10 +2,10 @@ using TimeTracker.PageModels;
 
 namespace TimeTracker.Pages;
 
-public partial class ChartTestPage : ContentPage
+public partial class ProgressPage : ContentPage
 {
-	ChartTestPageViewModel model;
-	public ChartTestPage(ChartTestPageViewModel m)
+	ProgressPageViewModel model;
+	public ProgressPage(ProgressPageViewModel m)
 	{
 		InitializeComponent();
 		model = m;

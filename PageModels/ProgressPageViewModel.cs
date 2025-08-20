@@ -19,7 +19,7 @@ using TimeTracker.Models;
  
 namespace TimeTracker.PageModels
 {
-    public partial class ChartTestPageViewModel : ObservableObject
+    public partial class ProgressPageViewModel : ObservableObject
     {
         #region SEGMENT
 
@@ -95,7 +95,7 @@ namespace TimeTracker.PageModels
 
 
 
-        public ChartTestPageViewModel(DatabaseFun db)
+        public ProgressPageViewModel(DatabaseFun db)
         {
             database = db;
 
