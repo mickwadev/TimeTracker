@@ -6,6 +6,7 @@
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:TimeTracker.Converters"
              x:DataType="local:ProgressPageViewModel"
              Title="Progress Page :3="
              x:Name="Page">
@@ -13,6 +14,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <mct:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <VerticalStackLayout>
@@ -23,9 +25,10 @@
 
         <Button Text="Toggle" Clicked="Button_Clicked"></Button>
         
-        <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,222" IsVisible="{Binding HasAnyEntries}">
+        <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,222" >
 
-            <sf:SfSegmentedControl  x:Name="TimeRange" Grid.Column="0" Grid.Row="0" BackgroundColor="AliceBlue" ItemsSource="{Binding Segments}">
+            <Label IsVisible="{Binding HasAnyEntries, Converter={StaticResource InverseBoolConverter}}" Text="Nic tu nie ma ;(" Grid.Column="0" Grid.Row="0"/>
+            <sf:SfSegmentedControl x:Name="TimeRange" Grid.Column="0" Grid.Row="0" BackgroundColor="AliceBlue" ItemsSource="{Binding Segments}">
                 <sf:SfSegmentedControl.Behaviors>
                     <mct:EventToCommandBehavior
                         x:TypeArguments="sf:SelectionChangedEventArgs"
@@ -37,6 +40,7 @@
             </sf:SfSegmentedControl>
             <Label HorizontalOptions="Center" Grid.Column="0" Grid.Row="1" x:Name="TimePeriodLabel" Text="{Binding TimePeriod}" />
             <lvc:CartesianChart
+                IsVisible="{Binding HasAnyEntries}"
                 Grid.Column="0" Grid.Row="2"
                 Series="{Binding MyWorkingHours}"
                 YAxes="{Binding YAxes}"
