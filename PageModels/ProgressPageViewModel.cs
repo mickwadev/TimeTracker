@@ -37,7 +37,7 @@ namespace TimeTracker.PageModels
         public async Task TimeRange_SelectionChanged(Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
         {
             Trace.WriteLine($"zmiana: {e.OldIndex} ==> {e.NewIndex}  {Segments[(int)e.NewIndex!].Text}");
-
+            string f = "yyyy-MM-dd";
             var p = Segments[(int)e.NewIndex!].Text switch
             {
                 "Today" => Dates.Today,
@@ -47,7 +47,7 @@ namespace TimeTracker.PageModels
                 _ => Dates.All
             };
             await LoadTimeFromDb(p.start, p.end);
-            TimePeriod = $"From {p.start.ToString("yyyy-MM-dd")} to {p.end.ToString("yyyy-MM-dd")}";
+            TimePeriod = p.start == p.end ? p.start.ToString(f) :  $"From {p.start.ToString(f)} to {p.end.ToString(f)}";
         }
         #endregion
 
