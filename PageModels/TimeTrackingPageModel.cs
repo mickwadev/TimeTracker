@@ -27,7 +27,7 @@ namespace TimeTracker.PageModels
             {
                 var startTime = DateTime.ParseExact(currentWorkTime!.StartTime,DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
                 TimeSpan sp = (DateTime.Now -  startTime); 
-                TicksMsg = $"Current working: {sp.TotalSeconds.ToString(@"hh\:mm\:ss")}"; 
+                TicksMsg = $"Current working: {sp.ToString(@"hh\:mm\:ss")}"; 
             };
             this.db = db;
             UpdateTimeButtonText();

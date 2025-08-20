@@ -15,6 +15,11 @@
         <ResourceDictionary>
             <mct:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
             <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+            <Style x:Key="NicNieMa" TargetType="Label">
+                <Setter Property="FontSize" Value="42"/>
+                <Setter Property="TextColor" Value="MediumVioletRed"/>
+
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <VerticalStackLayout>
@@ -27,7 +32,7 @@
         
         <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,222" >
 
-            <Label IsVisible="{Binding HasAnyEntries, Converter={StaticResource InverseBoolConverter}}" Text="Nic tu nie ma ;(" Grid.Column="0" Grid.Row="0"/>
+            
             <sf:SfSegmentedControl x:Name="TimeRange" Grid.Column="0" Grid.Row="0" BackgroundColor="AliceBlue" ItemsSource="{Binding Segments}">
                 <sf:SfSegmentedControl.Behaviors>
                     <mct:EventToCommandBehavior
@@ -39,6 +44,11 @@
                 </sf:SfSegmentedControl.Behaviors>
             </sf:SfSegmentedControl>
             <Label HorizontalOptions="Center" Grid.Column="0" Grid.Row="1" x:Name="TimePeriodLabel" Text="{Binding TimePeriod}" />
+            <Label IsVisible="{Binding HasAnyEntries, Converter={StaticResource InverseBoolConverter}}" Text="Nic tu nie ma ;(" 
+                   Grid.Column="0" Grid.Row="2"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Style="{StaticResource NicNieMa}"/>
             <lvc:CartesianChart
                 IsVisible="{Binding HasAnyEntries}"
                 Grid.Column="0" Grid.Row="2"
