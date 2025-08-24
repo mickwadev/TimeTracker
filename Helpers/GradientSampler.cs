@@ -35,7 +35,7 @@ namespace TimeTracker.Helpers
                     return SKColorLerp(stColor, endColor, factor);
                 }
             }
-            return SKColors.Magenta;
+            return SKColors.Green;
         }
 
         // v => 0-1
