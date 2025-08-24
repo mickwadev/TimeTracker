@@ -23,7 +23,7 @@ public partial class SettingPage : ContentPage
         Trace.WriteLine($"OnNavigatedTo...{u++}");
 
         // eee... dziwny ten sposób SetBinding...
-        Kolekcja.SetBinding(ItemsView.ItemsSourceProperty, static (MasloModel mm) => mm.masla);
+      //  Kolekcja.SetBinding(ItemsView.ItemsSourceProperty, static (MasloModel mm) => mm.masla);
     }
 
     private void SettingPage_Loaded(object? sender, EventArgs e)

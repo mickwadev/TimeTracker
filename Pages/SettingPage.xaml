@@ -6,7 +6,7 @@
              x:DataType="maslo:MasloModel"
              Title="SettingPage">
     <VerticalStackLayout x:Name="Layout">
-        <CollectionView x:Name="Kolekcja" >
+        <CollectionView x:Name="Kolekcja" ItemsSource="{Binding masla}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="maslo:RodzajMasla">
                     <HorizontalStackLayout>
