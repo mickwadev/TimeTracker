@@ -4,7 +4,7 @@
   <!-- if you truly need just 32-bit ARM -->
   <RuntimeIdentifiers>android-arm</RuntimeIdentifiers>
   <!-- If your device is 64-bit, prefer: android-arm64 -->
-  <!-- <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers> -->
+    <RuntimeIdentifiers>android-arm64;android-arm;android-x64</RuntimeIdentifiers>
   <SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
 </PropertyGroup>
     
@@ -99,6 +99,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\MyColors.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="TestPages\CollectionViewFun1.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
