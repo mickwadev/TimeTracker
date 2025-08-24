@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TimeTracker.Pages.SettingPage"
+             Title="SettingPage">
+    <VerticalStackLayout x:Name="Layout">
+        <Slider Minimum="0" Maximum="24" ValueChanged="Slider_ValueChanged"/>
+        <Label x:Name="Labelka"/>
+        <BoxView HeightRequest="222" WidthRequest="222" x:Name="Boxik"/>
+    </VerticalStackLayout>
+</ContentPage>

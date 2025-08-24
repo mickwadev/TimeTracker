@@ -82,7 +82,7 @@ namespace TimeTracker.PageModels
                 Name = "Working hours",
                 NamePaint = new SolidColorPaint(DeviceInfo.Current.Platform == DevicePlatform.Android ? SKColors.DarkGray :  SKColors.Beige),
                 LabelsPaint = new SolidColorPaint(DeviceInfo.Current.Platform == DevicePlatform.Android? SKColors.DarkGray  : SKColors.Beige),
-                TextSize = DeviceInfo.Current.Platform == DevicePlatform.Android? 5 : 12,
+                TextSize = DeviceInfo.Current.Platform == DevicePlatform.Android? 7 : 12,
                 SeparatorsPaint = new SolidColorPaint(SKColors.DarkGray) { StrokeThickness = 1 }
             }
         };
