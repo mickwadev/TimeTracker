@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using TimeTracker.Data;
+using TimeTracker.Helpers;
 using TimeTracker.Models;
  
 namespace TimeTracker.PageModels
@@ -114,12 +115,9 @@ namespace TimeTracker.PageModels
             cc.PointMeasured += (chartPoint) => {
                 double y = chartPoint.Coordinate.PrimaryValue;
                 Trace.WriteLine($"value y {y}");
-                double t = Math.Clamp( y / 36.0, 0, 1);  // normalize 0..6 → 0..1
-                byte r = (byte)(255 * (1 - t));
-                byte g = (byte)(255 * t);
-                var color = new SKColor(r, g, 0);
+              
 
-                chartPoint.Visual.Fill = new SolidColorPaint(color);
+                chartPoint.Visual.Fill = new SolidColorPaint(GradientSampler.GetWorkTimeColor(y));
             
             };
 

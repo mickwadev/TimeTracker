@@ -25,7 +25,7 @@ public partial class SettingPage : ContentPage
     private void Slider_ValueChanged(object sender, ValueChangedEventArgs e)
     {
         var v = e.NewValue * 3600;
-        Boxik.BackgroundColor = GradientSampler.GetWorkTimeColor(v);
+      //  Boxik.BackgroundColor = GradientSampler.GetWorkTimeColor(v);
         Labelka.Text = "Working hours: "+ e.NewValue.ToString("F2");
     }
 }

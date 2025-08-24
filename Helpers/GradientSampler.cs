@@ -20,7 +20,7 @@ namespace TimeTracker.Helpers
             (greenThreshold, SKColors.Green),
         };
         
-        public static Color GetWorkTimeColor(double workTimeInSeconds)
+        public static SKColor GetWorkTimeColor(double workTimeInSeconds)
         {
             double currentHour = workTimeInSeconds / AppConsts.SecondsInHours;
             for (int i = 1; i < d.Count; i++)
@@ -32,10 +32,10 @@ namespace TimeTracker.Helpers
                     var factor = (currentHour - startHour) / (endHour - startHour); // 0-1
                     SKColor stColor = d[i - 1].color;
                     SKColor endColor = d[i].color;
-                    return ColorLerp(stColor, endColor, factor);
+                    return SKColorLerp(stColor, endColor, factor);
                 }
             }
-            return Colors.Green;
+            return SKColors.Magenta;
         }
 
         // v => 0-1
@@ -44,15 +44,25 @@ namespace TimeTracker.Helpers
            return st + (end - st) * v;
         }
         // v => 0-1
-        static Color ColorLerp(SKColor st, SKColor end, double v)
+        static SKColor SKColorLerp(SKColor st, SKColor end, double v)
         {
-            var r = (float) Lerp(st.Red,end.Red,v);
-            var g = (float) Lerp(st.Green, end.Green, v);
-            var b = (float) Lerp(st.Blue, end.Blue, v);
+            var r = (byte) Lerp(st.Red,end.Red,v);
+            var g = (byte) Lerp(st.Green, end.Green, v);
+            var b = (byte) Lerp(st.Blue, end.Blue, v);
 
-            return new Color (r / 255f, g / 255f, b / 255f);
+            return new SKColor (r , g , b );
             
         }
-            
+
+        static Color ColorLerp(SKColor st, SKColor end, double v)
+        {
+            var r = (float)Lerp(st.Red, end.Red, v);
+            var g = (float)Lerp(st.Green, end.Green, v);
+            var b = (float)Lerp(st.Blue, end.Blue, v);
+
+            return new Color(r / 255f, g / 255f, b / 255f);
+
+        }
+
     }
 }
