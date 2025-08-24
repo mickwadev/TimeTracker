@@ -2,10 +2,21 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TimeTracker.Pages.SettingPage"
+             xmlns:maslo="clr-namespace:TimeTracker.ModelMasla"
+             x:DataType="maslo:MasloModel"
              Title="SettingPage">
     <VerticalStackLayout x:Name="Layout">
-        <Slider Minimum="0" Maximum="24" ValueChanged="Slider_ValueChanged"/>
-        <Label x:Name="Labelka"/>
-        <BoxView HeightRequest="222" WidthRequest="222" x:Name="Boxik"/>
+        <CollectionView x:Name="Kolekcja" >
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="maslo:RodzajMasla">
+                    <HorizontalStackLayout>
+                        <Label Text="{Binding Nazwa}"/>
+                        <Label Text="{Binding ProcentTluszczyku}"/>
+                    </HorizontalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Dodaj maslo ^_^" Clicked="Button_Clicked" ></Button>
     </VerticalStackLayout>
 </ContentPage>

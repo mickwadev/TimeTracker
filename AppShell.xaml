@@ -12,9 +12,9 @@
         />
 
     <ShellContent
-        Title="My progress"
-        ContentTemplate="{DataTemplate local:ProgressPage}"
-        />
+            Title="My progress"
+            ContentTemplate="{DataTemplate local:ProgressPage}"
+            />
 
     <ShellContent
         Title="Time Tracking"

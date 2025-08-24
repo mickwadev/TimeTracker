@@ -35,6 +35,7 @@ namespace TimeTracker
             builder.Services.AddSingleton<WorkTimeModel>();
             builder.Services.AddSingleton<WorkTimeDashboardPageModel>();
             builder.Services.AddSingleton<ProgressPageViewModel>();
+            
             return builder.Build();
         }
     }
