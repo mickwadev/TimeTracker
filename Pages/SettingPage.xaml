@@ -18,5 +18,7 @@
         </CollectionView>
 
         <Button Text="Dodaj maslo ^_^" Clicked="Button_Clicked" ></Button>
+
+        
     </VerticalStackLayout>
 </ContentPage>

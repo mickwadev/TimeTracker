@@ -134,9 +134,9 @@ namespace TimeTracker.PageModels
 
             MyWorkingHours = new ISeries[]{cc};
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 8; i++)
             {
-                DateTimePoints.Add(new DateTimePoint() { DateTime = new(2025, 8, kulfon), Value = kulfon });
+                DateTimePoints.Add(new DateTimePoint() { DateTime = new(2025, 8, kulfon), Value = i*3600 });
                 kulfon++;
             }
 
