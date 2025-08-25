@@ -5,7 +5,7 @@
              xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material">
 
-    <VerticalStackLayout>
+    <VerticalStackLayout Padding="10">
         <Image WidthRequest="33" HeightRequest="33">
             <Image.Source>
                 <!-- Use FontFamily="MaterialSharpFilled" to get the filled variant of the selected glyph -->
@@ -18,7 +18,8 @@
         <material:CheckBox></material:CheckBox>
         <Button StyleClass="ElevatedButton" Text="Elevated Button" />
 
-        <!--material:TextField Title="Name" /-->
+        <material:TextField Title="Name" />
+        <material:TextField Title="E-mail" Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static ms:MaterialSharp.Attach_email}}"/>
 
         <material:RadioButtonGroupView>
             <material:RadioButton Text="Option 1" />
