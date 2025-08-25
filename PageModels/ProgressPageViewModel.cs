@@ -76,11 +76,25 @@ namespace TimeTracker.PageModels
         [ObservableProperty]
         private bool _hasAnyEntries = false;
 
+        // This must be static to add it in Labeler while creating it
+        private static string TimeLabeler(double seconds) =>  (seconds / AppConsts.SecondsInHours) +"h";
+
+        // this function must match Func<double, string>
+        private string MyCustomLabelFormatter(double value)
+        {
+            if (value > 1000)
+                return $"{value / 1000:0.0}k";
+
+            return value.ToString("0.##");
+        }
+
         public Axis[] YAxes { get; } = new Axis[] {
             new Axis() {
                 MinLimit = 0,
-                MinStep = 1,
+                MinStep = AppConsts.SecondsInHours*2,
                 Name = "Working hours",
+                ForceStepToMin = true,
+                Labeler = TimeLabeler,
                 NamePaint = new SolidColorPaint(DeviceInfo.Current.Platform == DevicePlatform.Android ? SKColors.DarkGray :  SKColors.Beige),
                 LabelsPaint = new SolidColorPaint(DeviceInfo.Current.Platform == DevicePlatform.Android? SKColors.DarkGray  : SKColors.Beige),
                 TextSize = DeviceInfo.Current.Platform == DevicePlatform.Android? 7 : 12,
