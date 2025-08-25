@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TimeTracker.TestPages.CollectionViewFun1"
              xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              Title="CollectionViewFun1">
 
     <VerticalStackLayout>
@@ -14,7 +15,10 @@
             </Image.Source>
         </Image>
 
-
+        <material:CheckBox></material:CheckBox>
+        <material:CheckBox></material:CheckBox>
+        <material:CheckBox></material:CheckBox>
+                
         <CollectionView ItemsLayout="VerticalList" SelectionMode="Single">
             <CollectionView.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
