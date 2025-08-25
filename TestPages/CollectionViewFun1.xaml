@@ -5,8 +5,7 @@
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              Title="CollectionViewFun1"
              
-             xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
-             xmlns:mi="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons">
+             xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols">
     <VerticalStackLayout>
         <Image WidthRequest="22" HeightRequest="22">
             <Image.Source>
@@ -17,10 +16,7 @@
 
         <material:TextField Title="E-mail" Padding="5"
             Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static ms:MaterialSharp.Attach_email}}"/>
-
-        <material:TextField Title="E-mail" Padding="5"
-            Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static mi:MaterialRegular.Attach_email}}"/>
-
+ 
         <CheckBox></CheckBox>
         <material:CheckBox Text="Uranium UI Checkbox"/>
         
