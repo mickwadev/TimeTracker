@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TimeTracker.TestPages.CollectionViewFun1"
-             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-             Title="CollectionViewFun1"
-             
-             xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols">
-    <VerticalStackLayout>
-        <Image WidthRequest="22" HeightRequest="22">
-            <Image.Source>
-                <!-- Use FontFamily="MaterialSharpFilled" to get the filled variant of the selected glyph -->
-                <FontImageSource FontFamily="MaterialSharp" Glyph="{x:Static ms:MaterialSharp.Settings_suggest}" Color="OldLace" />
-            </Image.Source>
-        </Image>
+             x:Class="TimeTracker.TestPages.CollectionViewFun1" 
+             Title="CollectionViewFun1">
 
-        <material:TextField Title="E-mail" Padding="5"
-            Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static ms:MaterialSharp.Attach_email}}"/>
- 
-        <CheckBox></CheckBox>
-        <material:CheckBox Text="Uranium UI Checkbox"/>
+    <VerticalStackLayout>
+        
+
         
         
         <CollectionView ItemsLayout="VerticalList" SelectionMode="Single">
