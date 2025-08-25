@@ -3,11 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TimeTracker.TestPages.CollectionViewFun1"
              xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
-             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-             Title="CollectionViewFun1">
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material">
 
     <VerticalStackLayout>
-
         <Image WidthRequest="33" HeightRequest="33">
             <Image.Source>
                 <!-- Use FontFamily="MaterialSharpFilled" to get the filled variant of the selected glyph -->
@@ -18,22 +16,5 @@
         <material:CheckBox></material:CheckBox>
         <material:CheckBox></material:CheckBox>
         <material:CheckBox></material:CheckBox>
-                
-        <CollectionView ItemsLayout="VerticalList" SelectionMode="Single">
-            <CollectionView.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>Klopsik</x:String>
-                    <x:String>Muszelka</x:String>
-                </x:Array>
-            </CollectionView.ItemsSource>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <HorizontalStackLayout BackgroundColor="Peru" Padding="3">
-                        <Label Text="{Binding .}"/>
-                        <Label Text="{Binding Length}"/>
-                    </HorizontalStackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>

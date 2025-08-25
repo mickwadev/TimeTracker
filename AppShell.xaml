@@ -8,7 +8,7 @@
     xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
     Title="TimeTracker">
 
-    <ShellContent Title="CollectionView test :)"
+    <ShellContent Title=""
                   ContentTemplate="{DataTemplate testPages:CollectionViewFun1}"
                   Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Dashboard}, FontFamily=MaterialSharp, Color=#460d23}"
                   />
