@@ -14,9 +14,9 @@
                   />
 
     <ShellContent
-        Title=" = "
+        Title="Settings"
         ContentTemplate="{DataTemplate local:SettingPage}"
-        Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Matter}, FontFamily=MaterialSharp, Color=#f6e2db}"
+        Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Assured_workload}, FontFamily=MaterialSharp, Color=#f6e2db}"
         />
 
     <ShellContent
