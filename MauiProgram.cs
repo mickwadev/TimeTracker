@@ -6,6 +6,7 @@ using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 using TimeTracker.Data;
 using TimeTracker.PageModels;
+using UraniumUI;
 
 namespace TimeTracker
 {
@@ -21,6 +22,8 @@ namespace TimeTracker
                 .ConfigureSyncfusionToolkit()
                 .UseSkiaSharp()
                 .UseLiveCharts()
+                .UseUraniumUI()
+                .UseUraniumUIMaterial()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
