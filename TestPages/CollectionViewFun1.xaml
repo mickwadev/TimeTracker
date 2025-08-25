@@ -16,5 +16,6 @@
         <material:CheckBox></material:CheckBox>
         <material:CheckBox></material:CheckBox>
         <material:CheckBox></material:CheckBox>
+        <Button StyleClass="ElevatedButton" Text="Elevated Button" />
     </VerticalStackLayout>
 </ContentPage>
