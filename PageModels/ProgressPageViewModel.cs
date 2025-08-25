@@ -89,7 +89,7 @@ namespace TimeTracker.PageModels
         }
 
         public Axis[] YAxes { get; } = new Axis[] {
-            new Axis() {
+            new Axis {
                 MinLimit = 0,
                 MinStep = AppConsts.SecondsInHours*2,
                 Name = "Working hours",
@@ -109,14 +109,14 @@ namespace TimeTracker.PageModels
 
         public ProgressPageViewModel(DatabaseFun db)
         {
-            var yAxesLabelColors = new OnPlatform<SKColor>()
+            var yAxesLabelColors = new OnPlatform<SKColor>
             {
                 
             };
 
             database = db;
 
-            var cc = new ColumnSeries<DateTimePoint>()
+            var cc = new ColumnSeries<DateTimePoint>
             {
                 Values = DateTimePoints,
                 //  Name = "Kokoszka",
