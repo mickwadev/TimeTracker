@@ -2,8 +2,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TimeTracker.TestPages.CollectionViewFun1"
-             Title="CollectionViewFun1">
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             Title="CollectionViewFun1"
+             
+             xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
+             xmlns:mi="clr-namespace:UraniumUI.Icons.MaterialIcons;assembly=UraniumUI.Icons.MaterialIcons">
     <VerticalStackLayout>
+       
+        <material:TextField Title="E-mail" Padding="5"
+            Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static ms:MaterialSharp.Attach_email}}"/>
+
+        <material:TextField Title="E-mail" Padding="5"
+            Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static mi:MaterialRegular.Attach_email}}"/>
+
+        <CheckBox></CheckBox>
+        <material:CheckBox Text="Uranium UI Checkbox"/>
+        
+        
         <CollectionView ItemsLayout="VerticalList" SelectionMode="Single">
             <CollectionView.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
