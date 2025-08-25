@@ -5,15 +5,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:TimeTracker.Pages"
     xmlns:testPages="clr-namespace:TimeTracker.TestPages"
+    xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
     Title="TimeTracker">
 
     <ShellContent Title="CollectionView test :)"
                   ContentTemplate="{DataTemplate testPages:CollectionViewFun1}"
+                  Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Dashboard}, FontFamily=MaterialSharp, Color=#460d23}"
                   />
 
     <ShellContent
         Title=" = "
         ContentTemplate="{DataTemplate local:SettingPage}"
+        Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Matter}, FontFamily=MaterialSharp, Color=#f6e2db}"
         />
 
     <ShellContent

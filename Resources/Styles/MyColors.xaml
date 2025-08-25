@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TimeTracker.Resources.Styles.MyColors">
     <Color x:Key="MyOrange">#FF5900</Color>
-
+    <Color x:Key="PetsyBkg">#460d2d</Color>
+    <Color x:Key="PetsyTtext">#f6e2db</Color>
 
 </ResourceDictionary>
