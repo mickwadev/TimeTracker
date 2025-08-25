@@ -17,5 +17,14 @@
         <material:CheckBox></material:CheckBox>
         <material:CheckBox></material:CheckBox>
         <Button StyleClass="ElevatedButton" Text="Elevated Button" />
+
+        <!--material:TextField Title="Name" /-->
+
+        <material:RadioButtonGroupView>
+            <material:RadioButton Text="Option 1" />
+            <material:RadioButton Text="Option 2" />
+            <material:RadioButton Text="Option 3 (Disabled)" IsDisabled="True" />
+        </material:RadioButtonGroupView>
+
     </VerticalStackLayout>
 </ContentPage>
