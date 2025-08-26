@@ -23,9 +23,7 @@ namespace TimeTracker.Pastebin
         { 
          _db = db;
         }
-
-        
-
+         
         [ObservableProperty]
         private string _poem = "Gentle panda in the morning mist,  \r\nChewing bamboo with a sleepy twist.  \r\nBlack and white, a peaceful sight,  \r\nSoft as clouds, yet strong in might.  \r\nThey wander forests calm and deep,  \r\nGuarding secrets trees still keep.  \r\nWith every step the mountains ring,  \r\nA quiet hymn the breezes sing.  \r\nPandas dream where rivers flow,  \r\nIn quiet groves where blossoms grow.  \r\nTheir gentle hearts remind us all,  \r\nEven giants may be small.  \r\nA tender soul in fur so grand,  \r\nA living poem of the land.";
 
@@ -43,8 +41,16 @@ namespace TimeTracker.Pastebin
             var latest = await pb.CreatePasteAsync(serializedJson, $"Enties backup from {DateTime.Now.ToString("G")}",userKey);
             LastPasteURL = $"Backup done: {latest}";
         }
+
         [RelayCommand]
-        public async Task GetLatestPaste()
+        public async Task LoadFromLastPaste()
+        {
+            var dataFromBackup = await GetLatestPaste();
+            int added = await _db.CreateFromBackupAsync(JsonConvert.DeserializeObject<List<WorkTime>>(dataFromBackup));
+        }
+
+        [RelayCommand]
+        public async Task<string> GetLatestPaste()
         {
             Trace.WriteLine("Get latest paste...");
             using var pb = new PastebinClient(DevKey.Replace("R", ""));
@@ -57,7 +63,7 @@ namespace TimeTracker.Pastebin
             if (latest == null || string.IsNullOrWhiteSpace(latest.Key))
             {
                 Trace.WriteLine("No pastes found.");
-                return;
+                return ":(";
             }
 
             Trace.WriteLine($"Latest paste: {latest.Title} ({latest.Key})");
@@ -68,6 +74,7 @@ namespace TimeTracker.Pastebin
             Trace.WriteLine("---- RAW CONTENT ----");
             Trace.WriteLine(raw);
             Poem = raw;
+            return raw;
         }
     }
 }

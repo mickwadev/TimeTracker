@@ -59,6 +59,45 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             return new WorkTime() { Title = "Random 10 minute ;)", StartTime = start.ToString(), EndTime = (start + TimeSpan.FromMinutes(10)).ToString() };
         }
 
+        public async Task<int> CreateFromBackupAsync(List<WorkTime> workEntries)
+        { 
+            await using var connection = new SqliteConnection(DbConsts.connectionString);
+            await connection.OpenAsync();
+            // co to za dziwny syntax XD
+            await using var tx = await connection.BeginTransactionAsync();
+            try
+            {
+                await using var cmd = connection.CreateCommand();
+                cmd.Transaction = (SqliteTransaction) tx;
+                cmd.CommandText = $@"INSERT INTO {CurrentTable} (Title, StartTime, EndTime) VALUES (@Title, @StartTime, @EndTime);";
+
+                // Define parameters once (faster when reusing)
+                var pTitle = cmd.Parameters.Add("@Title", SqliteType.Text);
+                var pStart = cmd.Parameters.Add("@StartTime", SqliteType.Text);   // or SqliteType.Integer if ticks/epoch
+                var pEnd = cmd.Parameters.Add("@EndTime", SqliteType.Text);
+
+                // Optional: prepare for better perf
+                cmd.Prepare();
+                var affected = 0;
+                foreach (var r in workEntries)
+                {
+                    pTitle.Value = r.Title ?? (object)DBNull.Value;
+                    pStart.Value = r.StartTime;  // ensure this matches your column type
+                    pEnd.Value = r.EndTime;
+
+                    affected += await cmd.ExecuteNonQueryAsync();
+                }
+
+                await tx.CommitAsync();
+                return affected;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Something failed... ;( {ex.Message}");
+            }
+            return 42;
+        }
+
         public async Task<int> AddWorkTimeAsync(WorkTime r)
         {
             await using var connection = new SqliteConnection(DbConsts.connectionString);

@@ -11,5 +11,8 @@
 
         <Button Text="Backup working hours" Command="{Binding CreatePastebinPasteCommand}"/>
         <Label Text="{Binding LastPasteURL}"/>
+
+        <Button Text="Load working hours" Command="{Binding LoadFromLastPasteCommand}"/>
+        
     </VerticalStackLayout>
 </ContentPage>
