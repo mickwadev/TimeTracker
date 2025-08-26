@@ -8,5 +8,8 @@
     <VerticalStackLayout>
         <Button Text="Get Latest paste" Command="{Binding GetLatestPasteCommand}" />
         <Label Text="{Binding Poem}" LineBreakMode="WordWrap" />
+
+        <Button Text="Backup working hours" Command="{Binding CreatePastebinPasteCommand}"/>
+        <Label Text="{Binding LastPasteURL}"/>
     </VerticalStackLayout>
 </ContentPage>

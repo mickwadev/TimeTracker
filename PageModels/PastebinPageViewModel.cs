@@ -16,18 +16,30 @@ namespace TimeTracker.Pastebin
         private const string Username = "RmiRckwaR";
         private const string Password = "PastebRinPassRwordR";
 
-        [RelayCommand]
-        public async void GetLatestPaste()
-        {
-            Trace.WriteLine("Get latest paste...");
-            await Main();
-        }
+       
+         
+
+        
 
         [ObservableProperty]
-        public string _poem = "Gentle panda in the morning mist,  \r\nChewing bamboo with a sleepy twist.  \r\nBlack and white, a peaceful sight,  \r\nSoft as clouds, yet strong in might.  \r\nThey wander forests calm and deep,  \r\nGuarding secrets trees still keep.  \r\nWith every step the mountains ring,  \r\nA quiet hymn the breezes sing.  \r\nPandas dream where rivers flow,  \r\nIn quiet groves where blossoms grow.  \r\nTheir gentle hearts remind us all,  \r\nEven giants may be small.  \r\nA tender soul in fur so grand,  \r\nA living poem of the land.";
+        private string _poem = "Gentle panda in the morning mist,  \r\nChewing bamboo with a sleepy twist.  \r\nBlack and white, a peaceful sight,  \r\nSoft as clouds, yet strong in might.  \r\nThey wander forests calm and deep,  \r\nGuarding secrets trees still keep.  \r\nWith every step the mountains ring,  \r\nA quiet hymn the breezes sing.  \r\nPandas dream where rivers flow,  \r\nIn quiet groves where blossoms grow.  \r\nTheir gentle hearts remind us all,  \r\nEven giants may be small.  \r\nA tender soul in fur so grand,  \r\nA living poem of the land.";
 
-        public async Task Main()
+        [ObservableProperty]
+        private string _lastPasteURL = "";
+
+        [RelayCommand]
+        public async Task CreatePastebinPaste()
         {
+            Trace.WriteLine("Create new paste...");
+            using var pb = new PastebinClient(DevKey.Replace("R", ""));
+            var userKey = await pb.GetUserKeyAsync(Username.Replace("R", ""), Password.Replace("R", ""));
+            var latest = await pb.CreatePasteAsync(":)", ":)",userKey);
+            LastPasteURL = latest;
+        }
+        [RelayCommand]
+        public async Task GetLatestPaste()
+        {
+            Trace.WriteLine("Get latest paste...");
             using var pb = new PastebinClient(DevKey.Replace("R", ""));
 
             // 1) login -> user key

@@ -107,6 +107,29 @@ namespace TimeTracker.Models
             }
         }
 
+        public async Task<string> CreatePasteAsync(string text, string title, string userKey)
+        {
+            var form = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                ["api_dev_key"] = _devKey,
+                ["api_user_key"] = userKey,
+                ["api_option"] = "paste",
+                ["api_paste_code"] = text,
+                ["api_paste_name"] = title,
+                ["api_paste_private"] = "2", //// 0=public, 1=unlisted, 2=private
+                ["api_paste_expire_date"] =  "N",
+                ["api_paste_format"] = "text"
+            });
+             
+            var resp = await _http.PostAsync("api/api_post.php", form);
+            var body = await resp.Content.ReadAsStringAsync();
+
+            if (!resp.IsSuccessStatusCode || body.StartsWith("Bad API request"))
+                throw new Exception($"Paste creation failed: {body}");
+
+            return body.Trim(); // This will be the paste URL
+        }
+
     }
 
     public record PasteMeta
