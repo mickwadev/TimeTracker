@@ -32,8 +32,6 @@ namespace TimeTracker.PageModels
             new SfSegmentItem(){Text = "All"}
         };
 
-
-
         [RelayCommand]
         public async Task TimeRange_SelectionChanged(Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
         {
@@ -51,15 +49,11 @@ namespace TimeTracker.PageModels
             TimePeriod = p.start == p.end ? p.start.ToString(f) : $"From {p.start.ToString(f)} to {p.end.ToString(f)}";
         }
         #endregion
- 
-        Random random = new Random();
          
         [ObservableProperty]
         private ObservableCollection<DateTimePoint> _dateTimePoints = new ObservableCollection<DateTimePoint>();
 
         public ISeries[] MyWorkingHours { get; }
-
-        
 
         [ObservableProperty]
         private string _timePeriod = "";
@@ -67,21 +61,12 @@ namespace TimeTracker.PageModels
         DatabaseFun database;
 
         [ObservableProperty]
-        private bool _hasAnyEntries = false;
+        private bool _hasAnyEntries = true;
 
         // This must be static to add it in Labeler while creating it
         private static string TimeLabeler(double seconds) => (seconds / AppConsts.SecondsInHours) + "h";
 
-        // this function must match Func<double, string>
-        private string MyCustomLabelFormatter(double value)
-        {
-            if (value > 1000)
-                return $"{value / 1000:0.0}k";
-
-            return value.ToString("0.##");
-        }
-
-        public Axis[] YAxes { get; } = new Axis[] {
+       public Axis[] YAxes { get; } = new Axis[] {
             new Axis {
                 MinLimit = 0,
                 MinStep = AppConsts.SecondsInHours*2,
@@ -102,11 +87,6 @@ namespace TimeTracker.PageModels
 
         public ProgressPageViewModel(DatabaseFun db)
         {
-            var yAxesLabelColors = new OnPlatform<SKColor>
-            {
-
-            };
-
             database = db;
 
             var cc = new ColumnSeries<DateTimePoint>
@@ -120,7 +100,6 @@ namespace TimeTracker.PageModels
                 double y = chartPoint.Coordinate.PrimaryValue;
                 Trace.WriteLine($"value y {y}");
                 chartPoint.Visual.Fill = new SolidColorPaint(GradientSampler.GetWorkTimeColor(y));
-
             };
 
             cc.ChartPointPointerHover += (sender, chartPoint) =>
@@ -160,17 +139,17 @@ namespace TimeTracker.PageModels
             }
         }
 
-        [RelayCommand]
-        public async Task LoadTimeFromDb()
-        {
-            List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(new DateTime(2025, 8, 1), new DateTime(2025, 8, 30));
-            var group = d.GroupBy(wt => DateTime.Parse(wt.StartTime).ToString("yyyy MM dd"));
-            DateTimePoints.Clear();
-            foreach (var w in group)
-            {
-                //Trace.WriteLine($"{w.Key} {w.Count()}"); 
-                DateTimePoints.Add(new DateTimePoint() { DateTime = DateTime.Parse(w.Key), Value = w.Aggregate(0, (sum, wt) => sum += (int)wt.Duration().TotalSeconds) });
-            }
-        }
+        //[RelayCommand]
+        //public async Task LoadTimeFromDb()
+        //{
+        //    List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(new DateTime(2025, 8, 1), new DateTime(2025, 8, 30));
+        //    var group = d.GroupBy(wt => DateTime.Parse(wt.StartTime).ToString("yyyy MM dd"));
+        //    DateTimePoints.Clear();
+        //    foreach (var w in group)
+        //    {
+        //        //Trace.WriteLine($"{w.Key} {w.Count()}"); 
+        //        DateTimePoints.Add(new DateTimePoint() { DateTime = DateTime.Parse(w.Key), Value = w.Aggregate(0, (sum, wt) => sum += (int)wt.Duration().TotalSeconds) });
+        //    }
+        //}
     }
 }

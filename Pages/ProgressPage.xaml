@@ -30,8 +30,6 @@
         <Button Text="Toggle" Clicked="Button_Clicked"></Button>
 
         <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,222" >
-
-
             <sf:SfSegmentedControl x:Name="TimeRange" Grid.Column="0" Grid.Row="0" BackgroundColor="AliceBlue" ItemsSource="{Binding Segments}">
                 <sf:SfSegmentedControl.Behaviors>
                     <mct:EventToCommandBehavior
