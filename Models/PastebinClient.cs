@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,8 @@ namespace TimeTracker.Models
             return body.Trim(); // this is api_user_key
         }
 
+        
+
         public async Task<PasteMeta?> GetLatestPasteMetaAsync(string userKey)
         {
             var form = new FormUrlEncodedContent(new Dictionary<string, string>
@@ -48,7 +51,7 @@ namespace TimeTracker.Models
                 ["api_dev_key"] = _devKey,
                 ["api_user_key"] = userKey,
                 ["api_option"] = "list",
-                ["api_results_limit"] = "1" // newest first; 1 = latest
+                ["api_results_limit"] = "1000" 
             });
 
             var resp = await _http.PostAsync("api/api_post.php", form);
@@ -58,8 +61,9 @@ namespace TimeTracker.Models
                 throw new Exception($"List failed: {xml}");
 
             // The response is an XML document with <paste> nodes.
+            Trace.WriteLine(xml);
             var doc = XDocument.Parse($"<root>{xml}</root>"); // wrap in a root to make parsing easier
-            var paste = doc.Root?.Element("paste");
+            var paste = doc.Root?.Elements("paste").OrderBy(p => p.Element("paste_date").Value).Last();
             if (paste == null) return null;
 
             return new PasteMeta
@@ -74,7 +78,7 @@ namespace TimeTracker.Models
                 Format = paste.Element("paste_format_long")?.Value
             };
         }
-
+         
         public async Task<string> GetPasteRawAsync(string pasteKey, string? userKey = null)
         {
             if (!string.IsNullOrWhiteSpace(userKey))
@@ -87,7 +91,7 @@ namespace TimeTracker.Models
                     ["api_option"] = "show_paste",
                     ["api_paste_key"] = pasteKey
                 });
-
+                Trace.WriteLine($"Get paset with key: {pasteKey}");
                 var resp = await _http.PostAsync("api/api_raw.php", form);
                 var text = await resp.Content.ReadAsStringAsync();
 
