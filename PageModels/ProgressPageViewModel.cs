@@ -17,14 +17,14 @@ using System.Globalization;
 using TimeTracker.Data;
 using TimeTracker.Helpers;
 using TimeTracker.Models;
- 
+
 namespace TimeTracker.PageModels
 {
     public partial class ProgressPageViewModel : ObservableObject
     {
         #region SEGMENT
 
-        public List<SfSegmentItem> Segments { get; } = new List<SfSegmentItem>() 
+        public List<SfSegmentItem> Segments { get; } = new List<SfSegmentItem>()
         {
             new SfSegmentItem(){Text = "Today"},
             new SfSegmentItem(){Text = "Week"},
@@ -48,25 +48,18 @@ namespace TimeTracker.PageModels
                 _ => Dates.All
             };
             await LoadTimeFromDb(p.start, p.end);
-            TimePeriod = p.start == p.end ? p.start.ToString(f) :  $"From {p.start.ToString(f)} to {p.end.ToString(f)}";
+            TimePeriod = p.start == p.end ? p.start.ToString(f) : $"From {p.start.ToString(f)} to {p.end.ToString(f)}";
         }
         #endregion
-
-        // https://livecharts.dev/docs/maui/2.0.0-rc5.4/Overview.Automatic%20updates
-        [ObservableProperty]
-        private ObservableCollection<int> _ints =new ObservableCollection<int>() {1,2,3}; // with List<int> this won't work.
+ 
         Random random = new Random();
-
-
-        public ISeries[] Series2 { get;}
-        public ISeries[] MyIntsSeries { get; }
-
+         
         [ObservableProperty]
         private ObservableCollection<DateTimePoint> _dateTimePoints = new ObservableCollection<DateTimePoint>();
 
         public ISeries[] MyWorkingHours { get; }
 
-        int kulfon = 15;
+        
 
         [ObservableProperty]
         private string _timePeriod = "";
@@ -77,7 +70,7 @@ namespace TimeTracker.PageModels
         private bool _hasAnyEntries = false;
 
         // This must be static to add it in Labeler while creating it
-        private static string TimeLabeler(double seconds) =>  (seconds / AppConsts.SecondsInHours) +"h";
+        private static string TimeLabeler(double seconds) => (seconds / AppConsts.SecondsInHours) + "h";
 
         // this function must match Func<double, string>
         private string MyCustomLabelFormatter(double value)
@@ -111,7 +104,7 @@ namespace TimeTracker.PageModels
         {
             var yAxesLabelColors = new OnPlatform<SKColor>
             {
-                
+
             };
 
             database = db;
@@ -119,26 +112,21 @@ namespace TimeTracker.PageModels
             var cc = new ColumnSeries<DateTimePoint>
             {
                 Values = DateTimePoints,
-                //  Name = "Kokoszka",
-                //   Fill = new SolidColorPaint(SKColors.Beige),
-                //   Rx = 23,
-                //    Ry = 23,
                 Stroke = new SolidColorPaint(SKColors.Transparent) { StrokeThickness = 0 },
                 YToolTipLabelFormatter = p => TimeSpan.FromSeconds((int)(p.Model.Value)).ToString(@"hh\:mm\:ss")
             };
-            cc.PointMeasured += (chartPoint) => {
+            cc.PointMeasured += (chartPoint) =>
+            {
                 double y = chartPoint.Coordinate.PrimaryValue;
                 Trace.WriteLine($"value y {y}");
-              
-
                 chartPoint.Visual.Fill = new SolidColorPaint(GradientSampler.GetWorkTimeColor(y));
-            
+
             };
 
-            cc.ChartPointPointerHover += (sender, chartPoint) => {
+            cc.ChartPointPointerHover += (sender, chartPoint) =>
+            {
                 var color = SKColors.Beige;
                 chartPoint.Visual.Stroke = new SolidColorPaint(color) { StrokeThickness = 4 };
-           //     chartPoint.Context.Series.Name = chartPoint.Coordinate.PrimaryValue.ToString();
             };
 
             cc.ChartPointPointerHoverLost += (sender, chartPoint) =>
@@ -146,54 +134,10 @@ namespace TimeTracker.PageModels
                 chartPoint.Visual.Stroke = new SolidColorPaint(SKColors.Transparent) { StrokeThickness = 0 };
             };
 
-            MyWorkingHours = new ISeries[]{cc};
-
-            for (int i = 0; i < 8; i++)
-            {
-                DateTimePoints.Add(new DateTimePoint() { DateTime = new(2025, 8, kulfon), Value = i*3600 });
-                kulfon++;
-            }
-
-
-            // since _ints is of type ObservableCollection 
-            // LiveCharts will update when you add, remove, replace or clear the collection
-
-            Series2 = new ISeries[] { new LineSeries<int>() { Values = Ints} };         // This results in line plot
-            MyIntsSeries = new ISeries[] {new ColumnSeries<int>() { Values = Ints} };   // This results in columns
-
-            // This results in THREE different types drawn values on sigle plot
-            MyIntsSeries = new ISeries[]
-            {
-                new ColumnSeries<int>() { Values = Ints},
-                new LineSeries<int>() { Values = Ints},
-                new ScatterSeries<int>() {Values = Ints}
-            };
+            MyWorkingHours = new ISeries[] { cc };
+             
         }
          
-            [RelayCommand]
-            public async Task AddSomeValuesAsync()
-            {
-                for (int i = 0; i < 5; i++)
-                { 
-                    await Task.Delay(1000);
-                    Ints.Add(random.Next(1, 10));
-                }
-            }
-
-            [RelayCommand]
-            public void AddValueButton()
-            {
-                Trace.WriteLine("Add value to chart...");
-                Ints.Add(random.Next(0,10));
-            }
-
-            [RelayCommand]
-            public async Task DodajDoDat()
-            {
-            await Task.Delay(1000);
-                DateTimePoints.Add(new DateTimePoint() { DateTime = new DateTime(2025, 8, kulfon), Value = kulfon++ });
-            }
-
         public async Task LoadTimeFromDb(DateTime start, DateTime end)
         {
             List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(start, end);
@@ -202,27 +146,31 @@ namespace TimeTracker.PageModels
             foreach (var w in group)
             {
                 Trace.WriteLine($"For '{w.Key}' found {w.Count()} activities");
-                DateTimePoints.Add(new DateTimePoint() { DateTime = DateTime.Parse(w.Key), Value = w.Aggregate(0, (sum, wt) => 
+                DateTimePoints.Add(new DateTimePoint()
+                {
+                    DateTime = DateTime.Parse(w.Key),
+                    Value = w.Aggregate(0, (sum, wt) =>
                 {
                     var v = (int)wt.Duration().TotalSeconds;
                     Trace.WriteLine($"Adding total seconds: {v}");
                     sum += v;
                     return sum;
-                }) });
+                })
+                });
             }
         }
 
         [RelayCommand]
-            public async Task LoadTimeFromDb()
+        public async Task LoadTimeFromDb()
+        {
+            List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(new DateTime(2025, 8, 1), new DateTime(2025, 8, 30));
+            var group = d.GroupBy(wt => DateTime.Parse(wt.StartTime).ToString("yyyy MM dd"));
+            DateTimePoints.Clear();
+            foreach (var w in group)
             {
-                List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(new DateTime(2025, 8, 1), new DateTime(2025, 8, 30));
-                var group = d.GroupBy(wt => DateTime.Parse(wt.StartTime).ToString("yyyy MM dd"));
-                DateTimePoints.Clear();
-                foreach (var w in group)
-                {
-                    //Trace.WriteLine($"{w.Key} {w.Count()}"); 
-                    DateTimePoints.Add(new DateTimePoint() {DateTime = DateTime.Parse(w.Key) , Value = w.Aggregate(0, (sum, wt) => sum += (int)wt.Duration().TotalSeconds) });
-                }
+                //Trace.WriteLine($"{w.Key} {w.Count()}"); 
+                DateTimePoints.Add(new DateTimePoint() { DateTime = DateTime.Parse(w.Key), Value = w.Aggregate(0, (sum, wt) => sum += (int)wt.Duration().TotalSeconds) });
             }
         }
+    }
 }

@@ -18,7 +18,6 @@
             <Style x:Key="NicNieMa" TargetType="Label">
                 <Setter Property="FontSize" Value="42"/>
                 <Setter Property="TextColor" Value="MediumVioletRed"/>
-
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -29,10 +28,10 @@
             HorizontalOptions="Center" />
 
         <Button Text="Toggle" Clicked="Button_Clicked"></Button>
-        
+
         <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,222" >
 
-            
+
             <sf:SfSegmentedControl x:Name="TimeRange" Grid.Column="0" Grid.Row="0" BackgroundColor="AliceBlue" ItemsSource="{Binding Segments}">
                 <sf:SfSegmentedControl.Behaviors>
                     <mct:EventToCommandBehavior
@@ -57,10 +56,5 @@
                 XAxes="{Binding XAxes}">
             </lvc:CartesianChart>
         </Grid>
-
-        <Button Text="Add single value to chart" Command="{Binding AddValueButtonCommand}" />
-        <Button Text="Add some values async" Command="{Binding AddSomeValuesCommand}" />
-        <Button Text="Dodaj do dat" Command="{Binding DodajDoDatCommand}"/>
-        <Button Text="Load from db" Command="{Binding LoadTimeFromDbCommand}"/>
     </VerticalStackLayout>
 </ContentPage>
