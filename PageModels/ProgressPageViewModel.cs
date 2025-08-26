@@ -22,6 +22,12 @@ namespace TimeTracker.PageModels
 {
     public partial class ProgressPageViewModel : ObservableObject
     {
+        public ProgressPageViewModel(DatabaseFun db)
+        {
+            database = db;
+            SetChart();
+        }
+
         #region SEGMENT
 
         public List<SfSegmentItem> Segments { get; } = new List<SfSegmentItem>()
@@ -46,14 +52,18 @@ namespace TimeTracker.PageModels
                 _ => Dates.All
             };
             await LoadTimeFromDb(p.start, p.end);
+            // Update label text:
             TimePeriod = p.start == p.end ? p.start.ToString(f) : $"From {p.start.ToString(f)} to {p.end.ToString(f)}";
         }
         #endregion
-         
+
+        //DateTimePoint to jest klasa z tych charts.
         [ObservableProperty]
         private ObservableCollection<DateTimePoint> _dateTimePoints = new ObservableCollection<DateTimePoint>();
 
-        public ISeries[] MyWorkingHours { get; }
+        // Do tego jest zrobiony binding: Series="{Binding MyWorkingHours}"
+        [ObservableProperty]
+        private ISeries[] _MyWorkingHours;
 
         [ObservableProperty]
         private string _timePeriod = "";
@@ -66,9 +76,11 @@ namespace TimeTracker.PageModels
         // This must be static to add it in Labeler while creating it
         private static string TimeLabeler(double seconds) => (seconds / AppConsts.SecondsInHours) + "h";
 
-       public Axis[] YAxes { get; } = new Axis[] {
+        #region AXIS_DEFINITIONS
+        public ICartesianAxis[] YAxes { get; } = {
             new Axis {
                 MinLimit = 0,
+                MaxLimit= AppConsts.SecondsInHours*10,
                 MinStep = AppConsts.SecondsInHours*2,
                 Name = "Working hours",
                 ForceStepToMin = true,
@@ -82,13 +94,27 @@ namespace TimeTracker.PageModels
 
         public ICartesianAxis[] XAxes { get; set; } =
             [
-                new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("dd MM")),
+                 new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("dd MM yyyy"))
+                 {
+                     MinStep = TimeSpan.FromDays(1).Ticks,
+                     MinLimit = DateTime.Now.AddDays(-10).Ticks,
+                     MaxLimit= DateTime.Now.AddDays(5).Ticks,
+                     ForceStepToMin = true,
+                     Name="Dates",
+                     NamePaint = new SolidColorPaint(DeviceInfo.Current.Platform == DevicePlatform.Android ? SKColors.DarkGray :  SKColors.Beige),
+                    // LabelsPaint = new SolidColorPaint(DeviceInfo.Current.Platform == DevicePlatform.Android? SKColors.DarkGray  : SKColors.Beige),
+                 }
             ];
 
-        public ProgressPageViewModel(DatabaseFun db)
+        #endregion
+        private void SetChart()
         {
-            database = db;
+            // Add some fake DateTimePoints:
+            DateTimePoints.Add(new DateTimePoint(new DateTime(2025, 7, 2), 7200));
+            DateTimePoints.Add(new DateTimePoint(new DateTime(2025, 8, 12), 7200));
+            DateTimePoints.Add(new DateTimePoint(new DateTime(2025, 8, 13), 7200));
 
+            Trace.WriteLine($"Points here {DateTimePoints.Count}");
             var cc = new ColumnSeries<DateTimePoint>
             {
                 Values = DateTimePoints,
@@ -113,10 +139,11 @@ namespace TimeTracker.PageModels
                 chartPoint.Visual.Stroke = new SolidColorPaint(SKColors.Transparent) { StrokeThickness = 0 };
             };
 
+            // Do tego jest zrobiony binding w xaml.
             MyWorkingHours = new ISeries[] { cc };
-             
         }
-         
+
+        // Tu są aktualizowane te DateTimePoints z bazy danych:
         public async Task LoadTimeFromDb(DateTime start, DateTime end)
         {
             List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(start, end);
@@ -128,28 +155,27 @@ namespace TimeTracker.PageModels
                 DateTimePoints.Add(new DateTimePoint()
                 {
                     DateTime = DateTime.Parse(w.Key),
+                    // Sum seconds of all activities
                     Value = w.Aggregate(0, (sum, wt) =>
-                {
-                    var v = (int)wt.Duration().TotalSeconds;
-                    Trace.WriteLine($"Adding total seconds: {v}");
-                    sum += v;
-                    return sum;
-                })
+                    {
+                        var v = (int)wt.Duration().TotalSeconds;
+                        Trace.WriteLine($"Adding total seconds: {v}");
+                        sum += v;
+                        return sum;
+                    })
                 });
             }
-        }
+            //foreach (var x in XAxes)
+            //{
+            //    x.MinLimit = null;
+            //    x.MaxLimit = null;
+            //}
 
-        //[RelayCommand]
-        //public async Task LoadTimeFromDb()
-        //{
-        //    List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(new DateTime(2025, 8, 1), new DateTime(2025, 8, 30));
-        //    var group = d.GroupBy(wt => DateTime.Parse(wt.StartTime).ToString("yyyy MM dd"));
-        //    DateTimePoints.Clear();
-        //    foreach (var w in group)
-        //    {
-        //        //Trace.WriteLine($"{w.Key} {w.Count()}"); 
-        //        DateTimePoints.Add(new DateTimePoint() { DateTime = DateTime.Parse(w.Key), Value = w.Aggregate(0, (sum, wt) => sum += (int)wt.Duration().TotalSeconds) });
-        //    }
-        //}
+            //foreach (var y in YAxes)
+            //{
+            //    y.MinLimit = null;
+            //    y.MaxLimit = null;
+            //}
+        }
     }
 }

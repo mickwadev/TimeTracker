@@ -15,5 +15,6 @@ public partial class ProgressPage : ContentPage
     private void Button_Clicked(object sender, EventArgs e)
     {
 		model.HasAnyEntries = !model.HasAnyEntries;
+		 
     }
 }

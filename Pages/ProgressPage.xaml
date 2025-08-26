@@ -47,6 +47,8 @@
                    VerticalOptions="Center"
                    Style="{StaticResource NicNieMa}"/>
             <lvc:CartesianChart
+                x:Name="WorkTimeChart"
+                
                 IsVisible="{Binding HasAnyEntries}"
                 Grid.Column="0" Grid.Row="2"
                 Series="{Binding MyWorkingHours}"
