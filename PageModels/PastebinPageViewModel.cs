@@ -1,11 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimeTracker.Data;
 using TimeTracker.Models;
 
 namespace TimeTracker.Pastebin
@@ -16,8 +18,11 @@ namespace TimeTracker.Pastebin
         private const string Username = "RmiRckwaR";
         private const string Password = "PastebRinPassRwordR";
 
-       
-         
+        private DatabaseFun _db;
+        public PastebinPageViewModel(DatabaseFun db)
+        { 
+         _db = db;
+        }
 
         
 
@@ -31,10 +36,12 @@ namespace TimeTracker.Pastebin
         public async Task CreatePastebinPaste()
         {
             Trace.WriteLine("Create new paste...");
+            var allEntries = await _db.GetAllWorkingEntriesAsync();
+            string serializedJson = JsonConvert.SerializeObject(allEntries, Formatting.Indented);
             using var pb = new PastebinClient(DevKey.Replace("R", ""));
             var userKey = await pb.GetUserKeyAsync(Username.Replace("R", ""), Password.Replace("R", ""));
-            var latest = await pb.CreatePasteAsync(":)", ":)",userKey);
-            LastPasteURL = latest;
+            var latest = await pb.CreatePasteAsync(serializedJson, $"Enties backup from {DateTime.Now.ToString("G")}",userKey);
+            LastPasteURL = $"Backup done: {latest}";
         }
         [RelayCommand]
         public async Task GetLatestPaste()

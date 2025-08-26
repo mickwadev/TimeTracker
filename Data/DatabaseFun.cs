@@ -75,7 +75,8 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
         public async Task<int> AddRandomWorkTimeAsync() => await AddWorkTimeAsync(GetRandomWorkTime());
 
         public async Task<List<WorkTime>> GetTodayWorkingEntriesAsync() => await GetWorkingEntriesForTimePeriodAsync(DateTime.Now,DateTime.Now);
-       
+        public async Task<List<WorkTime>> GetAllWorkingEntriesAsync() => await GetWorkingEntriesForTimePeriodAsync(new DateTime(1410,7,15), DateTime.Now);
+
 
 
         public async Task<List<WorkTime>> GetWorkingEntriesForTimePeriodAsync(DateTime startDate, DateTime endDate)
