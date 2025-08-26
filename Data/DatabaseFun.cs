@@ -59,8 +59,20 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             return new WorkTime() { Title = "Random 10 minute ;)", StartTime = start.ToString(), EndTime = (start + TimeSpan.FromMinutes(10)).ToString() };
         }
 
+        public async Task<int> ClearTableAsync()
+        {
+            await using var connection = new SqliteConnection(DbConsts.connectionString);
+            await connection.OpenAsync();
+
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = $"DELETE FROM {CurrentTable}";
+            return await cmd.ExecuteNonQueryAsync(); // returns number of rows deleted
+        }
+
         public async Task<int> CreateFromBackupAsync(List<WorkTime> workEntries)
-        { 
+        {
+            int removedRows = await ClearTableAsync();
+            Trace.WriteLine($"Removed rows: {removedRows}");
             await using var connection = new SqliteConnection(DbConsts.connectionString);
             await connection.OpenAsync();
             // co to za dziwny syntax XD
