@@ -165,11 +165,11 @@ namespace TimeTracker.PageModels
                     })
                 });
             }
-            //foreach (var x in XAxes)
-            //{
-            //    x.MinLimit = null;
-            //    x.MaxLimit = null;
-            //}
+            foreach (var x in XAxes)
+            {
+                x.MinLimit = start.Ticks;
+                x.MaxLimit = end.Ticks;
+            }
 
             //foreach (var y in YAxes)
             //{
