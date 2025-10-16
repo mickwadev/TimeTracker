@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="TimeTracker.Pages.TimeTrackingPage"
              xmlns:pageModel="clr-namespace:TimeTracker.PageModels"
-             x:DataType="pageModel:TimeTrackingPageModel"
-             Title="{Binding Today}">
+             
+             x:DataType="pageModel:TimeTrackingPageViewModel"
+             Title="{Binding Today}"
+             x:Name="page">
+    <ContentPage.Behaviors>
+        <mct:EventToCommandBehavior 
+            BindingContext="{Binding Source={x:Reference page}, Path=BindingContext, x:DataType=ContentPage}"
+            Command="{Binding Source={x:Reference page}, Path=BindingContext.AppearingEventCommand, x:DataType=ContentPage}" 
+            EventName="Appearing" />
+    </ContentPage.Behaviors>
     <VerticalStackLayout Spacing="10" Padding="10" >
+
+        <Label VerticalOptions="Center" HorizontalOptions="Center" >
+
+        </Label>
+
         <Label 
             Text="{Binding TicksMsg}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        <Entry Text="{Binding WorkTimeComment}"/>
 
 
-        <Entry Text="{Binding WorkTimeComment}">
-            <Entry.Triggers>
-                <Trigger TargetType="Entry" Property="IsFocused" Value="True">
-                    <Setter Property="BackgroundColor" Value="LightGray"/>
-                </Trigger>
 
-                <Trigger TargetType="Entry" Property="IsFocused" Value="False">
-                    <Setter Property="BackgroundColor" Value="DarkGray"/>
-                </Trigger>
-            </Entry.Triggers>
-        </Entry>
         <Button Text="{Binding CountTimeButtonText}" Command="{Binding TimeCountingButtonPressedCommand}" />
         <Button Text="Create db" Command="{Binding CreateDatabaseCommand}" />
         <Button Text="Drop db" Command="{Binding DropTableCommand}" />
-        <Button Text="Todays working time" Command="{Binding GetDatesCommand}" BackgroundColor="{StaticResource MyOrange}" />
+        <Button Text="Todays working time" Command="{Binding GetDatesCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

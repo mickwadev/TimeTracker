@@ -37,11 +37,11 @@ namespace TimeTracker
     		builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<DatabaseFun>();
-            builder.Services.AddSingleton<TimeTrackingPageModel>();
-            builder.Services.AddSingleton<WorkTimeModel>();
-            builder.Services.AddSingleton<WorkTimeDashboardPageModel>();
-            builder.Services.AddSingleton<ProgressPageViewModel>();
-            builder.Services.AddSingleton<PastebinPageViewModel>();
+            builder.Services.AddTransient<TimeTrackingPageViewModel>();
+          //  builder.Services.AddTransient<WorkTimeModel>();
+            builder.Services.AddTransient<WorkTimeDashboardPageModel>();
+            builder.Services.AddTransient<ProgressPageViewModel>();
+            builder.Services.AddTransient<PastebinPageViewModel>();
             
             return builder.Build();
         }

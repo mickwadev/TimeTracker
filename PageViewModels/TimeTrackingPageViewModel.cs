@@ -12,13 +12,13 @@ using TimeTracker.Models;
 
 namespace TimeTracker.PageModels
 {
-    public partial class TimeTrackingPageModel : ObservableObject
+    public partial class TimeTrackingPageViewModel : ObservableObject
     {
         DatabaseFun db;
         IDispatcherTimer timer;
         WorkTime currentWorkTime = null;
 
-        public TimeTrackingPageModel(DatabaseFun db)
+        public TimeTrackingPageViewModel(DatabaseFun db)
         {
             timer = Application.Current!.Dispatcher.CreateTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -58,6 +58,12 @@ namespace TimeTracker.PageModels
                 StartWorkTimeCounting();
             }
             UpdateTimeButtonText();
+        }
+
+        [RelayCommand]
+        public void AppearingEvent()
+        {
+            Trace.WriteLine("Appearing event in vm :)");
         }
          
         [RelayCommand]
