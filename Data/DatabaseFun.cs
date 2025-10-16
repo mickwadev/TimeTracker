@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
         public WorkTime GetRandomWorkTime()
         {
             DateTime start = DateTime.Now;
-            return new WorkTime() { Title = "Random 10 minute ;)", StartTime = start.ToString(), EndTime = (start + TimeSpan.FromMinutes(10)).ToString() };
+            return new WorkTime() { Title = "Random 10 minute ;)", StartTime = start, EndTime = (start + TimeSpan.FromMinutes(10)) };
         }
 
         public async Task<int> ClearTableAsync()
@@ -130,15 +130,16 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
 
 
 
+
         public async Task<List<WorkTime>> GetWorkingEntriesForTimePeriodAsync(DateTime startDate, DateTime endDate)
         {
-            string format = "yyyy-MM-dd ";
+            string onlyDateFormat = "yyyy-MM-dd ";
            
             await using var connection = new SqliteConnection(DbConsts.connectionString);
             await connection.OpenAsync();
             var addWorkTimeCmd = connection.CreateCommand();
-            var start = startDate.ToString(format);
-            var end = endDate.ToString(format);
+            var start = startDate.ToString(onlyDateFormat);
+            var end = endDate.ToString(onlyDateFormat);
             Trace.WriteLine($"Time period days: {start} to {end}");
             addWorkTimeCmd.CommandText = @$"SELECT ID, Title, StartTime, EndTime FROM {CurrentTable} WHERE date(StartTime) >= date(@start) AND date(StartTime) <= date(@end);";
             addWorkTimeCmd.Parameters.AddWithValue("@start", start);
@@ -148,20 +149,23 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
              
             while (await reader.ReadAsync())
             {
+                bool startDateParsuSuccess = 
+                    DateTime.TryParseExact(reader.GetString(2), DbConsts.dbDateFormat, 
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startTimeFromDb);
+                bool endDateParsuSuccess = 
+                    DateTime.TryParseExact(reader.GetString(3), DbConsts.dbDateFormat, 
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endTimeFromDb);
+                
                 var wt = new WorkTime()
                 {
                     ID = reader.GetInt32(0),
                     Title = reader.GetString(1),
-                    StartTime = reader.GetString(2),
-                    EndTime = reader.GetString(3),
+                    StartTime = startTimeFromDb,
+                    EndTime = endTimeFromDb,
                 };
-                Trace.WriteLine($"Pure data: '{wt.StartTime}' '{wt.EndTime}'");
-                times.Add(wt);
-                var startTime = DateTime.ParseExact(wt.StartTime,  DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
-                var endTime = DateTime.ParseExact(wt.EndTime, DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
-                var time = endTime - startTime;
-                
-                Trace.WriteLine($"Time span from activity: {time} ({startTime.ToString(DbConsts.dbDateFormat)} - {endTime.ToString(DbConsts.dbDateFormat)})");
+                Trace.WriteLine($"Parsed times from db: '{wt.StartTime}' '{wt.EndTime}'");
+                times.Add(wt); 
+               // Trace.WriteLine($"Time span from activity: {wt.Duration} ({startTime.ToString(DbConsts.dbDateFormat)} - {endTime.ToString(DbConsts.dbDateFormat)})");
             }
             return times;
         }

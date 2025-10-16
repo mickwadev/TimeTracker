@@ -32,8 +32,8 @@ namespace TimeTracker.PageModels
             timer.IsRepeating = true;
             timer.Tick += (s, e) =>
             {
-                var startTime = DateTime.ParseExact(currentWorkTime!.StartTime,DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
-                currentWorkTime.EndTime = DateTime.Now.ToString();
+                //    var startTime = DateTime.ParseExact(currentWorkTime!.StartTime,DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
+                currentWorkTime.EndTime = DateTime.Now;//.ToString();
                 
                 TicksMsg = $"Current working: {currentWorkTime.Duration.ToString(@"hh\:mm\:ss")}";
                 UpdateTodaysWorkTimeText();
@@ -125,7 +125,7 @@ namespace TimeTracker.PageModels
         private async Task StopWorkTimeCounting()
         {
             timer.Stop();
-            var et = DateTime.Now.ToString(DbConsts.dbDateFormat);
+            var et = DateTime.Now;//.ToString(DbConsts.dbDateFormat);
             currentWorkTime.EndTime = et;
             currentWorkTime.Title = WorkTimeComment;
             Trace.WriteLine($"Saving activity: '{currentWorkTime.StartTime}'to '{currentWorkTime.EndTime}'");
@@ -136,7 +136,7 @@ namespace TimeTracker.PageModels
 
         private void StartWorkTimeCounting()
         {
-            var st = DateTime.Now.ToString(DbConsts.dbDateFormat);
+            var st = DateTime.Now;//.ToString(DbConsts.dbDateFormat);
             currentWorkTime = new WorkTime() { StartTime = st, EndTime = st, Title = WorkTimeComment };
             Trace.WriteLine($"Starting new activity from: '{currentWorkTime.StartTime}'");
             timer.Start();

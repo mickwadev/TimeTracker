@@ -54,7 +54,7 @@ namespace TimeTracker.PageModels
         public async Task LoadAllWorkingHistory()
         {
             List<WorkTime> times = await db.GetWorkingEntriesForTimePeriodAsync(new DateTime(2025, 1, 1), DateTime.Today);
-            var grouped = times.GroupBy(wt => DateTime.Parse(wt.StartTime).ToString("yyyy MM dd"));
+            var grouped = times.GroupBy(wt => (wt.StartTime).ToString("yyyy MM dd"));
             var d = new ColumnSeries<DateTimePoint>
             {
                 Values = [

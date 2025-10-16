@@ -147,7 +147,7 @@ namespace TimeTracker.PageModels
         public async Task LoadTimeFromDb(DateTime start, DateTime end)
         {
             List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(start, end);
-            var group = d.GroupBy(wt => DateTime.Parse(wt.StartTime).ToString("yyyy MM dd"));
+            var group = d.GroupBy(wt => wt.StartTime.ToString("yyyy MM dd"));
             DateTimePoints.Clear();
             foreach (var w in group)
             {

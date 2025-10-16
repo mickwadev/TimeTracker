@@ -18,12 +18,12 @@ namespace TimeTracker.Models
         public string Title { get; set; }
         // TO DO: store this as DateTime to avoid this to string parsing
         [Column("start_time")]
-        public string StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         [Column("end_time")]
-        public string EndTime { get; set; }
+        public DateTime EndTime { get; set; }
 
-        public TimeSpan Duration => DateTime.Parse(EndTime) - DateTime.Parse(StartTime);
+        public TimeSpan Duration => EndTime - StartTime;
          
     }
 }
