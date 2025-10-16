@@ -14,7 +14,7 @@ namespace TimeTracker.Models
         public string StartTime { get; set; }  
         public string EndTime { get; set; }
 
-        public TimeSpan Duration() => DateTime.Parse(EndTime) - DateTime.Parse(StartTime);
+        public TimeSpan Duration => DateTime.Parse(EndTime) - DateTime.Parse(StartTime);
          
     }
 }

@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             TimeSpan todayWorkTime = TimeSpan.FromSeconds(0);
             foreach (var todayWorkEntry in todayWorkEntries)
             {
-                todayWorkTime += todayWorkEntry.Duration();
+                todayWorkTime += todayWorkEntry.Duration;
             }
             return todayWorkTime;
         }

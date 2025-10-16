@@ -8,7 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimeTracker.Data;
+using TimeTracker.Helpers;
 using TimeTracker.Models;
+using Microsoft.Maui.Graphics.Skia;
+using SkiaSharp.Views.Maui;
 
 namespace TimeTracker.PageModels
 {
@@ -30,8 +33,10 @@ namespace TimeTracker.PageModels
             timer.Tick += (s, e) =>
             {
                 var startTime = DateTime.ParseExact(currentWorkTime!.StartTime,DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
-                TimeSpan sp = (DateTime.Now -  startTime); 
-                TicksMsg = $"Current working: {sp.ToString(@"hh\:mm\:ss")}"; 
+                currentWorkTime.EndTime = DateTime.Now.ToString();
+                
+                TicksMsg = $"Current working: {currentWorkTime.Duration.ToString(@"hh\:mm\:ss")}";
+                UpdateTodaysWorkTimeText();
             };
             this.db = db;
             UpdateTimeButtonText();
@@ -39,6 +44,9 @@ namespace TimeTracker.PageModels
 
         [ObservableProperty]
         private string _todayWorkTime= string.Empty;
+
+        [ObservableProperty]
+        private Color _textColor;
 
         [ObservableProperty]
         private string _today = DateTime.Now.ToString("dddd");
@@ -79,7 +87,18 @@ namespace TimeTracker.PageModels
         {
             var todayWorkEntries = await db.GetTodayWorkingEntriesAsync();
             todaysWorkingTime = db.SumTimeSpans(todayWorkEntries);
-            TodayWorkTime = todaysWorkingTime.ToString(@"hh\:mm\:ss");
+            UpdateTodaysWorkTimeText();
+        }
+
+        private void UpdateTodaysWorkTimeText()
+        {
+            TimeSpan current = TimeSpan.Zero;
+            if (currentWorkTime is not null)
+            {
+                current = currentWorkTime.Duration;
+            }
+            TodayWorkTime = "Today work time: " + (todaysWorkingTime + current).ToString(@"hh\:mm\:ss");
+            TextColor = GradientSampler.GetWorkTimeColor(todaysWorkingTime).ToMauiColor();
         }
          
         [RelayCommand]
@@ -108,6 +127,7 @@ namespace TimeTracker.PageModels
             timer.Stop();
             var et = DateTime.Now.ToString(DbConsts.dbDateFormat);
             currentWorkTime.EndTime = et;
+            currentWorkTime.Title = WorkTimeComment;
             Trace.WriteLine($"Saving activity: '{currentWorkTime.StartTime}'to '{currentWorkTime.EndTime}'");
             var affectedRows = await db.AddWorkTimeAsync(currentWorkTime);
             Trace.WriteLine($"Affected rows: {affectedRows}");
@@ -117,7 +137,7 @@ namespace TimeTracker.PageModels
         private void StartWorkTimeCounting()
         {
             var st = DateTime.Now.ToString(DbConsts.dbDateFormat);
-            currentWorkTime = new WorkTime() { StartTime = st, EndTime = null, Title = WorkTimeComment };
+            currentWorkTime = new WorkTime() { StartTime = st, EndTime = st, Title = WorkTimeComment };
             Trace.WriteLine($"Starting new activity from: '{currentWorkTime.StartTime}'");
             timer.Start();
         }

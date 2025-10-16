@@ -158,7 +158,7 @@ namespace TimeTracker.PageModels
                     // Sum seconds of all activities
                     Value = w.Aggregate(0, (sum, wt) =>
                     {
-                        var v = (int)wt.Duration().TotalSeconds;
+                        var v = (int)wt.Duration.TotalSeconds;
                         Trace.WriteLine($"Adding total seconds: {v}");
                         sum += v;
                         return sum;
