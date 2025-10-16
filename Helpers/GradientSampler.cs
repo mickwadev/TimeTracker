@@ -10,16 +10,19 @@ namespace TimeTracker.Helpers
         const double redThreshold = 2;
         const double yellowThreshold = 4;
         const double greenThreshold = 6;
-
+         
         static List<(double hourThreshold, SKColor color)> d = new() 
         {
-            (0, SKColors.Black),
-            (blackThreshold, SKColors.Black),
+            (0, SKColors.Red),
+            (blackThreshold, SKColors.Red),
             (redThreshold, SKColors.Red),
             (yellowThreshold, SKColors.Yellow),
             (greenThreshold, SKColors.Green),
         };
+
+        public static SKColor GetWorkTimeColor(TimeSpan workTimeSpan) => GetWorkTimeColor(workTimeSpan.TotalSeconds);
         
+
         public static SKColor GetWorkTimeColor(double workTimeInSeconds)
         {
             double currentHour = workTimeInSeconds / AppConsts.SecondsInHours;
