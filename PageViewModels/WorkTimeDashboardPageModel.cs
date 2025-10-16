@@ -46,7 +46,8 @@ namespace TimeTracker.PageModels
             Trace.WriteLine($"Check db for:{Day} {Month}");
             DateTime d = new DateTime(2025, int.Parse(Month), int.Parse(Day));
             var times = await db.GetWorkingEntriesForTimePeriodAsync(d, d);
-            TimeLabel = db.SumTimeSpans(times);
+            var todayWorkTime = db.SumTimeSpans(times);
+            TimeLabel = $"In {Day}.{Month}.2025 you worked: {todayWorkTime.ToString(@"hh\:mm\:ss")}";
         }
 
         [RelayCommand]

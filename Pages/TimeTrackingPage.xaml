@@ -16,9 +16,9 @@
     </ContentPage.Behaviors>
     <VerticalStackLayout Spacing="10" Padding="10" >
 
-        <Label VerticalOptions="Center" HorizontalOptions="Center" >
+        <Label Text="{Binding TodayWorkTime}" VerticalOptions="Center" HorizontalOptions="Center" />
 
-        </Label>
+
 
         <Label 
             Text="{Binding TicksMsg}"

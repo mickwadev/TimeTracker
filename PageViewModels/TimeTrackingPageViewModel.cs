@@ -34,6 +34,9 @@ namespace TimeTracker.PageModels
         }
 
         [ObservableProperty]
+        private string _todayWorkTime= string.Empty;
+
+        [ObservableProperty]
         private string _today = DateTime.Now.ToString("dddd");
 
         [ObservableProperty]
@@ -61,9 +64,12 @@ namespace TimeTracker.PageModels
         }
 
         [RelayCommand]
-        public void AppearingEvent()
+        public async Task AppearingEvent()
         {
             Trace.WriteLine("Appearing event in vm :)");
+            var todayWorkEntries = await db.GetTodayWorkingEntriesAsync();
+            var todayWorkTime = db.SumTimeSpans(todayWorkEntries);
+            TodayWorkTime = todayWorkTime.ToString(@"hh\:mm\:ss");
         }
          
         [RelayCommand]
@@ -83,7 +89,8 @@ namespace TimeTracker.PageModels
         {
             Trace.WriteLine("Dzisiejsze wpisy...");
             var todayWorkEntries = await db.GetTodayWorkingEntriesAsync();
-            WorkTimeComment = db.SumTimeSpans(todayWorkEntries);
+            var todayWorkTime = db.SumTimeSpans(todayWorkEntries);
+            WorkTimeComment = $"You worked today: {todayWorkTime.ToString(@"hh\:mm\:ss")}";
         }
          
         private void StopWorkTimeCounting()
