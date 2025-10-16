@@ -3,15 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Supabase;
+using Supabase.Postgrest.Attributes;
 
 namespace TimeTracker.Models
 {
+    [Table("TimeTracking")]
     public class WorkTime
     {
-        public int ID { get; set; }
+        [PrimaryKey("id",false)]
+        public long ID { get; set; }
+
+        [Column("title")]
         public string Title { get; set; }
         // TO DO: store this as DateTime to avoid this to string parsing
-        public string StartTime { get; set; }  
+        [Column("start_time")]
+        public string StartTime { get; set; }
+
+        [Column("end_time")]
         public string EndTime { get; set; }
 
         public TimeSpan Duration => DateTime.Parse(EndTime) - DateTime.Parse(StartTime);
