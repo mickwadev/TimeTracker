@@ -14,9 +14,13 @@ namespace TimeTracker.PageModels
 {
     public partial class TimeTrackingPageViewModel : ObservableObject
     {
+        // Page registered in Shell with ShellContent ContentTemplate acts like singleton.
+        public int a = 0;
+        public static int sa = 0;
         DatabaseFun db;
         IDispatcherTimer timer;
         WorkTime currentWorkTime = null;
+        TimeSpan todaysWorkingTime = TimeSpan.Zero;
 
         public TimeTrackingPageViewModel(DatabaseFun db)
         {
@@ -49,12 +53,12 @@ namespace TimeTracker.PageModels
         private string _countTimeButtonText;
 
         [RelayCommand]
-        private void TimeCountingButtonPressed()
+        private async Task TimeCountingButtonPressed()
         {
             Trace.WriteLine("Time counting button pressed...");
             if (timer.IsRunning)
             {
-                StopWorkTimeCounting();
+              await StopWorkTimeCounting();
             }
             else
             {
@@ -63,13 +67,19 @@ namespace TimeTracker.PageModels
             UpdateTimeButtonText();
         }
 
+        // This page is registered in Shell, so this page model behaves as singleton, but this event is triggered each time when page is appearing
         [RelayCommand]
         public async Task AppearingEvent()
         {
-            Trace.WriteLine("Appearing event in vm :)");
+            Trace.WriteLine($"Appearing event in vm :) {++a}/{++sa}");
+            await LoadTodayWorkTimesFromDb();
+        }
+
+        private async Task LoadTodayWorkTimesFromDb()
+        {
             var todayWorkEntries = await db.GetTodayWorkingEntriesAsync();
-            var todayWorkTime = db.SumTimeSpans(todayWorkEntries);
-            TodayWorkTime = todayWorkTime.ToString(@"hh\:mm\:ss");
+            todaysWorkingTime = db.SumTimeSpans(todayWorkEntries);
+            TodayWorkTime = todaysWorkingTime.ToString(@"hh\:mm\:ss");
         }
          
         [RelayCommand]
@@ -93,13 +103,15 @@ namespace TimeTracker.PageModels
             WorkTimeComment = $"You worked today: {todayWorkTime.ToString(@"hh\:mm\:ss")}";
         }
          
-        private void StopWorkTimeCounting()
+        private async Task StopWorkTimeCounting()
         {
             timer.Stop();
             var et = DateTime.Now.ToString(DbConsts.dbDateFormat);
             currentWorkTime.EndTime = et;
             Trace.WriteLine($"Saving activity: '{currentWorkTime.StartTime}'to '{currentWorkTime.EndTime}'");
-            Task.Run(async () => await db.AddWorkTimeAsync(currentWorkTime));
+            var affectedRows = await db.AddWorkTimeAsync(currentWorkTime);
+            Trace.WriteLine($"Affected rows: {affectedRows}");
+            currentWorkTime = null;
         }
 
         private void StartWorkTimeCounting()
