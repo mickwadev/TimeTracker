@@ -34,12 +34,27 @@ namespace TimeTracker.Pastebin
         public async Task CreatePastebinPaste()
         {
             Trace.WriteLine("Create new paste...");
-            var allEntries = await _db.GetAllWorkingEntriesAsync();
-            string serializedJson = JsonConvert.SerializeObject(allEntries, Formatting.Indented);
-            using var pb = new PastebinClient(DevKey.Replace("R", ""));
-            var userKey = await pb.GetUserKeyAsync(Username.Replace("R", ""), Password.Replace("R", ""));
-            var latest = await pb.CreatePasteAsync(serializedJson, $"Enties backup from {DateTime.Now.ToString("G")}",userKey);
-            LastPasteURL = $"Backup done: {latest}";
+            string serializedJson = string.Empty;
+           
+            try
+            { 
+                var allEntries = await _db.GetAllWorkingEntriesAsync();
+                JsonSerializerSettings settings = new()
+                {
+                    DateFormatString = DbConsts.dbDateFormat
+                };
+                serializedJson = JsonConvert.SerializeObject(allEntries, Formatting.Indented, settings);
+                using var pb = new PastebinClient(DevKey.Replace("R", ""));
+                var userKey = await pb.GetUserKeyAsync(Username.Replace("R", ""), Password.Replace("R", ""));
+                var latest = await pb.CreatePasteAsync(serializedJson, $"Enties backup from {DateTime.Now.ToString("G")}",userKey);
+                LastPasteURL = $"Backup done: {latest}";
+            }
+            catch (Exception ex) 
+            {
+                Trace.WriteLine($"Serialization failed... {ex.Message}");
+                return;
+            }
+           
         }
 
         [RelayCommand]
