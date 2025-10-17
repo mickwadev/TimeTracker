@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TimeTracker.PageViewModels"
+             x:DataType="vm:SupabaseLoginPageViewModel"
+             x:Class="TimeTracker.Pages.SupabaseLoginPage"
+             Title="SupabaseLoginPage">
+    <VerticalStackLayout Spacing="5">
+        <Label Text="Login page" VerticalOptions="Center" HorizontalOptions="Center" />
+       
+        <Entry Text="{Binding UserName}"/>
+        <Entry Text="{Binding Password}"/>
+        <Button Text="Init Client" Command="{Binding InitClientCommand}"/>
+        <Button Text="Sign up user" Command="{Binding SignUpUserCommand}" />
+        <Button Text="Sign in user" Command="{Binding SignInUserCommand}" />
+        <Button Text="Put test data" Command="{Binding PutTestDataCommand}" />
+        <Button Text="Get test data" Command="{Binding GetDataForUserCommand}" />
+        <Button Text="SignOut user" Command="{Binding SignOutUserCommand}" />
+        <Button Text="Restore session" Command="{Binding RestoreSessionCommand}" />
+        
+    </VerticalStackLayout>
+</ContentPage>

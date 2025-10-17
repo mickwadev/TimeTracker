@@ -8,6 +8,8 @@
     xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
     Title="TimeTracker">
 
+    <ShellContent Title="Login Page" ContentTemplate="{DataTemplate local:SupabaseLoginPage}"/>
+
     <ShellContent
         Title="My progress"
         ContentTemplate="{DataTemplate local:ProgressPage}"

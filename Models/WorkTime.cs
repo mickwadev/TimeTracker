@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Supabase;
 using Supabase.Postgrest.Attributes;
+using Supabase.Postgrest.Models;
 
 namespace TimeTracker.Models
 {
     [Table("TimeTracking")]
-    public class WorkTime
+    public class WorkTime :BaseModel
     {
         [PrimaryKey("id",false)]
         public long ID { get; set; }
@@ -23,6 +25,8 @@ namespace TimeTracker.Models
         [Column("end_time")]
         public DateTime EndTime { get; set; }
 
+        //{"code":"PGRST204","details":null,"hint":null,"message":"Could not find the 'Duration' column of 'TimeTracking' in the schema cache"}
+        [JsonIgnore]
         public TimeSpan Duration => EndTime - StartTime;
          
     }

@@ -6,6 +6,7 @@ using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 using TimeTracker.Data;
 using TimeTracker.PageModels;
+using TimeTracker.PageViewModels;
 using TimeTracker.Pastebin;
 using UraniumUI;
 
@@ -42,6 +43,7 @@ namespace TimeTracker
             builder.Services.AddTransient<WorkTimeDashboardPageModel>();
             builder.Services.AddTransient<ProgressPageViewModel>();
             builder.Services.AddTransient<PastebinPageViewModel>();
+            builder.Services.AddTransient<SupabaseLoginPageViewModel>();
             
             return builder.Build();
         }
