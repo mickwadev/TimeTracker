@@ -12,6 +12,8 @@ using TimeTracker.Helpers;
 using TimeTracker.Models;
 using Microsoft.Maui.Graphics.Skia;
 using SkiaSharp.Views.Maui;
+using TimeTracker.Models.Database;
+using TimeTracker.Extensions;
 
 namespace TimeTracker.PageModels
 {
@@ -21,11 +23,13 @@ namespace TimeTracker.PageModels
         public int a = 0;
         public static int sa = 0;
         DatabaseFun db;
+        SupabaseClient _client;
         IDispatcherTimer timer;
         WorkTime currentWorkTime = null;
         TimeSpan todaysWorkingTime = TimeSpan.Zero;
 
-        public TimeTrackingPageViewModel(DatabaseFun db)
+
+        public TimeTrackingPageViewModel(DatabaseFun db, SupabaseClient client)
         {
             timer = Application.Current!.Dispatcher.CreateTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -39,6 +43,7 @@ namespace TimeTracker.PageModels
                 UpdateTodaysWorkTimeText();
             };
             this.db = db;
+            _client = client;
             UpdateTimeButtonText();
         }
 
@@ -115,8 +120,7 @@ namespace TimeTracker.PageModels
         private async Task StopWorkTimeCounting()
         {
             timer.Stop();
-            var et = DateTime.Now;//.ToString(DbConsts.dbDateFormat);
-            currentWorkTime.EndTime = et;
+            currentWorkTime.EndTime = DateTime.Now.ToDBFormat();
             currentWorkTime.Title = WorkTimeComment;
             Trace.WriteLine($"Saving activity: '{currentWorkTime.StartTime}'to '{currentWorkTime.EndTime}'");
             var affectedRows = await db.AddWorkTimeAsync(currentWorkTime);
@@ -126,8 +130,15 @@ namespace TimeTracker.PageModels
 
         private void StartWorkTimeCounting()
         {
-            var st = DateTime.Now;//.ToString(DbConsts.dbDateFormat);
-            currentWorkTime = new WorkTime() { StartTime = st, EndTime = st, Title = WorkTimeComment };
+            var st = DateTime.Now.ToDBFormat();
+            currentWorkTime = new WorkTime() { 
+                StartTime = st, 
+                EndTime = st, 
+                Title = WorkTimeComment,
+                backupID = AppConsts.NoBackupID,
+                User = "KKK",// _client.LoggedUser.UserName,
+                ActivityType  = AppConsts.ActivityNotSet
+            };
             Trace.WriteLine($"Starting new activity from: '{currentWorkTime.StartTime}'");
             timer.Start();
         }

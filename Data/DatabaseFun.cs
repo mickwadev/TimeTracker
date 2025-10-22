@@ -241,14 +241,25 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
              
             while (await reader.ReadAsync())
             {
+                var rawStartTimeFromDb = reader.GetString(2);
+                var rawEndTimeFromDb = reader.GetString(3);
                 bool startDateParsuSuccess = 
-                    DateTime.TryParseExact(reader.GetString(2), DbConsts.dbDateFormat, 
+                    DateTime.TryParseExact(rawStartTimeFromDb, DbConsts.dbDateFormat, 
                     CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startTimeFromDb);
                 bool endDateParsuSuccess = 
-                    DateTime.TryParseExact(reader.GetString(3), DbConsts.dbDateFormat, 
+                    DateTime.TryParseExact(rawEndTimeFromDb, DbConsts.dbDateFormat, 
                     CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endTimeFromDb);
 
-                
+                if (startDateParsuSuccess == false)
+                {
+                    throw new Exception($"Failed to parse: {rawStartTimeFromDb}");
+                }
+
+                if (endDateParsuSuccess == false)
+                {
+                    throw new Exception($"Failed to parse: {rawEndTimeFromDb}");
+                }
+
                 var wt = new WorkTime()
                 {
                     // tu trzeba sie upewnić, że nigdzie nie ma nulla:
