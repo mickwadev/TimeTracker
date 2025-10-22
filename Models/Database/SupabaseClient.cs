@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimeTracker.Data;
 
 namespace TimeTracker.Models.Database
 {
@@ -15,7 +16,9 @@ namespace TimeTracker.Models.Database
         const string fakeEmailPart = "@sofakeemail.com";
         const string secureJsonSupabaseSessionKey = "supabase_session";
 
-        public LoggedUser LoggedUser { get; private set; }
+        private LoggedUser _loggedUser = null;
+
+        public string GetLoggedUserName => _loggedUser?.UserName ?? DbConsts.NotSetUser;
         
         public async Task InitSupabaseClient()
         {
@@ -105,13 +108,13 @@ namespace TimeTracker.Models.Database
             await SecureStorage.SetAsync(secureJsonSupabaseSessionKey, sessionJson);
             //_client.Auth.CurrentSession.User.Id
 
-            LoggedUser = new LoggedUser()
+            _loggedUser = new LoggedUser()
             {
                 UserName = session.User.Email.Split("@").First(),
                 UserId =_client.Auth.CurrentSession.User.Id
             };
 
-            return LoggedUser;
+            return _loggedUser;
         }
 
         public async Task<WorkTime> BackupSingleData(WorkTime wt)

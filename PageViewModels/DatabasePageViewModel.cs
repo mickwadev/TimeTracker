@@ -52,7 +52,7 @@ namespace TimeTracker.PageViewModels
         [RelayCommand]
         private async Task UpdateMissingUsersRows()
         {
-            await _db.UpdateRowsWithNoUser(_supabaseClient.LoggedUser.UserName);
+            await _db.UpdateRowsWithNoUser(_supabaseClient.GetLoggedUserName);
         }
     }
 }

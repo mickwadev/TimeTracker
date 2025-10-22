@@ -126,10 +126,14 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
             await connection.OpenAsync();
             var addWorkTimeCmd = connection.CreateCommand();
             addWorkTimeCmd.CommandText = @$"
-            INSERT INTO {TimeTable} (Title, StartTime, EndTime) VALUES (@Title, @StartTime, @EndTime)";
+            INSERT INTO {TimeTable} (Title, StartTime, EndTime, ActivityType, User, BackupID) VALUES (@Title, @StartTime, @EndTime, @ActivityType, @User, @BackupID)";
             addWorkTimeCmd.Parameters.AddWithValue("@Title", r.Title);
             addWorkTimeCmd.Parameters.AddWithValue("@StartTime", r.StartTime);
             addWorkTimeCmd.Parameters.AddWithValue("@EndTime", r.EndTime);
+            addWorkTimeCmd.Parameters.AddWithValue("@ActivityType", r.ActivityType);
+            addWorkTimeCmd.Parameters.AddWithValue("@User", r.User);
+            addWorkTimeCmd.Parameters.AddWithValue("@BackupID", r.backupID);
+
             return await addWorkTimeCmd.ExecuteNonQueryAsync();
         }
 
@@ -141,7 +145,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
             updateMissingUsers.CommandText = $@"
             UPDATE {TimeTable} SET User = @NewUser WHERE User IS NULL OR User IS @NotSetUser";
             updateMissingUsers.Parameters.AddWithValue("@NewUser", user);
-            updateMissingUsers.Parameters.AddWithValue("@NotSetUser", AppConsts.NotSetUser);
+            updateMissingUsers.Parameters.AddWithValue("@NotSetUser", DbConsts.NotSetUser);
             return await updateMissingUsers.ExecuteNonQueryAsync();
         }
 

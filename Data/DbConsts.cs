@@ -7,6 +7,10 @@
         public static string dbPath => Path.Combine(FileSystem.AppDataDirectory, dbName);
         // z Data Source jest w przykładzie.
         public static string connectionString => $"Data Source={dbPath}";
-        
+
+        public const string NotSetUser = "user_not_set";
+        public const string ActivityNotSet = "at_not_set";
+        public const long NoBackupID = -1;
+
     }
 }

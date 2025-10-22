@@ -135,9 +135,9 @@ namespace TimeTracker.PageModels
                 StartTime = st, 
                 EndTime = st, 
                 Title = WorkTimeComment,
-                backupID = AppConsts.NoBackupID,
-                User = "KKK",// _client.LoggedUser.UserName,
-                ActivityType  = AppConsts.ActivityNotSet
+                backupID = DbConsts.NoBackupID,
+                User =  _client.GetLoggedUserName,
+                ActivityType  = DbConsts.ActivityNotSet
             };
             Trace.WriteLine($"Starting new activity from: '{currentWorkTime.StartTime}'");
             timer.Start();

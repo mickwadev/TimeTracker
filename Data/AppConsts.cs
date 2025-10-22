@@ -10,8 +10,5 @@ namespace TimeTracker.Data
     {
         public const int SecondsInHours = 3600;
         public const int ExpectedWorkHours = 6;
-        public const string NotSetUser = "user_not_set";
-        public const string ActivityNotSet = "at_not_set";
-        public const long NoBackupID = -1;
     }
 }
