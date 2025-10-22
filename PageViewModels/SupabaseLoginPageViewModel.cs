@@ -12,6 +12,7 @@ namespace TimeTracker.PageViewModels
     public partial class SupabaseLoginPageViewModel : ObservableObject
     {
         SupabaseClient client;
+        LoggedUser loggedUser;
 
         [ObservableProperty]
         private string userName = "Paputek";
@@ -19,9 +20,12 @@ namespace TimeTracker.PageViewModels
         [ObservableProperty]
         private string password = "password";
 
-        public SupabaseLoginPageViewModel()
+        [ObservableProperty]
+        private string currentLoggedUser =string.Empty;
+
+        public SupabaseLoginPageViewModel(SupabaseClient client)
         {
-            client = new SupabaseClient();
+            this.client = client;
         }
 
         [RelayCommand]
@@ -39,7 +43,8 @@ namespace TimeTracker.PageViewModels
         [RelayCommand]
         public async Task SignInUser()
         {
-            await client.SignIn(UserName, Password);
+           loggedUser = await client.SignIn(UserName, Password);
+            CurrentLoggedUser = loggedUser.UserName;
         }
 
         [RelayCommand]
@@ -64,6 +69,17 @@ namespace TimeTracker.PageViewModels
         public async Task SignOutUser()
         {
             await client.SignOutUser();
+        }
+
+        private void UpdateCurrentLoggedUser()
+        {
+            if (client is null)
+            {
+                CurrentLoggedUser = "Init client first...";
+                return;
+            }
+
+            
         }
     }
 }

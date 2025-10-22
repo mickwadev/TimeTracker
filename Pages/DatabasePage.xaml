@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TimeTracker.PageViewModels"
+             x:DataType="vm:DatabasePageViewModel"
+             x:Class="TimeTracker.Pages.DatabasePage"
+             Title="DatabasePage">
+    <VerticalStackLayout Spacing="5">
+        <Label 
+            Text="SQLite stuff"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Label Text="{Binding HasInternet}"/>
+        <Button Text="Drop Table" Command="{Binding DropTableCommand}"/>
+        <Button Text="Create Table" Command="{Binding CreateDatabaseCommand}" />
+        <Button Text="Select missing users" Command="{Binding SelectMissingUsersRowsCommand}"/>
+        <Button Text="Update missing users" Command="{Binding UpdateMissingUsersRowsCommand}"/>
+    </VerticalStackLayout>
+</ContentPage>

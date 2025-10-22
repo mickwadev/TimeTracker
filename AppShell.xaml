@@ -8,18 +8,24 @@
     xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
     Title="TimeTracker">
 
-    <ShellContent Title="Login Page" ContentTemplate="{DataTemplate local:SupabaseLoginPage}"/>
+    <ShellContent Title="SQLite" ContentTemplate="{DataTemplate local:DatabasePage}"
+                  Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Database}, FontFamily=MaterialSharp, Color=LightBlue}"/>
+
+     
+
+    <ShellContent Title="Supabase" ContentTemplate="{DataTemplate local:SupabaseLoginPage}"
+                  Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Backup_table}, FontFamily=MaterialSharp, Color=LightBlue}"/>
 
     <ShellContent
         Title="My progress"
         ContentTemplate="{DataTemplate local:ProgressPage}"
         />
-    
+
     <ShellContent Title="Pastebin backup page"
               ContentTemplate="{DataTemplate local:PastebinPage}"
               Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Backup}, FontFamily=MaterialSharp, Color=LightBlue}"
               />
-    
+
     <ShellContent Title=""
                   ContentTemplate="{DataTemplate testPages:CollectionViewFun1}"
                   Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Dashboard}, FontFamily=MaterialSharp, Color=#460d23}"
@@ -28,7 +34,7 @@
     <ShellContent
         Title="Settings"
         ContentTemplate="{DataTemplate local:SettingPage}" 
-        /> 
+        />
     <ShellContent
         Title="Time Tracking"
         ContentTemplate="{DataTemplate local:TimeTrackingPage}"

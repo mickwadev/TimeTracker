@@ -28,8 +28,7 @@
 
 
         <Button Text="{Binding CountTimeButtonText}" Command="{Binding TimeCountingButtonPressedCommand}" />
-        <Button Text="Create db" Command="{Binding CreateDatabaseCommand}" />
-        <Button Text="Drop db" Command="{Binding DropTableCommand}" />
+        
         <Button Text="Todays working time" Command="{Binding GetDatesCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

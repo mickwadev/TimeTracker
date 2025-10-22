@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 using TimeTracker.Data;
+using TimeTracker.Models.Database;
 using TimeTracker.PageModels;
 using TimeTracker.PageViewModels;
 using TimeTracker.Pastebin;
@@ -38,12 +39,15 @@ namespace TimeTracker
     		builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<DatabaseFun>();
+            builder.Services.AddSingleton<SupabaseClient>();
             builder.Services.AddTransient<TimeTrackingPageViewModel>();
           //  builder.Services.AddTransient<WorkTimeModel>();
             builder.Services.AddTransient<WorkTimeDashboardPageModel>();
             builder.Services.AddTransient<ProgressPageViewModel>();
             builder.Services.AddTransient<PastebinPageViewModel>();
             builder.Services.AddTransient<SupabaseLoginPageViewModel>();
+            builder.Services.AddTransient<DatabasePageViewModel>();
+            builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
             
             return builder.Build();
         }

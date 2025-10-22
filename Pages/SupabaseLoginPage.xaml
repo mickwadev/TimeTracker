@@ -10,6 +10,7 @@
        
         <Entry Text="{Binding UserName}"/>
         <Entry Text="{Binding Password}"/>
+        <Label Text="{Binding CurrentLoggedUser}"/>
         <Button Text="Init Client" Command="{Binding InitClientCommand}"/>
         <Button Text="Sign up user" Command="{Binding SignUpUserCommand}" />
         <Button Text="Sign in user" Command="{Binding SignInUserCommand}" />

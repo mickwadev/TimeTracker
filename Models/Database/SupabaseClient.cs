@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 
 namespace TimeTracker.Models.Database
 {
-    internal class SupabaseClient : IDbBackup
+    public class SupabaseClient : IDbBackup
     {
-        private Client _client;
+        private Client _client = null;
         const string fakeEmailPart = "@sofakeemail.com";
         const string secureJsonSupabaseSessionKey = "supabase_session";
 
+        public LoggedUser LoggedUser { get; private set; }
+        
         public async Task InitSupabaseClient()
         {
             var url = "https://baeovtminnahkokhrxnh.supabase.co";   // Project URL
@@ -72,7 +74,7 @@ namespace TimeTracker.Models.Database
             Trace.WriteLine(updated.UserMetadata["display_name"]?.ToString());
         }
 
-        public async Task SignIn(string email, string password)
+        public async Task<LoggedUser> SignIn(string email, string password)
         {
             if (email.Contains("@") is false)
             {
@@ -87,11 +89,12 @@ namespace TimeTracker.Models.Database
             catch (Exception ex)
             {
                 Trace.WriteLine(ex.Message);
-                return;
+                return null;
             }
             if (session?.User is null)
             {
                 Trace.WriteLine("Login failed...");
+                return null;
             }
 
             Trace.WriteLine($"Hello {session.User.UserMetadata["display_name"] ?? " [NoName] "}");
@@ -100,7 +103,14 @@ namespace TimeTracker.Models.Database
             var sessionJson = JsonConvert.SerializeObject(session);
             Trace.WriteLine($"Session json: {sessionJson}");
             await SecureStorage.SetAsync(secureJsonSupabaseSessionKey, sessionJson);
+            //_client.Auth.CurrentSession.User.Id
 
+            LoggedUser = new LoggedUser()
+            {
+                UserName = session.User.Email.Split("@").First()// + " " + _client.Auth.CurrentSession.User.Id
+            };
+
+            return LoggedUser;
         }
 
         public async Task PutTestData()

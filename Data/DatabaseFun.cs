@@ -13,7 +13,7 @@ namespace TimeTracker.Data
     // to jest dodane w builderze do Sevices
     public class DatabaseFun
     {
-        const string CurrentTable = "TimesTable";
+        const string TimeTable = "TimesTable";
         public async Task DropTableAsync()
         {
             Trace.WriteLine($"Using connection string: {DbConsts.connectionString}");
@@ -21,7 +21,7 @@ namespace TimeTracker.Data
             await connection.OpenAsync();
             var dropTableCommand = connection.CreateCommand();
             dropTableCommand.CommandText = @$"
-                DROP TABLE IF EXISTS {CurrentTable};";
+                DROP TABLE IF EXISTS {TimeTable};";
             await dropTableCommand.ExecuteNonQueryAsync();
         }
 
@@ -32,11 +32,13 @@ namespace TimeTracker.Data
             await connection.OpenAsync();
             var createTableCommand = connection.CreateCommand();
             createTableCommand.CommandText = @$"
-CREATE TABLE IF NOT EXISTS {CurrentTable} (
+CREATE TABLE IF NOT EXISTS {TimeTable} (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     Title TEXT NOT NULL,
     StartTime TEXT NOT NULL,
-    EndTime TEXT NOT NULL
+    EndTime TEXT NOT NULL,
+    ActivityType TEXT,
+    User TEXT
 );";
             await createTableCommand.ExecuteNonQueryAsync();
         }
@@ -47,10 +49,10 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             await connection.OpenAsync();
             var checkIfTableExistCmd = connection.CreateCommand();
             checkIfTableExistCmd.CommandText = @$"
-            SELECT name FROM sqlite_master WHERE type='table' AND name='{CurrentTable}';";
+            SELECT name FROM sqlite_master WHERE type='table' AND name='{TimeTable}';";
             await using var reader = await checkIfTableExistCmd.ExecuteReaderAsync();
             bool tableExists = await reader.ReadAsync();
-            Trace.WriteLine($"Table {CurrentTable} exists: {tableExists}");
+            Trace.WriteLine($"Table {TimeTable} exists: {tableExists}");
         }
 
         public WorkTime GetRandomWorkTime()
@@ -65,7 +67,7 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             await connection.OpenAsync();
 
             var cmd = connection.CreateCommand();
-            cmd.CommandText = $"DELETE FROM {CurrentTable}";
+            cmd.CommandText = $"DELETE FROM {TimeTable}";
             return await cmd.ExecuteNonQueryAsync(); // returns number of rows deleted
         }
 
@@ -81,7 +83,7 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             {
                 await using var cmd = connection.CreateCommand();
                 cmd.Transaction = (SqliteTransaction) tx;
-                cmd.CommandText = $@"INSERT INTO {CurrentTable} (Title, StartTime, EndTime) VALUES (@Title, @StartTime, @EndTime);";
+                cmd.CommandText = $@"INSERT INTO {TimeTable} (Title, StartTime, EndTime) VALUES (@Title, @StartTime, @EndTime);";
 
                 // Define parameters once (faster when reusing)
                 var pTitle = cmd.Parameters.Add("@Title", SqliteType.Text);
@@ -116,12 +118,43 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             await connection.OpenAsync();
             var addWorkTimeCmd = connection.CreateCommand();
             addWorkTimeCmd.CommandText = @$"
-            INSERT INTO {CurrentTable} (Title, StartTime, EndTime) VALUES (@Title, @StartTime, @EndTime)";
+            INSERT INTO {TimeTable} (Title, StartTime, EndTime) VALUES (@Title, @StartTime, @EndTime)";
             addWorkTimeCmd.Parameters.AddWithValue("@Title", r.Title);
             addWorkTimeCmd.Parameters.AddWithValue("@StartTime", r.StartTime);
             addWorkTimeCmd.Parameters.AddWithValue("@EndTime", r.EndTime);
             return await addWorkTimeCmd.ExecuteNonQueryAsync();
         }
+
+        public async Task<int> UpdateRowsWithNoUser(string user)
+        {
+            await using var connection = new SqliteConnection(DbConsts.connectionString);
+            await connection.OpenAsync();
+            var updateMissingUsers = connection.CreateCommand();
+            updateMissingUsers.CommandText = $@"
+            UPDATE {TimeTable} SET User = @NewUser WHERE User IS NULL";
+            updateMissingUsers.Parameters.AddWithValue("@NewUser", user);
+            return await updateMissingUsers.ExecuteNonQueryAsync();
+        }
+
+
+        public async Task<List<int>> SelectRowsWithNoUser()
+        {
+            await using var connection = new SqliteConnection(DbConsts.connectionString);
+            await connection.OpenAsync();
+            var getMissingUsers = connection.CreateCommand();
+            getMissingUsers.CommandText = $@"
+            SELECT ID FROM {TimeTable} WHERE User IS NULL";
+            List<int> missingUsers = new();
+            await using (var reader = await getMissingUsers.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                { 
+                    missingUsers.Add(reader.GetInt32(0));
+                }
+            }
+            return missingUsers;
+        }
+
 
         public async Task<int> AddRandomWorkTimeAsync() => await AddWorkTimeAsync(GetRandomWorkTime());
 
@@ -141,7 +174,7 @@ CREATE TABLE IF NOT EXISTS {CurrentTable} (
             var start = startDate.ToString(onlyDateFormat);
             var end = endDate.ToString(onlyDateFormat);
             Trace.WriteLine($"Time period days: {start} to {end}");
-            addWorkTimeCmd.CommandText = @$"SELECT ID, Title, StartTime, EndTime FROM {CurrentTable} WHERE date(StartTime) >= date(@start) AND date(StartTime) <= date(@end);";
+            addWorkTimeCmd.CommandText = @$"SELECT ID, Title, StartTime, EndTime FROM {TimeTable} WHERE date(StartTime) >= date(@start) AND date(StartTime) <= date(@end);";
             addWorkTimeCmd.Parameters.AddWithValue("@start", start);
             addWorkTimeCmd.Parameters.AddWithValue("@end", end);
             await using var reader = await addWorkTimeCmd.ExecuteReaderAsync();

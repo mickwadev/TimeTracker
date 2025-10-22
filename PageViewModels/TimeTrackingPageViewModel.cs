@@ -101,17 +101,7 @@ namespace TimeTracker.PageModels
             TextColor = GradientSampler.GetWorkTimeColor(todaysWorkingTime).ToMauiColor();
         }
          
-        [RelayCommand]
-        private async Task CreateDatabase()
-        {
-            await db.AddTimesTableAsync();
-        }
-
-        [RelayCommand]
-        private async Task DropTable()
-        { 
-           await db.DropTableAsync();
-        }
+        
 
         [RelayCommand]
         private async Task GetDates()
