@@ -139,8 +139,9 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
             await connection.OpenAsync();
             var updateMissingUsers = connection.CreateCommand();
             updateMissingUsers.CommandText = $@"
-            UPDATE {TimeTable} SET User = @NewUser WHERE User IS NULL";
+            UPDATE {TimeTable} SET User = @NewUser WHERE User IS NULL OR User IS @NotSetUser";
             updateMissingUsers.Parameters.AddWithValue("@NewUser", user);
+            updateMissingUsers.Parameters.AddWithValue("@NotSetUser", AppConsts.NotSetUser);
             return await updateMissingUsers.ExecuteNonQueryAsync();
         }
 

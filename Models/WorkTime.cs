@@ -33,7 +33,7 @@ namespace TimeTracker.Models
         public string User { get; set; } = "user_not_set";
 
         [Column("activity_type")]
-        public string ActivityType { get; set; } = "activity_not_set";
+        public string ActivityType { get; set; } = "at_not_set";
 
         //{"code":"PGRST204","details":null,"hint":null,"message":"Could not find the 'Duration' column of 'TimeTracking' in the schema cache"}
         [JsonIgnore]
