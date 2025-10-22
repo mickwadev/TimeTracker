@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
     StartTime TEXT NOT NULL,
     EndTime TEXT NOT NULL,
     ActivityType TEXT,
-    User TEXT
+    User TEXT,
+    BackupID INTEGER
 );";
             await createTableCommand.ExecuteNonQueryAsync();
         }
@@ -83,22 +84,29 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
             {
                 await using var cmd = connection.CreateCommand();
                 cmd.Transaction = (SqliteTransaction) tx;
-                cmd.CommandText = $@"INSERT INTO {TimeTable} (Title, StartTime, EndTime) VALUES (@Title, @StartTime, @EndTime);";
+                cmd.CommandText = $@"INSERT INTO {TimeTable} 
+(Title, StartTime, EndTime, ActivityType, User, BackupID) VALUES 
+(@Title, @StartTime, @EndTime, @ActivityType, @User, @BackupID);";
 
                 // Define parameters once (faster when reusing)
                 var pTitle = cmd.Parameters.Add("@Title", SqliteType.Text);
                 var pStart = cmd.Parameters.Add("@StartTime", SqliteType.Text);   // or SqliteType.Integer if ticks/epoch
                 var pEnd = cmd.Parameters.Add("@EndTime", SqliteType.Text);
+                var activityType = cmd.Parameters.Add("@ActivityType", SqliteType.Text);
+                var user = cmd.Parameters.Add("@User", SqliteType.Text);
+                var backupID = cmd.Parameters.Add("@BackupID", SqliteType.Integer);
 
                 // Optional: prepare for better perf
                 cmd.Prepare();
                 var affected = 0;
-                foreach (var r in workEntries)
+                foreach (WorkTime r in workEntries)
                 {
                     pTitle.Value = r.Title ?? (object)DBNull.Value;
                     pStart.Value = r.StartTime;  // ensure this matches your column type
                     pEnd.Value = r.EndTime;
-
+                    activityType.Value = r.ActivityType;
+                    user.Value = r.User;
+                    backupID.Value = r.backupID;
                     affected += await cmd.ExecuteNonQueryAsync();
                 }
 
@@ -160,10 +168,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
 
         public async Task<List<WorkTime>> GetTodayWorkingEntriesAsync() => await GetWorkingEntriesForTimePeriodAsync(DateTime.Now,DateTime.Now);
         public async Task<List<WorkTime>> GetAllWorkingEntriesAsync() => await GetWorkingEntriesForTimePeriodAsync(new DateTime(1410,7,15), DateTime.Now);
-
-
-
-
+ 
         public async Task<List<WorkTime>> GetWorkingEntriesForTimePeriodAsync(DateTime startDate, DateTime endDate)
         {
             string onlyDateFormat = "yyyy-MM-dd ";
@@ -174,7 +179,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
             var start = startDate.ToString(onlyDateFormat);
             var end = endDate.ToString(onlyDateFormat);
             Trace.WriteLine($"Time period days: {start} to {end}");
-            addWorkTimeCmd.CommandText = @$"SELECT ID, Title, StartTime, EndTime FROM {TimeTable} WHERE date(StartTime) >= date(@start) AND date(StartTime) <= date(@end);";
+            addWorkTimeCmd.CommandText = @$"SELECT ID, Title, StartTime, EndTime, ActivityType, User, BackupID FROM {TimeTable} WHERE date(StartTime) >= date(@start) AND date(StartTime) <= date(@end);";
             addWorkTimeCmd.Parameters.AddWithValue("@start", start);
             addWorkTimeCmd.Parameters.AddWithValue("@end", end);
             await using var reader = await addWorkTimeCmd.ExecuteReaderAsync();
@@ -188,13 +193,18 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
                 bool endDateParsuSuccess = 
                     DateTime.TryParseExact(reader.GetString(3), DbConsts.dbDateFormat, 
                     CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endTimeFromDb);
+
                 
                 var wt = new WorkTime()
                 {
+                    // tu trzeba sie upewnić, że nigdzie nie ma nulla:
                     ID = reader.GetInt32(0),
                     Title = reader.GetString(1),
                     StartTime = startTimeFromDb,
                     EndTime = endTimeFromDb,
+                    ActivityType = reader.GetString(4),
+                    User = reader.GetString(5),
+                    backupID = reader.GetInt32(6),
                 };
                 Trace.WriteLine($"Parsed times from db: '{wt.StartTime}' '{wt.EndTime}'");
                 times.Add(wt); 

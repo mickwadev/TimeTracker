@@ -9,5 +9,6 @@ namespace TimeTracker.Models.Database
     public class LoggedUser
     {
         public string UserName { get; set; }
+        public string UserId { get; set; }
     }
 }

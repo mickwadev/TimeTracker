@@ -25,6 +25,16 @@ namespace TimeTracker.Models
         [Column("end_time")]
         public DateTime EndTime { get; set; }
 
+        // this will be same as 'id', but I'm not sure how to handle that yet
+        [Column("backup_id")]
+        public long backupID { get; set; } = -1;
+
+        [Column("user")]
+        public string User { get; set; } = "user_not_set";
+
+        [Column("activity_type")]
+        public string ActivityType { get; set; } = "activity_not_set";
+
         //{"code":"PGRST204","details":null,"hint":null,"message":"Could not find the 'Duration' column of 'TimeTracking' in the schema cache"}
         [JsonIgnore]
         public TimeSpan Duration => EndTime - StartTime;

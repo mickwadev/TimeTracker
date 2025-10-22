@@ -107,7 +107,8 @@ namespace TimeTracker.Models.Database
 
             LoggedUser = new LoggedUser()
             {
-                UserName = session.User.Email.Split("@").First()// + " " + _client.Auth.CurrentSession.User.Id
+                UserName = session.User.Email.Split("@").First(),
+                UserId =_client.Auth.CurrentSession.User.Id
             };
 
             return LoggedUser;
