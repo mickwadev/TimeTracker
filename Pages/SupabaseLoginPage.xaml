@@ -18,6 +18,7 @@
         <Button Text="Get test data" Command="{Binding GetDataForUserCommand}" />
         <Button Text="SignOut user" Command="{Binding SignOutUserCommand}" />
         <Button Text="Restore session" Command="{Binding RestoreSessionCommand}" />
+        <Button Text="Backup" Command="{Binding BackupToSupabaseFromSQLiteCommand}" />
         
     </VerticalStackLayout>
 </ContentPage>

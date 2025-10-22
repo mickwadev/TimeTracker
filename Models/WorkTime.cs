@@ -17,7 +17,7 @@ namespace TimeTracker.Models
         public long ID { get; set; }
 
         [Column("title")]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         // TO DO: store this as DateTime to avoid this to string parsing
         [Column("start_time")]
         public DateTime StartTime { get; set; }
@@ -38,6 +38,11 @@ namespace TimeTracker.Models
         //{"code":"PGRST204","details":null,"hint":null,"message":"Could not find the 'Duration' column of 'TimeTracking' in the schema cache"}
         [JsonIgnore]
         public TimeSpan Duration => EndTime - StartTime;
+
+        public override string ToString()
+        {
+            return $"ID={ID} Title: {Title}, user: {User} start: {StartTime}, BackupID={backupID}";
+        }
          
     }
 }

@@ -114,6 +114,31 @@ namespace TimeTracker.Models.Database
             return LoggedUser;
         }
 
+        public async Task<WorkTime> BackupSingleData(WorkTime wt)
+        {
+            Supabase.Postgrest.QueryOptions options = new Supabase.Postgrest.QueryOptions()
+            {
+                Returning = Supabase.Postgrest.QueryOptions.ReturnType.Representation
+            };
+            Supabase.Postgrest.Responses.ModeledResponse<WorkTime> response = null;
+            try
+            {
+                response = await _client.From<WorkTime>().Insert(wt , options);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+                return null;
+            }
+
+           // Trace.WriteLine($"Added: {response.Models.Count}");
+         //   foreach (var model in response.Models)
+         //   {
+              //  Trace.WriteLine($"{model.ID}");
+           // }
+            return response.Model;
+        }
+
         public async Task PutTestData()
         {
             WorkTime wt = new WorkTime()

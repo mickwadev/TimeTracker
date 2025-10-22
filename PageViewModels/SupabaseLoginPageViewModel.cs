@@ -2,9 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimeTracker.Data;
+using TimeTracker.Models;
 using TimeTracker.Models.Database;
 
 namespace TimeTracker.PageViewModels
@@ -12,6 +15,7 @@ namespace TimeTracker.PageViewModels
     public partial class SupabaseLoginPageViewModel : ObservableObject
     {
         SupabaseClient client;
+        DatabaseFun _sqliteDb;
         LoggedUser loggedUser;
 
         [ObservableProperty]
@@ -23,9 +27,10 @@ namespace TimeTracker.PageViewModels
         [ObservableProperty]
         private string currentLoggedUser =string.Empty;
 
-        public SupabaseLoginPageViewModel(SupabaseClient client)
+        public SupabaseLoginPageViewModel(SupabaseClient client, DatabaseFun sqliteDb)
         {
             this.client = client;
+            _sqliteDb = sqliteDb;
         }
 
         [RelayCommand]
@@ -69,6 +74,20 @@ namespace TimeTracker.PageViewModels
         public async Task SignOutUser()
         {
             await client.SignOutUser();
+        }
+
+        [RelayCommand]
+        private async Task BackupToSupabaseFromSQLite()
+        {
+            List<WorkTime> notBackuped = await _sqliteDb.SelectRowsWithNoBackup();
+            foreach (WorkTime workTime in notBackuped)
+            {
+                Trace.WriteLine("Przed backupem: "+workTime);
+                WorkTime backuped = await client.BackupSingleData(workTime);
+                Trace.WriteLine("Po backupie: "+backuped);
+                await _sqliteDb.UpdateBackupRow(workTime.ID,backuped.ID);
+            }
+
         }
 
         private void UpdateCurrentLoggedUser()

@@ -164,6 +164,59 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
             return missingUsers;
         }
 
+        public async Task<int> UpdateBackupRow(long rowID, long backupID)
+        {
+            await using var connection = new SqliteConnection(DbConsts.connectionString);
+            await connection.OpenAsync();
+            var updateMissingUsers = connection.CreateCommand();
+            updateMissingUsers.CommandText = $@"
+            UPDATE {TimeTable} SET backupID = @backupID WHERE ID = @rowID";
+            updateMissingUsers.Parameters.AddWithValue("@backupID", backupID);
+            updateMissingUsers.Parameters.AddWithValue("@rowID", rowID);
+            return await updateMissingUsers.ExecuteNonQueryAsync();
+        }
+
+        public async Task<List<WorkTime>> SelectRowsWithNoBackup()
+        {
+            string onlyDateFormat = "yyyy-MM-dd ";
+
+            await using var connection = new SqliteConnection(DbConsts.connectionString);
+            await connection.OpenAsync();
+            var addWorkTimeCmd = connection.CreateCommand();
+            
+            addWorkTimeCmd.CommandText = @$"SELECT ID, Title, StartTime, EndTime, ActivityType, User, BackupID FROM {TimeTable} WHERE backupID = -1 ;";
+            
+            await using var reader = await addWorkTimeCmd.ExecuteReaderAsync();
+            List<WorkTime> times = new List<WorkTime>();
+
+            while (await reader.ReadAsync())
+            {
+                bool startDateParsuSuccess =
+                    DateTime.TryParseExact(reader.GetString(2), DbConsts.dbDateFormat,
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startTimeFromDb);
+                bool endDateParsuSuccess =
+                    DateTime.TryParseExact(reader.GetString(3), DbConsts.dbDateFormat,
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endTimeFromDb);
+
+
+                var wt = new WorkTime()
+                {
+                    // tu trzeba sie upewnić, że nigdzie nie ma nulla:
+                    ID = reader.GetInt32(0),
+                    Title = reader.GetString(1),
+                    StartTime = startTimeFromDb,
+                    EndTime = endTimeFromDb,
+                    ActivityType = reader.GetString(4),
+                    User = reader.GetString(5),
+                    backupID = reader.GetInt32(6),
+                };
+                Trace.WriteLine($"Parsed times from db: '{wt.StartTime}' '{wt.EndTime}'");
+                times.Add(wt);
+                // Trace.WriteLine($"Time span from activity: {wt.Duration} ({startTime.ToString(DbConsts.dbDateFormat)} - {endTime.ToString(DbConsts.dbDateFormat)})");
+            }
+            return times;
+        }
+
 
         public async Task<int> AddRandomWorkTimeAsync() => await AddWorkTimeAsync(GetRandomWorkTime());
 
