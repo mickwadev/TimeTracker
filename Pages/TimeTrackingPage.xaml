@@ -21,14 +21,10 @@
 
         <Label 
             Text="{Binding TicksMsg}"
+            IsVisible="{Binding IsCurrentWorkTimeLabelVisible}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
         <Entry Text="{Binding WorkTimeComment}"/>
-
-
-
         <Button Text="{Binding CountTimeButtonText}" Command="{Binding TimeCountingButtonPressedCommand}" />
-        
-        
     </VerticalStackLayout>
 </ContentPage>

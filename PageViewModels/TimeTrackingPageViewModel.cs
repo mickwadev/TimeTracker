@@ -37,13 +37,18 @@ namespace TimeTracker.PageModels
             timer.Tick += (s, e) =>
             {
                 currentWorkTime.EndTime = DateTime.Now.ToDBFormat();
-                
-                TicksMsg = $"Current working: {currentWorkTime.Duration.ToString(@"hh\:mm\:ss")}";
+                UpdateTickMessage();
+        
                 UpdateTodaysWorkTimeText();
             };
             this.db = db;
             _client = client;
             UpdateTimeButtonText();
+        }
+
+        private void UpdateTickMessage()
+        {
+            TicksMsg = $"Current working: {currentWorkTime.Duration.ToString(@"hh\:mm\:ss")}";
         }
 
         [ObservableProperty]
@@ -63,6 +68,9 @@ namespace TimeTracker.PageModels
 
         [ObservableProperty]
         private string _countTimeButtonText;
+
+        [ObservableProperty]
+        private bool _isCurrentWorkTimeLabelVisible = true;
 
         [RelayCommand]
         private async Task TimeCountingButtonPressed()
@@ -101,7 +109,7 @@ namespace TimeTracker.PageModels
             {
                 current = currentWorkTime.Duration;
             }
-            TodayWorkTime = $"[{current}]/[{todaysWorkingTime}]Today work time: {(todaysWorkingTime + current).ToString(@"hh\:mm\:ss")}";
+            TodayWorkTime = $"Today work time: {(todaysWorkingTime + current).ToString(@"hh\:mm\:ss")}";
             TextColor = GradientSampler.GetWorkTimeColor(todaysWorkingTime).ToMauiColor();
         }
          
@@ -124,6 +132,7 @@ namespace TimeTracker.PageModels
             var affectedRows = await db.AddWorkTimeAsync(currentWorkTime);
             Trace.WriteLine($"Affected rows: {affectedRows}");
             currentWorkTime = null;
+            IsCurrentWorkTimeLabelVisible = false;
             UpdateTodaysWorkTimeText();
         }
 
@@ -140,6 +149,9 @@ namespace TimeTracker.PageModels
             };
             Trace.WriteLine($"Starting new activity from: '{currentWorkTime.StartTime}'");
             timer.Start();
+            UpdateTodaysWorkTimeText();
+            UpdateTickMessage();
+            IsCurrentWorkTimeLabelVisible = true;
         }
 
         private void UpdateTimeButtonText()
