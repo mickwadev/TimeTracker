@@ -2,6 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
              x:Class="TimeTracker.Pages.TimeTrackingPage"
              xmlns:pageModel="clr-namespace:TimeTracker.PageModels"
              
@@ -24,7 +26,7 @@
             IsVisible="{Binding IsCurrentWorkTimeLabelVisible}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Entry Text="{Binding WorkTimeComment}"/>
+        <material:TextField Title="What are you working on? ^_^" Text="{Binding WorkTimeComment}" Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static ms:MaterialSharp.Science}}"/>
         <Button Text="{Binding CountTimeButtonText}" Command="{Binding TimeCountingButtonPressedCommand}" />
     </VerticalStackLayout>
 </ContentPage>
