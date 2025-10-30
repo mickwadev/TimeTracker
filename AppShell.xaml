@@ -26,11 +26,6 @@
               Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Backup}, FontFamily=MaterialSharp, Color=LightBlue}"
               />
 
-    <ShellContent Title=""
-                  ContentTemplate="{DataTemplate testPages:CollectionViewFun1}"
-                  Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Dashboard}, FontFamily=MaterialSharp, Color=#460d23}"
-                  />
-
     <ShellContent
         Title="Settings"
         ContentTemplate="{DataTemplate local:SettingPage}" 
