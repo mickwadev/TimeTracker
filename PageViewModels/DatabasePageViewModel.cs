@@ -27,6 +27,12 @@ namespace TimeTracker.PageViewModels
             _supabaseClient = supabaseClient;
         }
 
+        //
+        public void InitializeDatabase()
+        {
+            Task.Run(_db.Initialize);
+        }
+
         [RelayCommand]
         private async Task CreateDatabase()
         {

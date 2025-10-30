@@ -14,6 +14,21 @@ namespace TimeTracker.Data
     public class DatabaseFun
     {
         const string TimeTable = "TimesTable";
+
+        public async Task Initialize()
+        {
+            try
+            {
+                if (await CheckIfTableExistsAsync())
+                    await AddTimesTableAsync();
+            }
+            catch (Exception ex) 
+            {
+                //todo: propagate info that something is wrong
+                Trace.WriteLine(ex.Message);
+            }
+        }
+
         public async Task DropTableAsync()
         {
             Trace.WriteLine($"Using connection string: {DbConsts.connectionString}");
@@ -27,7 +42,7 @@ namespace TimeTracker.Data
 
         public async Task AddTimesTableAsync()
         {
-            Trace.WriteLine($"Using connection string: {DbConsts.connectionString}");
+            Trace.WriteLine($"Creating sqlite db, using connection string: {DbConsts.connectionString}");
             await using var connection = new SqliteConnection(DbConsts.connectionString);
             await connection.OpenAsync();
             var createTableCommand = connection.CreateCommand();
@@ -44,7 +59,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
             await createTableCommand.ExecuteNonQueryAsync();
         }
 
-        public async Task CheckIfTableExistsAsync()
+        public async Task<bool> CheckIfTableExistsAsync()
         {
             await using var connection = new SqliteConnection(DbConsts.connectionString);
             await connection.OpenAsync();
@@ -54,6 +69,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
             await using var reader = await checkIfTableExistCmd.ExecuteReaderAsync();
             bool tableExists = await reader.ReadAsync();
             Trace.WriteLine($"Table {TimeTable} exists: {tableExists}");
+            return tableExists;
         }
 
         public WorkTime GetRandomWorkTime()
