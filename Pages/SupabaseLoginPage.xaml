@@ -6,6 +6,7 @@
              x:Class="TimeTracker.Pages.SupabaseLoginPage"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="SupabaseLoginPage">
+    
     <VerticalStackLayout>
         <Label Text="Supabase Login page" VerticalOptions="Center" HorizontalOptions="Center" />
         <Label Text="{Binding LoggingInfo}"/> 
@@ -16,27 +17,23 @@
                     <Button Text="Init Client" Command="{Binding InitClientCommand}"/>
                 </VerticalStackLayout>
 
-                <VerticalStackLayout mct:StateView.StateKey="CLIENT_INITIALIZED">
+                <VerticalStackLayout Spacing="10" mct:StateView.StateKey="CLIENT_INITIALIZED">
                     <Entry Text="{Binding UserName}"/>
                     <Entry Text="{Binding Password}"/>
+                    <Button Text="Restore session" Command="{Binding RestoreSessionCommand}" />
                     <Button Text="Sign in existing user" Command="{Binding SignInUserCommand}" />
                     <Button Text="Sign up new user" Command="{Binding SignUpUserCommand}" />
-                    
                 </VerticalStackLayout>
 
-                <VerticalStackLayout mct:StateView.StateKey="USER_LOGGED">
-                    
+                <VerticalStackLayout Spacing="10" mct:StateView.StateKey="USER_SIGNEDIN">
+                    <Button Text="Put test data" Command="{Binding PutTestDataCommand}" />
+                    <Button Text="Get test data" Command="{Binding GetDataForUserCommand}" />
+                    <Button Text="SignOut user" Command="{Binding SignOutUserCommand}" />
+                    <Button Text="Backup" Command="{Binding BackupToSupabaseFromSQLiteCommand}" />
                 </VerticalStackLayout>
 
-
-
-                <Button Text="Put test data" Command="{Binding PutTestDataCommand}" />
-                <Button Text="Get test data" Command="{Binding GetDataForUserCommand}" />
-                <Button Text="SignOut user" Command="{Binding SignOutUserCommand}" />
-                <Button Text="Restore session" Command="{Binding RestoreSessionCommand}" />
-                <Button Text="Backup" Command="{Binding BackupToSupabaseFromSQLiteCommand}" />
+                 
             </mct:StateContainer.StateViews>
-
         </VerticalStackLayout>
     </VerticalStackLayout>
 

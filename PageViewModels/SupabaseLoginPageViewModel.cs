@@ -50,7 +50,12 @@ namespace TimeTracker.PageViewModels
         [RelayCommand]
         public async Task SignUpUser()
         {
-            await client.SignUpUser(UserName, ":3=", Password);
+            InProgress = true;
+            loggedUser = await client.SignUpUser(UserName, ":3=", Password);
+            LoggingInfo = $"Loggin {UserName} info: {loggedUser.Info}";
+            InProgress = false;
+
+            UserState = loggedUser.OK ? UserState.USER_SIGNEDIN: UserState.USER_SIGNIN_FAILED;
         }
 
         [RelayCommand]
@@ -63,6 +68,10 @@ namespace TimeTracker.PageViewModels
             LoggingInfo = $"Loggin {UserName} info: {loggedUser.Info}";
             
             InProgress = false;
+            if (loggedUser.OK) 
+            {
+                UserState = UserState.USER_SIGNEDIN;
+            }
         }
 
         [RelayCommand]
@@ -80,13 +89,21 @@ namespace TimeTracker.PageViewModels
         [RelayCommand]
         public async Task RestoreSession()
         {
-            await client.RestoreSession();
+            InProgress = true;
+            loggedUser = await client.RestoreSession();
+            LoggingInfo = $"Loggin from previous session info: {loggedUser.Info}";
+            InProgress = false;
+            if (loggedUser.OK)
+            {
+                UserState = UserState.USER_SIGNEDIN;
+            }
         }
 
         [RelayCommand]
         public async Task SignOutUser()
         {
             await client.SignOutUser();
+            UserState = UserState.CLIENT_INITIALIZED;
         }
 
         [RelayCommand]
@@ -100,9 +117,6 @@ namespace TimeTracker.PageViewModels
                 Trace.WriteLine("Po backupie: "+backuped);
                 await _sqliteDb.UpdateBackupRow(workTime.ID,backuped.ID);
             }
-
         }
-
-         
     }
 }

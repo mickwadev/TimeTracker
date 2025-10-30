@@ -11,8 +11,7 @@ namespace TimeTracker.Models.Database
         CLIENT_NOT_INITIALIZED,
         CLIENT_INITIALIZED,
         USER_SIGNUP_FAILED,
-        USER_LOGIN_FAILED,
-        USER_NOT_LOGGED,
-        USER_LOGGED
+        USER_SIGNIN_FAILED,
+        USER_SIGNEDIN
     }
 }

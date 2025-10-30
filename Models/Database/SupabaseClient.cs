@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Supabase;
+using Supabase.Gotrue;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +13,7 @@ namespace TimeTracker.Models.Database
 {
     public class SupabaseClient : IDbBackup
     {
-        private Client _client = null;
+        private Supabase.Client _client = null;
         const string fakeEmailPart = "@sofakeemail.com";
         const string secureJsonSupabaseSessionKey = "supabase_session";
 
@@ -31,13 +32,14 @@ namespace TimeTracker.Models.Database
                 AutoRefreshToken = true
             };
 
-            _client = new Client(url, anonKey, options);
+            _client = new Supabase.Client(url, anonKey, options);
             var d = await _client.InitializeAsync();
             Trace.WriteLine(d.Auth.CurrentUser?.Email ?? " [No curent user]"); // to się zgadza, bo jest tylko client a nie użytkownik.
         }
 
-        public async Task SignUpUser(string newUserEmail, string displayName, string newUserPassword)
+        public async Task<UserSignInStatus> SignUpUser(string newUserEmail, string displayName, string newUserPassword)
         {
+            UserSignInStatus status = new();
             if (newUserEmail.Contains("@") is false)
             {
                 newUserEmail += fakeEmailPart;
@@ -57,14 +59,24 @@ namespace TimeTracker.Models.Database
                 // jesli jest włączona captcha:
                 // {"code":500,"error_code":"unexpected_failure","msg":"captcha verification process failed","error_id":"99015d0de0e7289c-WAW"}
                 Trace.WriteLine(ex.ToString());
-                return;
+                status.OK = false;
+                status.Info = $"Sign up new user failed: {ex.Message}";
+                return status;
             }
-            var user = signUpResult?.User;
-
+            Supabase.Gotrue.User user = signUpResult?.User;
+            if (user is null)
+            {
+                Trace.WriteLine("User after sign up is null. Auto sign in...");
+            }
             var session = await _client.Auth.SignIn(newUserEmail, newUserPassword);
             user = session?.User;
 
             Trace.WriteLine(user.Email);
+            // Now save this session:
+            var sessionJson = JsonConvert.SerializeObject(session);
+            Trace.WriteLine($"Session json: {sessionJson}");
+            await SecureStorage.SetAsync(secureJsonSupabaseSessionKey, sessionJson);
+
             var attribs = new Supabase.Gotrue.UserAttributes()
             {
                 Data = new Dictionary<string, object>
@@ -75,6 +87,14 @@ namespace TimeTracker.Models.Database
 
             Supabase.Gotrue.User updated = await _client.Auth.Update(attribs);
             Trace.WriteLine(updated.UserMetadata["display_name"]?.ToString());
+            status.OK = true;
+            status.Info = "Sign up and sign in {} successful...";
+            status.User = new LoggedUser()
+            {
+                UserName = updated.Email.Split("@").First(),
+                UserId = _client.Auth.CurrentSession.User.Id
+            };
+            return status;
         }
 
         public async Task<UserSignInStatus> SignIn(string email, string password)
@@ -207,25 +227,40 @@ namespace TimeTracker.Models.Database
             }
         }
 
-        public async Task RestoreSession()
+        public async Task<UserSignInStatus> RestoreSession()
         {
+            UserSignInStatus status = new();
             string sessionJson = await SecureStorage.GetAsync(secureJsonSupabaseSessionKey);
             if (string.IsNullOrEmpty(sessionJson))
             {
                 Trace.WriteLine("Failed to restore session...");
-                return;
+                status.Info = "No previous session stored...";
+                status.OK = false;
+                return status;
             }
             Trace.WriteLine("Found previous session.");
             var savedSession = JsonConvert.DeserializeObject<Supabase.Gotrue.Session>(sessionJson);
-            Supabase.Gotrue.Session restoredSession = await _client.Auth.SetSession(savedSession.AccessToken, savedSession.AccessToken);
+            
+            Session restoredSession = await _client.Auth.SetSession(savedSession.AccessToken, savedSession.AccessToken);
+            var userName = savedSession.User.Email.Split("@").First();
             Trace.WriteLine($"Restored session for: {restoredSession.User.Email} to {restoredSession.ExpiresIn}");
+            Trace.WriteLine($"ID: {_client.Auth.CurrentSession.User.Id}");
+            status.Info = $"Session restored for user \"{userName}\": OK (expires: {restoredSession.ExpiresIn})";
+            status.OK = true;
+            status.User = new LoggedUser()
+            {
+                UserName = userName,
+                UserId = _client.Auth.CurrentSession.User.Id
+            };
 
+            return status;
         }
 
         public async Task SignOutUser()
         {
             Trace.WriteLine($"Session logout: {_client.Auth.CurrentUser.Email}");
-            SecureStorage.Remove(secureJsonSupabaseSessionKey);
+            bool successfulyRemoved =SecureStorage.Remove(secureJsonSupabaseSessionKey);
+
             await _client.Auth.SignOut();
             Trace.WriteLine($"CurrentUser is null: {_client.Auth.CurrentUser is null}"); // true
         }
