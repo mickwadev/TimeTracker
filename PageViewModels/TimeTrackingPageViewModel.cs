@@ -36,8 +36,7 @@ namespace TimeTracker.PageModels
             timer.IsRepeating = true;
             timer.Tick += (s, e) =>
             {
-                //    var startTime = DateTime.ParseExact(currentWorkTime!.StartTime,DbConsts.dbDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None);
-                currentWorkTime.EndTime = DateTime.Now;//.ToString();
+                currentWorkTime.EndTime = DateTime.Now.ToDBFormat();
                 
                 TicksMsg = $"Current working: {currentWorkTime.Duration.ToString(@"hh\:mm\:ss")}";
                 UpdateTodaysWorkTimeText();
@@ -102,12 +101,10 @@ namespace TimeTracker.PageModels
             {
                 current = currentWorkTime.Duration;
             }
-            TodayWorkTime = "Today work time: " + (todaysWorkingTime + current).ToString(@"hh\:mm\:ss");
+            TodayWorkTime = $"[{current}]/[{todaysWorkingTime}]Today work time: {(todaysWorkingTime + current).ToString(@"hh\:mm\:ss")}";
             TextColor = GradientSampler.GetWorkTimeColor(todaysWorkingTime).ToMauiColor();
         }
          
-        
-
         [RelayCommand]
         private async Task GetDates()
         {
@@ -122,10 +119,12 @@ namespace TimeTracker.PageModels
             timer.Stop();
             currentWorkTime.EndTime = DateTime.Now.ToDBFormat();
             currentWorkTime.Title = WorkTimeComment;
+            todaysWorkingTime += currentWorkTime.Duration;
             Trace.WriteLine($"Saving activity: '{currentWorkTime.StartTime}'to '{currentWorkTime.EndTime}'");
             var affectedRows = await db.AddWorkTimeAsync(currentWorkTime);
             Trace.WriteLine($"Affected rows: {affectedRows}");
             currentWorkTime = null;
+            UpdateTodaysWorkTimeText();
         }
 
         private void StartWorkTimeCounting()

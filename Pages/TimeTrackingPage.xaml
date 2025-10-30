@@ -29,6 +29,6 @@
 
         <Button Text="{Binding CountTimeButtonText}" Command="{Binding TimeCountingButtonPressedCommand}" />
         
-        <Button Text="Todays working time" Command="{Binding GetDatesCommand}"/>
+        
     </VerticalStackLayout>
 </ContentPage>
