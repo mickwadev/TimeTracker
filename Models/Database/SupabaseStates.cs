@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TimeTracker.Models.Database
+{
+    public enum UserState
+    {
+        CLIENT_NOT_INITIALIZED,
+        CLIENT_INITIALIZED,
+        USER_SIGNUP_FAILED,
+        USER_LOGIN_FAILED,
+        USER_NOT_LOGGED,
+        USER_LOGGED
+    }
+}

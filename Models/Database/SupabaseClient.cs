@@ -77,8 +77,9 @@ namespace TimeTracker.Models.Database
             Trace.WriteLine(updated.UserMetadata["display_name"]?.ToString());
         }
 
-        public async Task<LoggedUser> SignIn(string email, string password)
+        public async Task<UserSignInStatus> SignIn(string email, string password)
         {
+            UserSignInStatus status = new();
             if (email.Contains("@") is false)
             {
                 email += fakeEmailPart;
@@ -91,13 +92,17 @@ namespace TimeTracker.Models.Database
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(ex.Message);
-                return null;
+                Trace.WriteLine($"SignIn exception: {ex.Message}");
+                status.OK = false;
+                status.Info = $"Login failed: {ex.Message}";
+                return status;
             }
             if (session?.User is null)
             {
                 Trace.WriteLine("Login failed...");
-                return null;
+                status.OK = false;
+                status.Info = "Login failed...";
+                return status;
             }
 
             Trace.WriteLine($"Hello {session.User.UserMetadata["display_name"] ?? " [NoName] "}");
@@ -108,13 +113,15 @@ namespace TimeTracker.Models.Database
             await SecureStorage.SetAsync(secureJsonSupabaseSessionKey, sessionJson);
             //_client.Auth.CurrentSession.User.Id
 
-            _loggedUser = new LoggedUser()
+            status.Info = "SignIn OK";
+            status.OK = true;
+            status.User  = new LoggedUser()
             {
                 UserName = session.User.Email.Split("@").First(),
                 UserId =_client.Auth.CurrentSession.User.Id
             };
 
-            return _loggedUser;
+            return status;
         }
 
         public async Task<WorkTime> BackupSingleData(WorkTime wt)

@@ -16,7 +16,7 @@ namespace TimeTracker.PageViewModels
     {
         SupabaseClient client;
         DatabaseFun _sqliteDb;
-        LoggedUser loggedUser;
+        UserSignInStatus loggedUser;
 
         [ObservableProperty]
         private string userName = "Paputek";
@@ -25,7 +25,10 @@ namespace TimeTracker.PageViewModels
         private string password = "password";
 
         [ObservableProperty]
-        private string currentLoggedUser =string.Empty;
+        private string loggingInfo = string.Empty;
+
+        [ObservableProperty]
+        private UserState userState = UserState.CLIENT_NOT_INITIALIZED;
 
         public SupabaseLoginPageViewModel(SupabaseClient client, DatabaseFun sqliteDb)
         {
@@ -33,10 +36,15 @@ namespace TimeTracker.PageViewModels
             _sqliteDb = sqliteDb;
         }
 
+        [ObservableProperty]
+        private bool _inProgress = false;
+
         [RelayCommand]
         public async Task InitClient()
         {
             await client.InitSupabaseClient();
+            UserState = UserState.CLIENT_INITIALIZED;
+            LoggingInfo = "Client initialized. Sign up or sign in";
         }
 
         [RelayCommand]
@@ -48,8 +56,13 @@ namespace TimeTracker.PageViewModels
         [RelayCommand]
         public async Task SignInUser()
         {
-           loggedUser = await client.SignIn(UserName, Password);
-            CurrentLoggedUser = loggedUser.UserName;
+            InProgress = true;
+            
+            loggedUser = await client.SignIn(UserName, Password);
+           
+            LoggingInfo = $"Loggin {UserName} info: {loggedUser.Info}";
+            
+            InProgress = false;
         }
 
         [RelayCommand]
@@ -90,15 +103,6 @@ namespace TimeTracker.PageViewModels
 
         }
 
-        private void UpdateCurrentLoggedUser()
-        {
-            if (client is null)
-            {
-                CurrentLoggedUser = "Init client first...";
-                return;
-            }
-
-            
-        }
+         
     }
 }
