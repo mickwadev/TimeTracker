@@ -6,35 +6,36 @@
              x:Class="TimeTracker.Pages.SupabaseLoginPage"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="SupabaseLoginPage">
-    
-    <VerticalStackLayout>
-        <Label Text="Supabase Login page" VerticalOptions="Center" HorizontalOptions="Center" />
-        <Label Text="{Binding LoggingInfo}"/> 
-        <ActivityIndicator IsRunning="{Binding InProgress}" Color="Orange"/>
-        <VerticalStackLayout Spacing="5" mct:StateContainer.CurrentState="{Binding UserState}">
-            <mct:StateContainer.StateViews>
-                <VerticalStackLayout mct:StateView.StateKey="CLIENT_NOT_INITIALIZED">
-                    <Button Text="Init Client" Command="{Binding InitClientCommand}"/>
+    <Grid>
+        <Border Padding="12" Margin="12" StrokeThickness="2" StrokeShape="RoundRectangle 4" Stroke="Orange">
+            <VerticalStackLayout>
+                <Label Text="Supabase Login page" VerticalOptions="Center" HorizontalOptions="Center" />
+                <Label Text="{Binding LoggingInfo}"/>
+                <ActivityIndicator IsRunning="{Binding InProgress}" Color="Orange"/>
+                <VerticalStackLayout Spacing="5" mct:StateContainer.CurrentState="{Binding UserState}">
+                    <mct:StateContainer.StateViews>
+                        <VerticalStackLayout mct:StateView.StateKey="CLIENT_NOT_INITIALIZED">
+                            <Button Text="Init Client" Command="{Binding InitClientCommand}"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="10" mct:StateView.StateKey="CLIENT_INITIALIZED">
+                            <Entry Text="{Binding UserName}"/>
+                            <Entry Text="{Binding Password}"/>
+                            <Button Text="Restore session" Command="{Binding RestoreSessionCommand}" />
+                            <Button Text="Sign in existing user" Command="{Binding SignInUserCommand}" />
+                            <Button Text="Sign up new user" Command="{Binding SignUpUserCommand}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="10" mct:StateView.StateKey="USER_SIGNEDIN">
+                            <Label Text="{Binding DbFun}"/>
+                            <Button Text="Put test data" Command="{Binding PutTestDataCommand}" />
+                            <Button Text="Get test data" Command="{Binding GetDataForUserCommand}" />
+                            <Button Text="SignOut user" Command="{Binding SignOutUserCommand}" />
+                            <Button Text="Backup" Command="{Binding BackupToSupabaseFromSQLiteCommand}" />
+                        </VerticalStackLayout>
+                    </mct:StateContainer.StateViews>
                 </VerticalStackLayout>
-
-                <VerticalStackLayout Spacing="10" mct:StateView.StateKey="CLIENT_INITIALIZED">
-                    <Entry Text="{Binding UserName}"/>
-                    <Entry Text="{Binding Password}"/>
-                    <Button Text="Restore session" Command="{Binding RestoreSessionCommand}" />
-                    <Button Text="Sign in existing user" Command="{Binding SignInUserCommand}" />
-                    <Button Text="Sign up new user" Command="{Binding SignUpUserCommand}" />
-                </VerticalStackLayout>
-
-                <VerticalStackLayout Spacing="10" mct:StateView.StateKey="USER_SIGNEDIN">
-                    <Button Text="Put test data" Command="{Binding PutTestDataCommand}" />
-                    <Button Text="Get test data" Command="{Binding GetDataForUserCommand}" />
-                    <Button Text="SignOut user" Command="{Binding SignOutUserCommand}" />
-                    <Button Text="Backup" Command="{Binding BackupToSupabaseFromSQLiteCommand}" />
-                </VerticalStackLayout>
-
-                 
-            </mct:StateContainer.StateViews>
-        </VerticalStackLayout>
-    </VerticalStackLayout>
-
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
 </ContentPage>

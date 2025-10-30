@@ -28,6 +28,9 @@ namespace TimeTracker.PageViewModels
         private string loggingInfo = string.Empty;
 
         [ObservableProperty]
+        private string dbFun = string.Empty;
+
+        [ObservableProperty]
         private UserState userState = UserState.CLIENT_NOT_INITIALIZED;
 
         public SupabaseLoginPageViewModel(SupabaseClient client, DatabaseFun sqliteDb)
@@ -76,14 +79,20 @@ namespace TimeTracker.PageViewModels
 
         [RelayCommand]
         public async Task PutTestData()
-        { 
-          await client.PutTestData();
+        {
+            InProgress = true;
+            await client.PutTestData();
+            DbFun = "Adding some test data to db...";
+            InProgress = false;
         }
 
         [RelayCommand]
         public async Task GetDataForUser()
         {
-            await client.GetData();
+            InProgress = true;
+            var models = await client.GetData();
+            DbFun = $"Received models from db: {models.Count}"; 
+            InProgress= false;
         }
 
         [RelayCommand]

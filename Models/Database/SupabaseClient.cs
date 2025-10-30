@@ -206,7 +206,7 @@ namespace TimeTracker.Models.Database
             }
         }
 
-        public async Task GetData()
+        public async Task<List<WorkTime>> GetData()
         {
             Supabase.Postgrest.Responses.ModeledResponse<WorkTime> response = null;
             try
@@ -217,7 +217,7 @@ namespace TimeTracker.Models.Database
             catch (Exception ex)
             {
                 Trace.WriteLine(ex.Message);
-                return;
+                return null; // todo use  null object pattern here
             }
 
             Trace.WriteLine($"Received: {response.Models.Count}");
@@ -225,6 +225,8 @@ namespace TimeTracker.Models.Database
             {
                 Trace.WriteLine($"{model.ID} {model.Title}");
             }
+
+            return response.Models;
         }
 
         public async Task<UserSignInStatus> RestoreSession()
