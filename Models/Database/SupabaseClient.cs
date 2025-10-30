@@ -242,8 +242,17 @@ namespace TimeTracker.Models.Database
             }
             Trace.WriteLine("Found previous session.");
             var savedSession = JsonConvert.DeserializeObject<Supabase.Gotrue.Session>(sessionJson);
-            
-            Session restoredSession = await _client.Auth.SetSession(savedSession.AccessToken, savedSession.AccessToken);
+            Session restoredSession = null;
+            try
+            {
+                restoredSession = await _client.Auth.SetSession(savedSession.AccessToken, savedSession.AccessToken);
+            }
+            catch (Exception ex)
+            {
+                status.Info = $"Restore session failed: {ex.Message}";
+                status.OK = false;
+                return status;
+            }
             var userName = savedSession.User.Email.Split("@").First();
             Trace.WriteLine($"Restored session for: {restoredSession.User.Email} to {restoredSession.ExpiresIn}");
             Trace.WriteLine($"ID: {_client.Auth.CurrentSession.User.Id}");
