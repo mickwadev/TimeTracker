@@ -41,8 +41,6 @@ namespace TimeTracker
             builder.Services.AddSingleton<DatabaseFun>();
             builder.Services.AddSingleton<SupabaseClient>();
             builder.Services.AddTransient<TimeTrackingPageViewModel>();
-          //  builder.Services.AddTransient<WorkTimeModel>();
-            builder.Services.AddTransient<WorkTimeDashboardPageModel>();
             builder.Services.AddTransient<ProgressPageViewModel>();
             builder.Services.AddTransient<PastebinPageViewModel>();
             builder.Services.AddTransient<SupabaseLoginPageViewModel>();

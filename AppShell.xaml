@@ -38,11 +38,9 @@
     <ShellContent
         Title="Time Tracking"
         ContentTemplate="{DataTemplate local:TimeTrackingPage}"
+        Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Timer}, FontFamily=MaterialSharp, Color=LightBlue}"
         Route="TimeTracking" />
 
-    <ShellContent
-        Title="Dashboard"
-        ContentTemplate="{DataTemplate local:WorkTimeDashboard}"
-        Route="Dashboard"/>
+    
 
 </Shell>
