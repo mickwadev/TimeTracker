@@ -58,7 +58,10 @@ namespace TimeTracker.PageViewModels
             LoggingInfo = $"Loggin {UserName} info: {loggedUser.Info}";
             InProgress = false;
 
-            UserState = loggedUser.OK ? UserState.USER_SIGNEDIN: UserState.USER_SIGNIN_FAILED;
+            if (loggedUser.OK)
+            {
+                UserState = UserState.USER_SIGNEDIN;
+            }
         }
 
         [RelayCommand]

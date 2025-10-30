@@ -58,7 +58,7 @@ namespace TimeTracker.Models.Database
 
                 // jesli jest włączona captcha:
                 // {"code":500,"error_code":"unexpected_failure","msg":"captcha verification process failed","error_id":"99015d0de0e7289c-WAW"}
-                Trace.WriteLine(ex.ToString());
+                Trace.WriteLine("Signup failed: "+ex.ToString());
                 status.OK = false;
                 status.Info = $"Sign up new user failed: {ex.Message}";
                 return status;
