@@ -263,7 +263,15 @@ namespace TimeTracker.Models.Database
             Trace.WriteLine($"Session logout: {_client.Auth.CurrentUser.Email}");
             bool successfulyRemoved =SecureStorage.Remove(secureJsonSupabaseSessionKey);
 
-            await _client.Auth.SignOut();
+            try
+            {
+                await _client.Auth.SignOut();
+            }
+            catch (Exception ex)
+            {
+                // This happens when I logout on other device first: {"code":403,"error_code":"session_not_found","msg":"Session from session_id claim in JWT does not exist"}
+                Trace.WriteLine($"Logout issue: {ex.Message}");
+            }
             Trace.WriteLine($"CurrentUser is null: {_client.Auth.CurrentUser is null}"); // true
         }
     }
