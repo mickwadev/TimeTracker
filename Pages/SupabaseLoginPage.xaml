@@ -24,6 +24,10 @@
                             <Button Text="Restore session" Command="{Binding RestoreSessionCommand}" />
                             <Button Text="Sign in existing user" Command="{Binding SignInUserCommand}" />
                             <Button Text="Sign up new user" Command="{Binding SignUpUserCommand}" />
+                            <HorizontalStackLayout HorizontalOptions="Start" VerticalOptions="Center" >
+                                <Label Margin="5" VerticalTextAlignment="Center" Text="Rember login?"/>
+                                <Switch></Switch>
+                            </HorizontalStackLayout>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Spacing="10" mct:StateView.StateKey="USER_SIGNEDIN">

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 using TimeTracker.Data;
+using TimeTracker.Models;
 using TimeTracker.Models.Database;
 using TimeTracker.PageModels;
 using TimeTracker.PageViewModels;
@@ -46,7 +47,7 @@ namespace TimeTracker
             builder.Services.AddTransient<SupabaseLoginPageViewModel>();
             builder.Services.AddTransient<DatabasePageViewModel>();
             builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
-            
+            builder.Services.AddTransient<PomodoroControlViewModel>();
             return builder.Build();
         }
     }

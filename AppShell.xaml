@@ -7,7 +7,11 @@
     xmlns:testPages="clr-namespace:TimeTracker.TestPages"
     xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
     Title="TimeTracker">
-
+<ShellContent
+        Title="Time Tracking"
+        ContentTemplate="{DataTemplate local:TimeTrackingPage}"
+        Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Timer}, FontFamily=MaterialSharp, Color=LightBlue}"
+        Route="TimeTracking" />
     <ShellContent Title="Supabase" ContentTemplate="{DataTemplate local:SupabaseLoginPage}"
                  Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Backup_table}, FontFamily=MaterialSharp, Color=LightBlue}"/>
 
@@ -28,9 +32,5 @@
         Title="Settings"
         ContentTemplate="{DataTemplate local:SettingPage}" 
         />
-    <ShellContent
-        Title="Time Tracking"
-        ContentTemplate="{DataTemplate local:TimeTrackingPage}"
-        Icon="{FontImageSource Glyph={x:Static ms:MaterialSharp.Timer}, FontFamily=MaterialSharp, Color=LightBlue}"
-        Route="TimeTracking" />
+    
 </Shell>

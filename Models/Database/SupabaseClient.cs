@@ -256,7 +256,7 @@ namespace TimeTracker.Models.Database
             var userName = savedSession.User.Email.Split("@").First();
             Trace.WriteLine($"Restored session for: {restoredSession.User.Email} to {restoredSession.ExpiresIn}");
             Trace.WriteLine($"ID: {_client.Auth.CurrentSession.User.Id}");
-            status.Info = $"Session restored for user \"{userName}\": OK (expires: {restoredSession.ExpiresIn})";
+            status.Info = @$"Session restored for user ""{userName}"": OK, (Expires: {restoredSession.ExpiresAt()}";
             status.OK = true;
             status.User = new LoggedUser()
             {
