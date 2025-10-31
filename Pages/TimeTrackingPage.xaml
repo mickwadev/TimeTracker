@@ -32,6 +32,6 @@
         <Button Text="{Binding CountTimeButtonText}" Command="{Binding TimeCountingButtonPressedCommand}" />
         
     </VerticalStackLayout>
-        <controls:Pomodoro Grid.Row="1"/>
+        <controls:Pomodoro Grid.Row="1" MyText="{Binding Ticks}"/>
     </Grid>
 </ContentPage>

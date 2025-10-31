@@ -4,23 +4,35 @@ namespace TimeTracker.Controls;
 
 public partial class Pomodoro : IDrawable
 {
+	public static readonly BindableProperty MyTextProperty =
+		BindableProperty.Create(nameof(MyText), 
+			typeof(TimeSpan),
+			typeof(Pomodoro),
+			TimeSpan.FromSeconds(42),
+			propertyChanged:OnMyTextPropertyChanged);
+
+    public TimeSpan MyText
+	{
+		get => (TimeSpan)GetValue(MyTextProperty);
+		set => SetValue(MyTextProperty,value);
+	}
+
+	public static void OnMyTextPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+	{ 
+		var pomodoro = (Pomodoro)bindable;
+		pomodoro.Invalidate();
+	}
+
 	public Pomodoro()
 	{
 		InitializeComponent();
 		this.Drawable = this;
 		Trace.WriteLine("Pomodoro ctor...");
-		Task.Run(async () =>
-		{
-			await Task.Delay(2222);
-			Invalidate();
-			Trace.WriteLine("invalidate...");
-		});
-		
 	}
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
-		Trace.WriteLine("Draw...");
+		Trace.WriteLine($"Draw {MyText.TotalSeconds}...");
 		canvas.StrokeColor = Colors.AntiqueWhite;
 		canvas.StrokeSize = 6;
 		Point point = new Point(0,0);

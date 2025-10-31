@@ -61,7 +61,10 @@ namespace TimeTracker.PageModels
         private string _today = DateTime.Now.ToString("dddd");
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(Ticks))]
         private string _ticksMsg = $"";
+
+        public TimeSpan Ticks => currentWorkTime?.Duration ?? TimeSpan.FromSeconds(42);
 
         [ObservableProperty]
         private string _workTimeComment = "";
