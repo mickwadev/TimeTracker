@@ -9,7 +9,7 @@ public partial class Pomodoro : IDrawable
         BindableProperty.Create(nameof(CurrentTime),
             typeof(TimeSpan),
             typeof(Pomodoro),
-            TimeSpan.FromSeconds(42),
+            TimeSpan.FromSeconds(0),
             propertyChanged: OnMyTextPropertyChanged);
 
     public TimeSpan CurrentTime
@@ -35,7 +35,7 @@ public partial class Pomodoro : IDrawable
         BindableProperty.Create(nameof(EndTime),
             typeof(int),
             typeof(Pomodoro),
-            42,
+            10,
             propertyChanged: OnMyTextPropertyChanged);
 
     public int EndTime
@@ -84,6 +84,19 @@ public partial class Pomodoro : IDrawable
         set => SetValue(FillColorProperty, value);
     }
 
+    public static readonly BindableProperty FinishedPomodoroColorProperty =
+        BindableProperty.Create(nameof(FinishedPomodoroColor),
+            typeof(Color),
+            typeof(Pomodoro),
+            Colors.Beige,
+            propertyChanged: OnMyTextPropertyChanged);
+
+    public Color FinishedPomodoroColor
+    {
+        get => (Color)GetValue(FinishedPomodoroColorProperty);
+        set => SetValue(FinishedPomodoroColorProperty, value);
+    }
+
     public static void OnMyTextPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 	{ 
 		var pomodoro = (Pomodoro)bindable;
@@ -99,6 +112,7 @@ public partial class Pomodoro : IDrawable
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
+        if (CurrentTime.TotalSeconds == 0) return;
         var smallerSize = MathF.Min(dirtyRect.Width, dirtyRect.Height);
         var arcSize = smallerSize * 0.8f;
         // draw full rect:
@@ -109,16 +123,17 @@ public partial class Pomodoro : IDrawable
         canvas.StrokeSize = 3;
         
  
-        canvas.StrokeSize = 16;
+        canvas.StrokeSize = 26;
        
 		canvas.StrokeColor = FillColor;
         canvas.StrokeLineCap = LineCap.Round;
-        var normalized = (CurrentTime.TotalSeconds) / Duration;
-        
-        float clamped = (float) Math.Clamp(normalized, 0.0f, 0.99999f);
+        var factor = (CurrentTime.TotalSeconds) / Duration;
+        canvas.StrokeColor = factor > 1f ? FinishedPomodoroColor : FillColor;
+        float clamped = (float) Math.Clamp(factor, 0.0f, 0.99999f);
+
         float angle = 90 - 360 * clamped;
         Trace.WriteLine($"{CurrentTime.TotalSeconds}/{Duration}, clamped: {clamped}, {angle}  ");
-        // 90 do -269.999
+        // Angles from 90 do -269.999 give look I want.
         canvas.DrawArc(         
             dirtyRect.Center.X- arcSize/2f, 
             dirtyRect.Center.Y- arcSize/2f,

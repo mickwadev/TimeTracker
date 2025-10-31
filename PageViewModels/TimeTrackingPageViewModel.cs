@@ -64,7 +64,7 @@ namespace TimeTracker.PageModels
         [NotifyPropertyChangedFor(nameof(Ticks))]
         private string _ticksMsg = $"";
 
-        public TimeSpan Ticks => currentWorkTime?.Duration ?? TimeSpan.FromSeconds(42);
+        public TimeSpan Ticks => currentWorkTime?.Duration ?? TimeSpan.FromSeconds(0);
 
         [ObservableProperty]
         private string _workTimeComment = "";
