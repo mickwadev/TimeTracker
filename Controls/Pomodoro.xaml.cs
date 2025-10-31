@@ -22,7 +22,7 @@ public partial class Pomodoro : IDrawable
         BindableProperty.Create(nameof(StartTime),
             typeof(int),
             typeof(Pomodoro),
-            42,
+            0,
             propertyChanged: OnMyTextPropertyChanged);
 
     public int StartTime
@@ -102,13 +102,12 @@ public partial class Pomodoro : IDrawable
         var smallerSize = MathF.Min(dirtyRect.Width, dirtyRect.Height);
         var arcSize = smallerSize * 0.8f;
         // draw full rect:
-        canvas.StrokeColor = Colors.Gainsboro;
-        canvas.DrawRectangle(dirtyRect);
+      //  canvas.StrokeColor = Colors.Gainsboro;
+      //  canvas.DrawRectangle(dirtyRect);
 		//Trace.WriteLine($"Draw {CurrentTime.TotalSeconds}...{dirtyRect.Center}");
         //Trace.WriteLine($"{StartTime} to {EndTime} {ClockWise}");
         canvas.StrokeSize = 3;
-        canvas.StrokeColor = Colors.Red;
-        canvas.DrawCircle(dirtyRect.Center, 5);
+        
  
         canvas.StrokeSize = 16;
        
