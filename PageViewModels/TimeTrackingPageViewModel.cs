@@ -113,7 +113,7 @@ namespace TimeTracker.PageModels
                 current = currentWorkTime.Duration;
             }
             TodayWorkTime = $"Today work time: {(todaysWorkingTime + current).ToString(@"hh\:mm\:ss")}";
-            TextColor = GradientSampler.GetWorkTimeColor(todaysWorkingTime).ToMauiColor();
+            TextColor = GradientSampler.GetWorkTimeColor(todaysWorkingTime + current).ToMauiColor();
         }
          
         [RelayCommand]
