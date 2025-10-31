@@ -16,6 +16,9 @@
             Command="{Binding Source={x:Reference page}, Path=BindingContext.AppearingEventCommand, x:DataType=ContentPage}" 
             EventName="Appearing" />
     </ContentPage.Behaviors>
+    <ContentPage.Resources>
+        <Color x:Key="TakiNiebieski">#016396</Color>
+    </ContentPage.Resources>
     <Grid
         RowDefinitions="Auto,*">
     <VerticalStackLayout Spacing="10" Padding="10" >
@@ -32,6 +35,16 @@
         <Button Text="{Binding CountTimeButtonText}" Command="{Binding TimeCountingButtonPressedCommand}" />
         
     </VerticalStackLayout>
-        <controls:Pomodoro Grid.Row="1" MyText="{Binding Ticks}"/>
+        <VerticalStackLayout IsVisible="False">
+            <Slider x:Name="StartTimeSlider" Minimum="-720" Maximum="720" />
+            <Slider x:Name="EndTimeSlider" Minimum="-720" Maximum="720" />
+            <Switch x:Name="Clockwise"/>
+        </VerticalStackLayout>
+            <controls:Pomodoro 
+                Margin="10" 
+                Grid.Row="1" 
+                Duration="3600" 
+                CurrentTime="{Binding Ticks}"
+                FillColor="{StaticResource TakiNiebieski}"/>
     </Grid>
 </ContentPage>
