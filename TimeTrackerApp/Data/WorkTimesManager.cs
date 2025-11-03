@@ -29,6 +29,16 @@ namespace TimeTracker.Data
             _workTimes = await _db.GetAllWorkingEntriesAsync(); 
         }
 
+        public void GoToNextDataRange()
+        { 
+         _dataRangeSource.GoToNextDateRange();
+        }
+
+        public void GoToPreviousDataRange()
+        {
+            _dataRangeSource.GoToPreviousDateRange();
+        }
+
         public void ChangeDataSource(string period)
         {
             _dataRangeSource = GetDataRangeFactory(Enum.Parse<PeriodType>(period));

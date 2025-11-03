@@ -26,29 +26,29 @@
             Text="Keep up the good work ^_^"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-
+        
         <Button Text="Toggle" Clicked="Button_Clicked"></Button>
-
+        <HorizontalStackLayout>
+            <Button Text="Previous" Command="{Binding goToPreviousDateRangeCommand}"/>
+            <Button Text="Next" Command="{Binding goToNextDateRangeCommand}"/>
+        </HorizontalStackLayout>
         <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,222" >
-            <sf:SfSegmentedControl x:Name="TimeRange" Grid.Column="0" Grid.Row="0" BackgroundColor="AliceBlue" ItemsSource="{Binding Segments}">
+            <sf:SfSegmentedControl Grid.Column="0" Grid.Row="0" x:Name="TimeRange"  BackgroundColor="AliceBlue" ItemsSource="{Binding Segments}">
                 <sf:SfSegmentedControl.Behaviors>
                     <mct:EventToCommandBehavior
                         x:TypeArguments="sf:SelectionChangedEventArgs"
                         EventName="SelectionChanged"
                         BindingContext="{Binding Path=BindingContext, Source={x:Reference Page}, x:DataType=sf:SfSegmentedControl}"
                         Command="{Binding TimeRange_SelectionChangedCommand}"/>
-
                 </sf:SfSegmentedControl.Behaviors>
             </sf:SfSegmentedControl>
-            <Label HorizontalOptions="Center" Grid.Column="0" Grid.Row="1" x:Name="TimePeriodLabel" Text="{Binding TimePeriod}" />
-            <Label IsVisible="{Binding HasAnyEntries, Converter={StaticResource InverseBoolConverter}}" Text="Nic tu nie ma ;(" 
-                   Grid.Column="0" Grid.Row="2"
+            <Label Grid.Column="0" Grid.Row="1" HorizontalOptions="Center"  x:Name="TimePeriodLabel" Text="{Binding TimePeriod}" />
+            <Label Grid.Column="0" Grid.Row="2" IsVisible="{Binding HasAnyEntries, Converter={StaticResource InverseBoolConverter}}" Text="Nic tu nie ma ;(" 
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
                    Style="{StaticResource NicNieMa}"/>
             <lvc:CartesianChart
                 x:Name="WorkTimeChart"
-                
                 IsVisible="{Binding HasAnyEntries}"
                 Grid.Column="0" Grid.Row="2"
                 Series="{Binding MyWorkingHours}"

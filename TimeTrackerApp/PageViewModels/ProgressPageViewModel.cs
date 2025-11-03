@@ -70,6 +70,22 @@ namespace TimeTracker.PageModels
         // This must be static to add it in Labeler while creating it
         private static string TimeLabeler(double seconds) => (seconds / AppConsts.SecondsInHours) + "h";
 
+        [RelayCommand]
+        private async Task goToNextDateRange()
+        {
+            _workTimeManager.GoToNextDataRange();
+            await LoadTimeFromDb();
+            TimePeriod = _workTimeManager.GetTimePeriodInfo();
+        }
+
+        [RelayCommand]
+        private async Task goToPreviousDateRange() 
+        {
+            _workTimeManager.GoToPreviousDataRange();
+            await LoadTimeFromDb();
+            TimePeriod = _workTimeManager.GetTimePeriodInfo();
+        }
+
         #region AXIS_DEFINITIONS
         public ICartesianAxis[] YAxes { get; } = {
             new Axis {
@@ -140,7 +156,7 @@ namespace TimeTracker.PageModels
         // Tu są aktualizowane te DateTimePoints z bazy danych:
         public async Task LoadTimeFromDb()
         {
-            List<WorkTime> d = await _workTimeManager.GetUpdateWorkTimesForDateRange();// database.GetWorkingEntriesForTimePeriodAsync(start, end);
+            List<WorkTime> d = await _workTimeManager.GetUpdateWorkTimesForDateRange();
             var group = d.GroupBy(wt => wt.StartTime.ToString("yyyy MM dd"));
             DateTimePoints.Clear();
             foreach (var w in group)

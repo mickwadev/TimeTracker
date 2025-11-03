@@ -43,6 +43,7 @@ public class DateTimeWeekHelper : IGetDateRange
     public (long, long) GetTicksRange()
     {
         var dr = GetCurrentDateRange();
+        Trace.WriteLine(dr.ToString());
         return (dr.startDate.ToDateTime(new TimeOnly(0, 0)).Ticks, dr.endDate.ToDateTime(new TimeOnly(0, 0)).Ticks);
     }
 
