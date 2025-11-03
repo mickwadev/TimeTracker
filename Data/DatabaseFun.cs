@@ -19,7 +19,7 @@ namespace TimeTracker.Data
         {
             try
             {
-                if (await CheckIfTableExistsAsync())
+                if (await CheckIfTableExistsAsync() == false)
                     await AddTimesTableAsync();
             }
             catch (Exception ex) 
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
     User TEXT,
     BackupID INTEGER
 );";
-            await createTableCommand.ExecuteNonQueryAsync();
+           await createTableCommand.ExecuteNonQueryAsync();
         }
 
         public async Task<bool> CheckIfTableExistsAsync()

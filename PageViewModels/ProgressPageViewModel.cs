@@ -32,10 +32,10 @@ namespace TimeTracker.PageModels
 
         public List<SfSegmentItem> Segments { get; } = new List<SfSegmentItem>()
         {
-            new SfSegmentItem(){Text = "Today"},
-            new SfSegmentItem(){Text = "Week"},
-            new SfSegmentItem(){Text = "Month"},
-            new SfSegmentItem(){Text = "All"}
+            new SfSegmentItem(){Text = Periods.WEEK.ToString()},
+            new SfSegmentItem(){Text = Periods.MONTH.ToString()},
+            new SfSegmentItem(){Text = Periods.YEAR.ToString()},
+            new SfSegmentItem(){Text = Periods.ALL.ToString() }
         };
 
         [RelayCommand]

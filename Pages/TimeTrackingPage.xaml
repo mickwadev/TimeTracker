@@ -44,7 +44,7 @@
             <controls:Pomodoro 
                 Margin="10" 
                 Grid.Row="1" 
-                Duration="10" 
+                Duration="3600" 
                 CurrentTime="{Binding Ticks}"
                 FillColor="{StaticResource TakiNiebieski}"
                 FinishedPomodoroColor="{StaticResource TakiZielonyDoPomodoro}"/>

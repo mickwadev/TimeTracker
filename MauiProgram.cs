@@ -48,6 +48,7 @@ namespace TimeTracker
             builder.Services.AddTransient<DatabasePageViewModel>();
             builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
             builder.Services.AddTransient<PomodoroControlViewModel>();
+            builder.Services.AddSingleton<WorkTimesManager>();
             return builder.Build();
         }
     }
