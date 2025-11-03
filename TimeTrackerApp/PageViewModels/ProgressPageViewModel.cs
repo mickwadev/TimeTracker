@@ -29,6 +29,13 @@ namespace TimeTracker.PageModels
             SetChart();
         }
 
+        [RelayCommand]
+        private async Task OnAppearing()
+        {
+            Trace.WriteLine("From vm...");
+            await ChangeSelection(1);
+        }
+
         #region SEGMENT
 
         public List<SfSegmentItem> Segments { get; } = new List<SfSegmentItem>()
@@ -43,14 +50,16 @@ namespace TimeTracker.PageModels
         public async Task TimeRange_SelectionChanged(Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
         {
             Trace.WriteLine($"Change: {e.OldIndex} ==> {e.NewIndex}  {Segments[(int)e.NewIndex!].Text}");
-            string f = "yyyy-MM-dd";
-            _workTimeManager.ChangeDataSource(Segments[(int)e.NewIndex!].Text);
-            
-             await LoadTimeFromDb();
-         // await Task.Delay(1000);
-            // Update label text:
+            ChangeSelection(e.NewIndex);
+        }
+
+        private async Task ChangeSelection(int? newIndex)
+        { 
+            _workTimeManager.ChangeDataSource(Segments[(int)newIndex!].Text);
+            await LoadTimeFromDb();
             TimePeriod = _workTimeManager.GetTimePeriodInfo();
         }
+
         #endregion
 
         //DateTimePoint to jest klasa z tych charts.

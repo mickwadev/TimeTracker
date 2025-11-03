@@ -21,6 +21,13 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+
+    <ContentPage.Behaviors>
+        <mct:EventToCommandBehavior
+            EventName="Appearing"
+            BindingContext="{Binding Path=BindingContext, Source={x:Reference Page}, x:DataType=ContentPage}"
+            Command="{Binding AppearingCommand}"/>
+    </ContentPage.Behaviors>
     <VerticalStackLayout>
         <Label 
             Text="Keep up the good work ^_^"
