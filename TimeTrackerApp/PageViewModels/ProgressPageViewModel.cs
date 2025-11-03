@@ -23,9 +23,8 @@ namespace TimeTracker.PageModels
     public partial class ProgressPageViewModel : ObservableObject
     {
         WorkTimesManager _workTimeManager;
-        public ProgressPageViewModel(DatabaseFun db, WorkTimesManager workTimesManager)
-        {
-            database = db;
+        public ProgressPageViewModel(WorkTimesManager workTimesManager)
+        { 
             _workTimeManager = workTimesManager;
             SetChart();
         }
@@ -64,9 +63,7 @@ namespace TimeTracker.PageModels
 
         [ObservableProperty]
         private string _timePeriod = "";
-
-        DatabaseFun database;
-
+         
         [ObservableProperty]
         private bool _hasAnyEntries = true;
 
