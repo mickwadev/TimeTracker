@@ -86,6 +86,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\DateRange\DateRange.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="Pages\ProgressPage.xaml.cs">
 	    <DependentUpon>ProgressPage.xaml</DependentUpon>
 	  </Compile>
