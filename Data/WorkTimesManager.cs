@@ -27,7 +27,7 @@ namespace TimeTracker.Data
             //DateOnly start = 
             DateTime start = _workTimes.Min(wt => wt.StartTime);
             DateTime end = _workTimes.Max(wt => wt.StartTime);
-            Trace.WriteLine(A);
+          //  Trace.WriteLine(A);
         }
     }
 }
