@@ -33,6 +33,7 @@ namespace TimeTracker.PageModels
         private async Task OnAppearing()
         {
             Trace.WriteLine("From vm...");
+            await _workTimeManager.Initialize();
             await ChangeSelection(1);
         }
 

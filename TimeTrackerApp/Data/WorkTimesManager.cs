@@ -26,7 +26,11 @@ namespace TimeTracker.Data
         public async Task Initialize()
         {
             await _db.Initialize();
-            _workTimes = await _db.GetAllWorkingEntriesAsync(); 
+            _workTimes = await _db.GetAllWorkingEntriesAsync();
+            if (_workTimes is null) 
+            {
+                Trace.WriteLine("XXXXXXXXXXX _workTimes null!!!!");    
+            }
         }
 
         public void GoToNextDataRange()
@@ -44,11 +48,7 @@ namespace TimeTracker.Data
             _dataRangeSource = GetDataRangeFactory(Enum.Parse<PeriodType>(period));
         }
 
-        public void GetAllWorkingTime()
-        { 
-            DateTime start = _workTimes.Min(wt => wt.StartTime);
-            DateTime end = _workTimes.Max(wt => wt.StartTime);
-        }
+        
 
         public async Task<List<WorkTime>> GetUpdateWorkTimesForDateRange()
         {
@@ -73,9 +73,17 @@ namespace TimeTracker.Data
             {
                 PeriodType.WEEK => new DateTimeWeekHelper(_startDate),
                 PeriodType.MONTH => new DateTimeMonthHelpers(_startDate),
-                PeriodType.YEAR => new DateTimeYearHelpers(_startDate)
+                PeriodType.YEAR => new DateTimeYearHelpers(_startDate),
+                PeriodType.ALL => GetAllDataRangeHelper()
             };
             return range;
+        }
+
+        private IGetDateRange GetAllDataRangeHelper()
+        {
+            DateTime start = _workTimes.Min(wt => wt.StartTime);
+            DateTime end = _workTimes.Max(wt => wt.StartTime);
+            return new DateTimeAllHelper(start, end);
         }
     }
 }
