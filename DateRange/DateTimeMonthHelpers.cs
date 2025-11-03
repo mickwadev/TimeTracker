@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Date = System.DateOnly;
 
-namespace DateTimeHelpers
+namespace DateRangeHelpers
 {
     public class DateTimeMonthHelpers : IGetDateRange
     {

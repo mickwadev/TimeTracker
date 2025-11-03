@@ -1,5 +1,4 @@
-﻿using DateTimeHelpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Date = System.DateOnly;
-namespace DateHelpers;
+namespace DateRangeHelpers;
 
 // Weeks do not start when year or months start. Do not user years, months at all.
 public class DateTimeWeekHelper : IGetDateRange
