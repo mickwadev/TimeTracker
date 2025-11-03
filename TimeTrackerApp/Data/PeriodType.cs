@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TimeTracker.Data
 {
-    public enum Periods
+    public enum PeriodType
     {
         WEEK = 1,
         MONTH = 2,

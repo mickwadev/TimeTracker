@@ -22,9 +22,11 @@ namespace TimeTracker.PageModels
 {
     public partial class ProgressPageViewModel : ObservableObject
     {
-        public ProgressPageViewModel(DatabaseFun db)
+        WorkTimesManager _workTimeManager;
+        public ProgressPageViewModel(DatabaseFun db, WorkTimesManager workTimesManager)
         {
             database = db;
+            _workTimeManager = workTimesManager;
             SetChart();
         }
 
@@ -32,28 +34,23 @@ namespace TimeTracker.PageModels
 
         public List<SfSegmentItem> Segments { get; } = new List<SfSegmentItem>()
         {
-            new SfSegmentItem(){Text = Periods.WEEK.ToString()},
-            new SfSegmentItem(){Text = Periods.MONTH.ToString()},
-            new SfSegmentItem(){Text = Periods.YEAR.ToString()},
-            new SfSegmentItem(){Text = Periods.ALL.ToString() }
+            new SfSegmentItem(){Text = PeriodType.WEEK.ToString()},
+            new SfSegmentItem(){Text = PeriodType.MONTH.ToString()},
+            new SfSegmentItem(){Text = PeriodType.YEAR.ToString()},
+            new SfSegmentItem(){Text = PeriodType.ALL.ToString() }
         };
 
         [RelayCommand]
         public async Task TimeRange_SelectionChanged(Syncfusion.Maui.Toolkit.SegmentedControl.SelectionChangedEventArgs e)
         {
-            Trace.WriteLine($"zmiana: {e.OldIndex} ==> {e.NewIndex}  {Segments[(int)e.NewIndex!].Text}");
+            Trace.WriteLine($"Change: {e.OldIndex} ==> {e.NewIndex}  {Segments[(int)e.NewIndex!].Text}");
             string f = "yyyy-MM-dd";
-            var p = Segments[(int)e.NewIndex!].Text switch
-            {
-                "Today" => Dates.Today,
-                "Week" => Dates.ThisWeek,
-                "Month" => Dates.ThisMonth,
-                "All" => Dates.All,
-                _ => Dates.All
-            };
-            await LoadTimeFromDb(p.start, p.end);
+            _workTimeManager.ChangeDataSource(Segments[(int)e.NewIndex!].Text);
+            
+             await LoadTimeFromDb();
+         // await Task.Delay(1000);
             // Update label text:
-            TimePeriod = p.start == p.end ? p.start.ToString(f) : $"From {p.start.ToString(f)} to {p.end.ToString(f)}";
+            TimePeriod = _workTimeManager.GetTimePeriodInfo();
         }
         #endregion
 
@@ -144,9 +141,9 @@ namespace TimeTracker.PageModels
         }
 
         // Tu są aktualizowane te DateTimePoints z bazy danych:
-        public async Task LoadTimeFromDb(DateTime start, DateTime end)
+        public async Task LoadTimeFromDb()
         {
-            List<WorkTime> d = await database.GetWorkingEntriesForTimePeriodAsync(start, end);
+            List<WorkTime> d = await _workTimeManager.GetUpdateWorkTimesForDateRange();// database.GetWorkingEntriesForTimePeriodAsync(start, end);
             var group = d.GroupBy(wt => wt.StartTime.ToString("yyyy MM dd"));
             DateTimePoints.Clear();
             foreach (var w in group)
@@ -165,10 +162,11 @@ namespace TimeTracker.PageModels
                     })
                 });
             }
+            (long min, long max) ticks = _workTimeManager.GetTicksRange;
             foreach (var x in XAxes)
             {
-                x.MinLimit = start.Ticks;
-                x.MaxLimit = end.Ticks;
+                x.MinLimit = ticks.min;// start.Ticks;
+                x.MaxLimit = ticks.max;// end.Ticks;
             }
 
             //foreach (var y in YAxes)

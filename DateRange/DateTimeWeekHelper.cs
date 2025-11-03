@@ -40,5 +40,10 @@ public class DateTimeWeekHelper : IGetDateRange
     public void GoToPreviousDateRange() => weekOffset--;
     public void GoToStartRange() => weekOffset = 0;
 
+    public (long, long) GetTicksRange()
+    {
+        var dr = GetCurrentDateRange();
+        return (dr.startDate.ToDateTime(new TimeOnly(0, 0)).Ticks, dr.endDate.ToDateTime(new TimeOnly(0, 0)).Ticks);
+    }
 
 }

@@ -7,7 +7,7 @@ using Date = System.DateOnly;
 
 namespace DateRangeHelpers
 {
-    internal class DateTimeYearHelpers : IGetDateRange
+    public class DateTimeYearHelpers : IGetDateRange
     {
         Date startDate;
         Date currentDate;
@@ -34,6 +34,12 @@ namespace DateRangeHelpers
         public void GoToStartRange()
         {
             currentDate = startDate;
+        }
+
+        public (long, long) GetTicksRange()
+        {
+            var dr = GetCurrentDateRange();
+            return (dr.startDate.ToDateTime(new TimeOnly(0, 0)).Ticks, dr.endDate.ToDateTime(new TimeOnly(0, 0)).Ticks);
         }
     }
 }

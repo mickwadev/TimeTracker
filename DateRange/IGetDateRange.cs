@@ -12,5 +12,6 @@ namespace DateRangeHelpers
         void GoToNextDateRange();
         void GoToPreviousDateRange();
         void GoToStartRange();
+        (long min, long max) GetTicksRange();
     }
 }
