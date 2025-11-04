@@ -134,7 +134,7 @@ public class SupabaseClient
 
         status.Info = "SignIn OK";
         status.OK = true;
-        status.SecureJsonSupabaseSessionKey = DbConsts.secureJsonSupabaseSessionKey;
+        status.SecureJsonSupabaseSessionKey = sessionJson;
         status.User  = new LoggedUser()
         {
             UserName = session.User.Email.Split("@").First(),
