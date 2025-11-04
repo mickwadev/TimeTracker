@@ -13,6 +13,8 @@ using TimeTracker.Models;
 using Microsoft.Maui.Graphics.Skia;
 using SkiaSharp.Views.Maui;
 using TimeTracker.Extensions;
+using Database.SQLiteDB;
+using Database.SupabaseDB;
 
 namespace TimeTracker.PageModels
 {

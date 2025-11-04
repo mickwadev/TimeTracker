@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Database;
+namespace Database.SQLiteDB;
 
 // to jest dodane w builderze do Sevices
 public class DatabaseFun

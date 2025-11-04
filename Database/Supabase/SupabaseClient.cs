@@ -8,13 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks; 
 
-namespace Database;
+namespace Database.SupabaseDB;
 
 public class SupabaseClient 
 {
     private Supabase.Client _client = null;
    
-
     private LoggedUser _loggedUser = null;
 
     public string GetLoggedUserName => _loggedUser?.UserName ?? DbConsts.NotSetUser;

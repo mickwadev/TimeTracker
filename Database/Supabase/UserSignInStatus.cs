@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks; 
-namespace Database
+namespace Database.SupabaseDB;
+
+public class UserSignInStatus
 {
-    public class UserSignInStatus
-    {
-        public bool OK;
-        public string Info;
-        public LoggedUser? User;
-        public string SecureJsonSupabaseSessionKey;
-    }
+    public bool OK;
+    public string Info;
+    public LoggedUser? User;
+    public string SecureJsonSupabaseSessionKey;
 }

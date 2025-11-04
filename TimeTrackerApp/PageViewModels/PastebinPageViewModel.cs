@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TimeTracker.Data;
 using TimeTracker.Models;
+using Database.SQLiteDB;
 
 namespace TimeTracker.Pastebin
 {
