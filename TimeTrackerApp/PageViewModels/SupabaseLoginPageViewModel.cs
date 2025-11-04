@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TimeTracker.Data;
 using TimeTracker.Models;
-using TimeTracker.Models.Database;
 
 namespace TimeTracker.PageViewModels
 {
@@ -55,6 +54,7 @@ namespace TimeTracker.PageViewModels
         {
             InProgress = true;
             loggedUser = await client.SignUpUser(UserName, ":3=", Password);
+            await SecureStorage.SetAsync(DbConsts.secureJsonSupabaseSessionKey, loggedUser.SecureJsonSupabaseSessionKey);
             LoggingInfo = $"Loggin {UserName} info: {loggedUser.Info}";
             InProgress = false;
 
@@ -70,7 +70,7 @@ namespace TimeTracker.PageViewModels
             InProgress = true;
             
             loggedUser = await client.SignIn(UserName, Password);
-           
+            await SecureStorage.SetAsync(DbConsts.secureJsonSupabaseSessionKey, loggedUser.SecureJsonSupabaseSessionKey);
             LoggingInfo = $"Loggin {UserName} info: {loggedUser.Info}";
             
             InProgress = false;
@@ -102,7 +102,8 @@ namespace TimeTracker.PageViewModels
         public async Task RestoreSession()
         {
             InProgress = true;
-            loggedUser = await client.RestoreSession();
+             string sessionJson = await SecureStorage.GetAsync(DbConsts.secureJsonSupabaseSessionKey);
+            loggedUser = await client.RestoreSession(sessionJson);
             LoggingInfo = $"Loggin from previous session info: {loggedUser.Info}";
             InProgress = false;
             if (loggedUser.OK)
@@ -114,6 +115,7 @@ namespace TimeTracker.PageViewModels
         [RelayCommand]
         public async Task SignOutUser()
         {
+            bool successfulyRemoved =SecureStorage.Remove(DbConsts.secureJsonSupabaseSessionKey);
             await client.SignOutUser();
             UserState = UserState.CLIENT_INITIALIZED;
         }

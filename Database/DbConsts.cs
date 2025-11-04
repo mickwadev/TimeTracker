@@ -12,4 +12,8 @@ public class DbConsts
     public const string NotSetUser = "user_not_set";
     public const string ActivityNotSet = "at_not_set";
     public const long NoBackupID = -1;
+
+    //Supabase:
+    public const string fakeEmailPart = "@sofakeemail.com";
+    public const string secureJsonSupabaseSessionKey = "supabase_session";
 }

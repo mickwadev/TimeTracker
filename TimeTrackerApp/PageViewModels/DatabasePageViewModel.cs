@@ -6,8 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TimeTracker.Data;
-using TimeTracker.Models.Database;
+using TimeTracker.Data; 
 using Database;
 namespace TimeTracker.PageViewModels
 {

@@ -12,7 +12,6 @@ using TimeTracker.Helpers;
 using TimeTracker.Models;
 using Microsoft.Maui.Graphics.Skia;
 using SkiaSharp.Views.Maui;
-using TimeTracker.Models.Database;
 using TimeTracker.Extensions;
 
 namespace TimeTracker.PageModels
