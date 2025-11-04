@@ -10,7 +10,8 @@ using TimeTracker.PageModels;
 using TimeTracker.PageViewModels;
 using TimeTracker.Pastebin;
 using UraniumUI;
-using Database;
+using Database.SupabaseDB;
+using Database.SQLiteDB;
 
 namespace TimeTracker
 {
