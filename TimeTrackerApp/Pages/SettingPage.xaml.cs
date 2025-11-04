@@ -1,6 +1,5 @@
 using System.Diagnostics;
-using TimeTracker.Helpers;
-using TimeTracker.ModelMasla;
+using TimeTracker.Helpers; 
 
 namespace TimeTracker.Pages;
 
@@ -9,14 +8,14 @@ namespace TimeTracker.Pages;
 public partial class SettingPage : ContentPage
 {
     public static int u=0;
-    MasloModel mm;
+    
     public SettingPage()
     {
         Appearing += SettingPage_Appearing;
         Loaded += SettingPage_Loaded;
         InitializeComponent();
-        mm = new MasloModel();
-        BindingContext = mm;
+      
+        
     }
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
@@ -38,9 +37,5 @@ public partial class SettingPage : ContentPage
         Trace.WriteLine($"Appearing...{u++}");
     }
 
-    private void Button_Clicked(object sender, EventArgs e)
-    {
-        Trace.WriteLine("Dodane mase³ko ^_^");
-        mm.masla.Add(new RodzajMasla() {Nazwa="Klarowane", ProcentTluszczyku=89 });
-    }
+    
 }
