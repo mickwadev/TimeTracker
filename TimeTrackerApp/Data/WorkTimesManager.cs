@@ -25,7 +25,7 @@ namespace TimeTracker.Data
 
         public async Task Initialize()
         {
-            await _db.Initialize(DbConsts.connectionString);
+            await _db.Initialize(AppDbConsts.connectionString);
             _workTimes = await _db.GetAllWorkingEntriesAsync();
             if (_workTimes is null) 
             {
