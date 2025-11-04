@@ -28,7 +28,7 @@ public class DateTimeAllHelper : IGetDateRange
     public (long min, long max) GetTicksRange()
     {
         var dr = GetCurrentDateRange();
-        return (dr.startDate.ToDateTime(new TimeOnly(0, 0)).Ticks, dr.endDate.ToDateTime(new TimeOnly(0, 0)).Ticks);
+        return (dr.startDate.ToDateTime(new TimeOnly(0, 0)).Ticks, dr.endDate.AddDays(1).ToDateTime(new TimeOnly(0, 0)).Ticks);
     }
 
     public void GoToNextDateRange()
