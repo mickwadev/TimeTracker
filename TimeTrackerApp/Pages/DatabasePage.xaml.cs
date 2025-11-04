@@ -1,3 +1,4 @@
+using TimeTracker.Data;
 using TimeTracker.PageViewModels;
 
 namespace TimeTracker.Pages;
@@ -14,6 +15,6 @@ public partial class DatabasePage : ContentPage
 
     protected override void OnAppearing()
     {
-        viewModel.InitializeDatabase();
+      //  viewModel.InitializeDatabase(DbConsts.connectionString);
     }
 }

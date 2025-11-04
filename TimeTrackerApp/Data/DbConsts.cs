@@ -10,7 +10,7 @@
 
         public const string NotSetUser = "user_not_set";
         public const string ActivityNotSet = "at_not_set";
-        public const long NoBackupID = -1;
+         public const long NoBackupID = -1;
 
     }
 }

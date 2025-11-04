@@ -14,9 +14,10 @@ namespace Database;
 public class DatabaseFun
 {
     const string TimeTable = "TimesTable";
-
-    public async Task Initialize()
+    string connectionString;
+    public async Task Initialize(string connectionString)
     {
+        this.connectionString = connectionString;
         try
         {
             var exists = await CheckIfTableExistsAsync();
@@ -32,8 +33,8 @@ public class DatabaseFun
 
     public async Task DropTableAsync()
     {
-        Trace.WriteLine($"Using connection string: {DbConsts.connectionString}");
-        await using var connection = new SqliteConnection(DbConsts.connectionString);
+        Trace.WriteLine($"Using connection string: {connectionString}");
+        await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
         var dropTableCommand = connection.CreateCommand();
         dropTableCommand.CommandText = @$"
@@ -43,8 +44,8 @@ public class DatabaseFun
 
     public async Task AddTimesTableAsync()
     {
-        Trace.WriteLine($"Creating sqlite db, using connection string: {DbConsts.connectionString}");
-        await using var connection = new SqliteConnection(DbConsts.connectionString);
+        Trace.WriteLine($"Creating sqlite db, using connection string: {connectionString}");
+        await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
         var createTableCommand = connection.CreateCommand();
         createTableCommand.CommandText = @$"
@@ -62,7 +63,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
 
     public async Task<bool> CheckIfTableExistsAsync()
     {
-        await using var connection = new SqliteConnection(DbConsts.connectionString);
+        await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
         var checkIfTableExistCmd = connection.CreateCommand();
         checkIfTableExistCmd.CommandText = @$"
@@ -83,7 +84,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
 
     public async Task<int> ClearTableAsync()
     {
-        await using var connection = new SqliteConnection(DbConsts.connectionString);
+        await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
 
         var cmd = connection.CreateCommand();
@@ -95,7 +96,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
     {
         int removedRows = await ClearTableAsync();
         Trace.WriteLine($"Removed rows: {removedRows}");
-        await using var connection = new SqliteConnection(DbConsts.connectionString);
+        await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
         // co to za dziwny syntax XD
         await using var tx = await connection.BeginTransactionAsync();
@@ -141,7 +142,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
 
     public async Task<int> AddWorkTimeAsync(WorkTime r)
     {
-        await using var connection = new SqliteConnection(DbConsts.connectionString);
+        await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
         var addWorkTimeCmd = connection.CreateCommand();
         addWorkTimeCmd.CommandText = @$"
@@ -158,7 +159,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
 
     public async Task<int> UpdateRowsWithNoUser(string user)
     {
-        await using var connection = new SqliteConnection(DbConsts.connectionString);
+        await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
         var updateMissingUsers = connection.CreateCommand();
         updateMissingUsers.CommandText = $@"
@@ -171,7 +172,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
 
     public async Task<List<int>> SelectRowsWithNoUser()
     {
-        await using var connection = new SqliteConnection(DbConsts.connectionString);
+        await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
         var getMissingUsers = connection.CreateCommand();
         getMissingUsers.CommandText = $@"
@@ -189,7 +190,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
 
     public async Task<int> UpdateBackupRow(long rowID, long backupID)
     {
-        await using var connection = new SqliteConnection(DbConsts.connectionString);
+        await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
         var updateMissingUsers = connection.CreateCommand();
         updateMissingUsers.CommandText = $@"
@@ -203,7 +204,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
     {
         string onlyDateFormat = "yyyy-MM-dd ";
 
-        await using var connection = new SqliteConnection(DbConsts.connectionString);
+        await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
         var addWorkTimeCmd = connection.CreateCommand();
 
@@ -250,7 +251,7 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
     {
         string onlyDateFormat = "yyyy-MM-dd ";
 
-        await using var connection = new SqliteConnection(DbConsts.connectionString);
+        await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
         var addWorkTimeCmd = connection.CreateCommand();
         var start = startDate.ToString(onlyDateFormat);

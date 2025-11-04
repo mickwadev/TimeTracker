@@ -11,6 +11,7 @@ using TimeTracker.PageModels;
 using TimeTracker.PageViewModels;
 using TimeTracker.Pastebin;
 using UraniumUI;
+using Database;
 
 namespace TimeTracker
 {

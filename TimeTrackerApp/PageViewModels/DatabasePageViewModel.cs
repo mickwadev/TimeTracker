@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TimeTracker.Data;
 using TimeTracker.Models.Database;
-
+using Database;
 namespace TimeTracker.PageViewModels
 {
     public partial class DatabasePageViewModel : ObservableObject
@@ -26,13 +26,7 @@ namespace TimeTracker.PageViewModels
             _db = db;
             _supabaseClient = supabaseClient;
         }
-
-        //
-        public void InitializeDatabase()
-        {
-            Task.Run(_db.Initialize);
-        }
-
+         
         [RelayCommand]
         private async Task CreateDatabase()
         {

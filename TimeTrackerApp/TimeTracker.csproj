@@ -72,13 +72,11 @@
 		<PackageReference Include="CommunityToolkit.Maui.Markup" Version="6.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc5.4" />
-		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.8" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.100" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.100" />
 		<PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="9.0.111" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
 		<PackageReference Include="Supabase" Version="1.1.1" />
 		<PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.6" />
 		<PackageReference Include="UraniumUI.Icons.MaterialSymbols" Version="2.12.1" />
@@ -86,6 +84,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Database\Database.csproj" />
 	  <ProjectReference Include="..\DateRange\DateRange.csproj" />
 	</ItemGroup>
 
