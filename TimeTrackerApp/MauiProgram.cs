@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui; 
 using CommunityToolkit.Maui.Markup;
 using LiveChartsCore.SkiaSharpView.Maui;
 using Microsoft.Extensions.Logging;
