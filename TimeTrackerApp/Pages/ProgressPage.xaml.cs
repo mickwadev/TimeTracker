@@ -3,6 +3,7 @@ using TimeTracker.PageModels;
 using LiveChartsCore.Kernel;
 using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.Defaults;
+using LiveChartsCore.Kernel.Events;
 namespace TimeTracker.Pages;
 
 public partial class ProgressPage : ContentPage
@@ -20,11 +21,17 @@ public partial class ProgressPage : ContentPage
 		model.HasAnyEntries = !model.HasAnyEntries;
     }
 
+    
+	// This is not used, but I will leave this here, for learning purpouse
+	// here events have 3 parameters.
+	// Command has 1 parameter HoverCommandArgs.
+	// EventToCommand behaviour is not needed.
     private void WorkTimeChart_HoveredPointsChanged(
 		IChartView chart, 
 		IEnumerable<ChartPoint> newItems, 
 		IEnumerable<ChartPoint> oldItems)
     {
+		 
 		if (newItems is null)
 		{
 			Trace.WriteLine("Looks like you are not on chart anymore...");
@@ -46,4 +53,5 @@ public partial class ProgressPage : ContentPage
 			}
 		}
     }
+	 
 }

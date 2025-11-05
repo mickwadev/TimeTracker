@@ -4,6 +4,7 @@ using LiveChartsCore;
 using LiveChartsCore.ConditionalDraw;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.Kernel;
+using LiveChartsCore.Kernel.Events;
 using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
@@ -139,6 +140,31 @@ namespace TimeTracker.PageModels
                 x.MaxLimit = range.max;// end.Ticks;
                 x.MinStep = step;
                 Trace.WriteLine($"Step: {x.MinStep}");
+            }
+        }
+
+        [RelayCommand]
+        private void HoveredPointsChanged (HoverCommandArgs args)
+        {
+            if (args.NewPoints is null)
+            {
+                Trace.WriteLine("Looks like you are not on chart anymore...");
+                return;
+            }
+            if (args.NewPoints.Count() == 0)
+            {
+                Trace.WriteLine("No DateTimePoint selected...");
+                return;
+            }
+           
+            foreach (var item in args.NewPoints)
+            {
+                DateTimePoint currentSelectePoint = item.Context.Entity as DateTimePoint;
+
+                if (currentSelectePoint is not null)
+                {
+                    Trace.WriteLine($"{currentSelectePoint.DateTime}");
+                }
             }
         }
 

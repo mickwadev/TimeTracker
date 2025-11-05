@@ -4,7 +4,7 @@
              x:Class="TimeTracker.Pages.ProgressPage"
              xmlns:local="clr-namespace:TimeTracker.PageModels"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
-             xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit"
+              xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.SegmentedControl;assembly=Syncfusion.Maui.Toolkit"
              xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converters="clr-namespace:TimeTracker.Converters"
              x:DataType="local:ProgressPageViewModel"
@@ -56,7 +56,7 @@
                    Style="{StaticResource NicNieMa}"/>
             <lvc:CartesianChart
                 PressedCommand="{Binding ChartPressedCommand}"
-                HoveredPointsChanged="WorkTimeChart_HoveredPointsChanged"
+                HoveredPointsChangedCommand="{Binding HoveredPointsChangedCommand}"
                 x:Name="WorkTimeChart"
                 IsVisible="{Binding HasAnyEntries}"
                 Grid.Column="0" Grid.Row="2"
