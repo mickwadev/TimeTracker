@@ -213,5 +213,11 @@ namespace TimeTracker.PageModels
             //    y.MaxLimit = null;
             //}
         }
+
+        [RelayCommand]
+        private void ChartPressed()
+        {
+            Trace.WriteLine("Chart pressed");
+        }
     }
 }

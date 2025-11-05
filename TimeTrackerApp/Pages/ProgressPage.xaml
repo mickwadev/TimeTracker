@@ -55,6 +55,8 @@
                    VerticalOptions="Center"
                    Style="{StaticResource NicNieMa}"/>
             <lvc:CartesianChart
+                PressedCommand="{Binding ChartPressedCommand}"
+                HoveredPointsChanged="WorkTimeChart_HoveredPointsChanged"
                 x:Name="WorkTimeChart"
                 IsVisible="{Binding HasAnyEntries}"
                 Grid.Column="0" Grid.Row="2"
