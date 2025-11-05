@@ -50,7 +50,8 @@ namespace TimeTracker.Data
         {
             DateRange r = _dataRangeSource.GetCurrentDateRange();
             DateTime startDate = new DateTime(r.startDate.Year, r.startDate.Month, r.startDate.Day);
-            DateTime endDate = new DateTime(r.endDate.Year, r.endDate.Month, r.endDate.Day);
+            DateTime endDate = new DateTime(r.endDate.Year, r.endDate.Month, r.endDate.Day, 23, 59,59);
+            Trace.WriteLine($"[KKK] All dates are in range: {startDate} to {endDate}");
             // this does not have to be async, but lets test if this works
             return await Task.FromResult(_workTimes.Where(wt => wt.StartTime >= startDate && wt.EndTime <= endDate).ToList<WorkTime>());
         }
@@ -79,6 +80,7 @@ namespace TimeTracker.Data
         {
             DateTime start = _workTimes.Min(wt => wt.StartTime);
             DateTime end = _workTimes.Max(wt => wt.StartTime);
+            Trace.WriteLine($"All dates are in range: {start} to {end}");
             return new DateTimeAllHelper(start, end);
         }
     }
