@@ -25,13 +25,8 @@ namespace TimeTracker.Data
         }
 
         public async Task Initialize()
-        {
-            await _db.Initialize(AppDbConsts.connectionString);
+        { 
             _workTimes = await _db.GetAllWorkingEntriesAsync();
-            if (_workTimes is null) 
-            {
-                Trace.WriteLine("XXXXXXXXXXX _workTimes null!!!!");    
-            }
         }
 
         public void GoToNextDataRange()

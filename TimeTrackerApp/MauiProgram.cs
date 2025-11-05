@@ -19,6 +19,13 @@ namespace TimeTracker
     {
         public static MauiApp CreateMauiApp()
         {
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex) { 
+            }
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -50,6 +57,7 @@ namespace TimeTracker
             builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
             builder.Services.AddTransient<PomodoroControlViewModel>();
             builder.Services.AddSingleton<WorkTimesManager>();
+            builder.Services.AddTransient<AppShell>();
             return builder.Build();
         }
     }

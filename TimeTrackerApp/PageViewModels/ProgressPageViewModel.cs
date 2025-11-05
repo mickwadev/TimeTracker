@@ -144,7 +144,8 @@ namespace TimeTracker.PageModels
             cc.PointMeasured += (chartPoint) =>
             {
                 double y = chartPoint.Coordinate.PrimaryValue;
-                Trace.WriteLine($"value y {y}");
+                
+                Trace.WriteLine($"value y {y}  ");
                 chartPoint.Visual.Fill = new SolidColorPaint(GradientSampler.GetWorkTimeColor(y));
             };
 
@@ -172,18 +173,19 @@ namespace TimeTracker.PageModels
             foreach (var w in group)
             {
                 Trace.WriteLine($"For '{w.Key}' found {w.Count()} activities");
-                DateTimePoints.Add(new DateTimePoint()
+                var dateTimePoint = new DateTimePoint()
                 {
                     DateTime = DateTime.Parse(w.Key),
                     // Sum seconds of all activities
                     Value = w.Aggregate(0, (sum, wt) =>
                     {
                         var v = (int)wt.Duration.TotalSeconds;
-                        Trace.WriteLine($"Adding total seconds: {v}");
                         sum += v;
                         return sum;
                     })
-                });
+                };
+                DateTimePoints.Add(dateTimePoint);
+                Trace.WriteLine($"Adding total seconds {dateTimePoint.Value} for {dateTimePoint.DateTime}");
             }
             (long min, long max) ticks = _workTimeManager.GetTicksRange;
             foreach (var x in XAxes)

@@ -14,7 +14,10 @@ namespace Database.SQLiteDB;
 public class DatabaseFun
 {
     const string TimeTable = "TimesTable";
+    private string _initializedState = "INITIALIZE NOT PERFORMED";
     string connectionString;
+
+
     public async Task Initialize(string connectionString)
     {
         this.connectionString = connectionString;
@@ -23,17 +26,19 @@ public class DatabaseFun
             var exists = await CheckIfTableExistsAsync();
             if (exists == false)
                 await AddTimesTableAsync();
+            _initializedState = "INITIALIZE OK";
         }
         catch (Exception ex)
         {
             //todo: propagate info that something is wrong
             Trace.WriteLine(ex.Message);
+            _initializedState = "SOMETHING FAILED IN SQLITE INITIALIZE ;(";
         }
     }
 
     public async Task DropTableAsync()
     {
-        Trace.WriteLine($"Using connection string: {connectionString}");
+        Trace.WriteLine($"Using connection string: {connectionString} {_initializedState}");
         await using var connection = new SqliteConnection(connectionString);
         await connection.OpenAsync();
         var dropTableCommand = connection.CreateCommand();
