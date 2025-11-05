@@ -111,7 +111,7 @@ namespace TimeTracker.PageModels
                 SeparatorsPaint = new SolidColorPaint(SKColors.DarkGray) { StrokeThickness = 1 }
             }
         };
-
+         
         public ICartesianAxis[] XAxes { get; set; } =
             [
                  new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("dd MM yyyy"))
@@ -127,6 +127,21 @@ namespace TimeTracker.PageModels
             ];
 
         #endregion
+
+        private void UpdateXAxis()
+        {
+            var range = _workTimeManager.GetTicksRange;
+            double step = (range.max - range.min)/3;
+
+            foreach (var x in XAxes)
+            {
+                x.MinLimit = range.min;// start.Ticks;
+                x.MaxLimit = range.max;// end.Ticks;
+                x.MinStep = step;
+                Trace.WriteLine($"Step: {x.MinStep}");
+            }
+        }
+
         private void SetChart()
         {
             // Add some fake DateTimePoints:
@@ -187,12 +202,10 @@ namespace TimeTracker.PageModels
                 DateTimePoints.Add(dateTimePoint);
                 Trace.WriteLine($"Adding total seconds {dateTimePoint.Value} for {dateTimePoint.DateTime}");
             }
-            (long min, long max) ticks = _workTimeManager.GetTicksRange;
-            foreach (var x in XAxes)
-            {
-                x.MinLimit = ticks.min;// start.Ticks;
-                x.MaxLimit = ticks.max;// end.Ticks;
-            }
+             
+            
+
+            UpdateXAxis( );
 
             //foreach (var y in YAxes)
             //{
