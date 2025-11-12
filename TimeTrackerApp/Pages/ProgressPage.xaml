@@ -28,18 +28,16 @@
             BindingContext="{Binding Path=BindingContext, Source={x:Reference Page}, x:DataType=ContentPage}"
             Command="{Binding AppearingCommand}"/>
     </ContentPage.Behaviors>
-    <VerticalStackLayout>
-        <Label 
-            Text="Keep up the good work ^_^"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <Grid RowDefinitions="Auto,*" ColumnDefinitions="*"   > 
+        <VerticalStackLayout Grid.Column="0">
+        <Label             Text="Keep up the good work ^_^"            VerticalOptions="Center"             HorizontalOptions="Center" />
         
         <Button Text="Toggle" Clicked="Button_Clicked"></Button>
         <HorizontalStackLayout>
             <Button Text="Previous" Command="{Binding goToPreviousDateRangeCommand}"/>
             <Button Text="Next" Command="{Binding goToNextDateRangeCommand}"/>
         </HorizontalStackLayout>
-        <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,222" >
+        <Grid   ColumnDefinitions="*" RowDefinitions="auto,auto,222,*" >
             <sf:SfSegmentedControl Grid.Column="0" Grid.Row="0" x:Name="TimeRange"  BackgroundColor="AliceBlue" ItemsSource="{Binding Segments}">
                 <sf:SfSegmentedControl.Behaviors>
                     <mct:EventToCommandBehavior
@@ -64,6 +62,15 @@
                 YAxes="{Binding YAxes}"
                 XAxes="{Binding XAxes}">
             </lvc:CartesianChart>
+           
         </Grid>
+        
     </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="1">
+            <Label Margin="5" HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="{Binding CurrentSelectedDate}"/>
+            <ScrollView BackgroundColor="DarkGoldenrod">
+                <CollectionView ItemsSource="{Binding Entries}"/>
+            </ScrollView>
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>

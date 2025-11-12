@@ -8,4 +8,10 @@ public partial class SamplePage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void Switch_Toggled(object sender, ToggledEventArgs e)
+    {
+		var d = AppTheme.Dark;
+		Application.Current.UserAppTheme = e.Value ? AppTheme.Dark : AppTheme.Light;
+    }
 }

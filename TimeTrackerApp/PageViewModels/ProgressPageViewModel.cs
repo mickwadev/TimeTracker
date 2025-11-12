@@ -28,6 +28,12 @@ namespace TimeTracker.PageModels
         { 
             _workTimeManager = workTimesManager;
             SetChart();
+
+            for (int i = 0; i < 100; i++)
+            {
+                Entries.Add($"Pan Mors :3= {i}");
+            }
+            
         }
 
         [RelayCommand]
@@ -143,6 +149,12 @@ namespace TimeTracker.PageModels
             }
         }
 
+        [ObservableProperty]
+        private ObservableCollection<string> entries = new ObservableCollection<string>();
+
+        [ObservableProperty]
+        private string currentSelectedDate;
+
         [RelayCommand]
         private void HoveredPointsChanged (HoverCommandArgs args)
         {
@@ -164,6 +176,7 @@ namespace TimeTracker.PageModels
                 if (currentSelectePoint is not null)
                 {
                     Trace.WriteLine($"{currentSelectePoint.DateTime}");
+                    CurrentSelectedDate = currentSelectePoint.DateTime.ToShortDateString();
                 }
             }
         }
