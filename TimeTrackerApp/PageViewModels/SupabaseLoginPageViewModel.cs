@@ -72,14 +72,23 @@ namespace TimeTracker.PageViewModels
             InProgress = true;
             
             loggedUser = await client.SignIn(UserName, Password);
-            await SecureStorage.SetAsync(DbConsts.secureJsonSupabaseSessionKey, loggedUser.SecureJsonSupabaseSessionKey);
-            LoggingInfo = $"Loggin {UserName} info: {loggedUser.Info}";
-            
-            InProgress = false;
-            if (loggedUser.OK) 
+
+            if (loggedUser.OK)
             {
+                await SecureStorage.SetAsync(DbConsts.secureJsonSupabaseSessionKey, loggedUser.SecureJsonSupabaseSessionKey);
+                LoggingInfo = $"Loggin {UserName} info: {loggedUser.Info}";
                 UserState = UserState.USER_SIGNEDIN;
             }
+            else 
+            {
+                LoggingInfo = $"Loggin {UserName} failed: {loggedUser.Info}";
+               // UserState = UserState.USER_SIGNIN_FAILED; // if user state does not exist in .xaml it will throw exception
+            }
+
+            
+            
+            InProgress = false;
+            
         }
 
         [RelayCommand]
