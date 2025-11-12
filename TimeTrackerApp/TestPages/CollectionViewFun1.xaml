@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TimeTracker.TestPages.CollectionViewFun1"
              xmlns:ms="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
-             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material">
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             Shell.BackgroundColor="White">
 
     <VerticalStackLayout Padding="10">
         <Image WidthRequest="33" HeightRequest="33">

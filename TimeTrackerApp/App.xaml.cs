@@ -3,17 +3,20 @@
 namespace TimeTracker
 {
     public partial class App : Application
-    { 
-        AppShell shell;
-        public App(AppShell shell)
+    {
+        IServiceProvider _serviceProvider;
+        AppShell _shell;
+        public App(IServiceProvider serviceProvider)
+        //public App(AppShell shell) // this breaks color
         {
+            _serviceProvider = serviceProvider;
+            _shell = _serviceProvider.GetRequiredService<AppShell>();
             InitializeComponent();
-            this.shell = shell;
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(shell);
+             return new Window(_shell);
         }
     }
 }

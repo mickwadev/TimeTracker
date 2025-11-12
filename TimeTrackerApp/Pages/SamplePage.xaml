@@ -8,5 +8,6 @@
         <Label Text="{AppThemeBinding Light='Light Theme', Dark='Dark Theme',Default='Default Theme'}"/>
         <controls:ControlWithAnimation/>
         <Switch Toggled="Switch_Toggled" />
+        <Label x:Name="shellBkgLabel"/>
     </VerticalStackLayout>
 </ContentPage>

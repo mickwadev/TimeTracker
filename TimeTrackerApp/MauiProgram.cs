@@ -57,7 +57,7 @@ namespace TimeTracker
             builder.Services.AddSingleton<IConnectivity>(Connectivity.Current);
             builder.Services.AddTransient<PomodoroControlViewModel>();
             builder.Services.AddSingleton<WorkTimesManager>();
-            builder.Services.AddTransient<AppShell>();
+            builder.Services.AddSingleton<AppShell>();
             return builder.Build();
         }
     }
