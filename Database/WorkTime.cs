@@ -37,7 +37,7 @@ public class WorkTime : BaseModel
 
     //{"code":"PGRST204","details":null,"hint":null,"message":"Could not find the 'Duration' column of 'TimeTracking' in the schema cache"}
     [JsonIgnore]
-    public TimeSpan Duration => EndTime - StartTime;
+    public TimeSpan Duration => new TimeSpan((EndTime - StartTime).Hours, (EndTime - StartTime).Minutes, (EndTime - StartTime).Seconds) ;
 
     public override string ToString()
     {

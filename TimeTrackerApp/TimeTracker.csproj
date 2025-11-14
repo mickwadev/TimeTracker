@@ -101,6 +101,9 @@
 	  <MauiXaml Update="Controls\Pomodoro.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Controls\WorkTimeEntry.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\DatabasePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

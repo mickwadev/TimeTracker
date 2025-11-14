@@ -31,7 +31,13 @@ namespace TimeTracker.PageModels
 
             for (int i = 0; i < 100; i++)
             {
-                Entries.Add($"Pan Mors :3= {i}");
+                Entries.Add(new WorkTime() 
+                {
+                 Title =  $":) {i}",
+                 StartTime = DateTime.Now,
+                 EndTime = DateTime.Now+ TimeSpan.FromSeconds(i),
+                });
+             //   Entries.Add($"Pan Mors :3= {i}");
             }
             
         }
@@ -150,7 +156,7 @@ namespace TimeTracker.PageModels
         }
 
         [ObservableProperty]
-        private ObservableCollection<string> entries = new ObservableCollection<string>();
+        private ObservableCollection<WorkTime> entries = new ObservableCollection<WorkTime>();
 
         [ObservableProperty]
         private string currentSelectedDate;

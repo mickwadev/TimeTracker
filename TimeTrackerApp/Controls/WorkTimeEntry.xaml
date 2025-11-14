@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Database;assembly=Database"
+             xmlns:converters="clr-namespace:TimeTracker.Converters"
+             x:DataType="models:WorkTime"
+             x:Class="TimeTracker.Controls.WorkTimeEntry">
+    <ContentView.Resources>
+        <converters:WorkTimeConverter x:Key="WorkTimeConverter"/>
+    </ContentView.Resources>
+    <HorizontalStackLayout Spacing="10">
+        <Label
+            VerticalOptions="Center" 
+            HorizontalOptions="Center">
+            <Label.Text>
+                <MultiBinding Converter="{StaticResource WorkTimeConverter}">
+                    <Binding Path="StartTime" />
+                    <Binding Path="EndTime" />
+                </MultiBinding>
+            </Label.Text>
+        </Label>
+        <Label Text="{Binding Duration}"/>
+        <Label Text="{Binding Title}"/>
+    </HorizontalStackLayout>
+</ContentView>
