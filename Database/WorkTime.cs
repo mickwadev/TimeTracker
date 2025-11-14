@@ -39,6 +39,10 @@ public class WorkTime : BaseModel
     [JsonIgnore]
     public TimeSpan Duration => new TimeSpan((EndTime - StartTime).Hours, (EndTime - StartTime).Minutes, (EndTime - StartTime).Seconds) ;
 
+    [JsonIgnore]
+    public string DurationTrimmed => Duration.ToTrimmedFormat();
+
+
     public override string ToString()
     {
         return $"ID={ID} Title: {Title}, user: {User} start: {StartTime}, BackupID={backupID}";

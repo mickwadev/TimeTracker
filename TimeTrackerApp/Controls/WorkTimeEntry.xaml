@@ -8,8 +8,8 @@
     <ContentView.Resources>
         <converters:WorkTimeConverter x:Key="WorkTimeConverter"/>
     </ContentView.Resources>
-    <HorizontalStackLayout Spacing="10">
-        <Label
+    <Grid ColumnDefinitions="200, 50 ,*">
+        <Label Grid.Column="0"
             VerticalOptions="Center" 
             HorizontalOptions="Center">
             <Label.Text>
@@ -19,7 +19,7 @@
                 </MultiBinding>
             </Label.Text>
         </Label>
-        <Label Text="{Binding Duration}"/>
-        <Label Text="{Binding Title}"/>
-    </HorizontalStackLayout>
+        <Label Grid.Column="1" Text="{Binding DurationTrimmed}" HorizontalOptions="End" HorizontalTextAlignment="End"/>
+        <Label Padding="10,0,0,0" Grid.Column="2" Text="{Binding Title}"/>
+    </Grid>
 </ContentView>

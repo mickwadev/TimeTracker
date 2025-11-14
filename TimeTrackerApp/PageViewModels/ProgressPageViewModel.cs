@@ -183,6 +183,12 @@ namespace TimeTracker.PageModels
                 {
                     Trace.WriteLine($"{currentSelectePoint.DateTime}");
                     CurrentSelectedDate = currentSelectePoint.DateTime.ToShortDateString();
+                    var w = _workTimeManager.GetEntriesForDate(currentSelectePoint.DateTime);
+                    Entries.Clear();
+                    foreach (var e in w)
+                    { 
+                        Entries.Add(e);
+                    }
                 }
             }
         }

@@ -83,5 +83,12 @@ namespace TimeTracker.Data
             Trace.WriteLine($"All dates are in range: {start} to {end}");
             return new DateTimeAllHelper(start, end);
         }
+
+        public IEnumerable<WorkTime> GetEntriesForDate(DateTime day)
+        {
+           return _workTimes.Where(wt =>  SameDay(wt.StartTime,day) );
+        }
+
+       private bool SameDay(DateTime d1, DateTime d2) => d1.Year == d2.Year && d1.Month == d2.Month && d1.Day == d2.Day;
     }
 }
