@@ -3,16 +3,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TimeTracker.Pages.PastebinPage"
              xmlns:pastebin="clr-namespace:TimeTracker.Pastebin"
+             xmlns:controls="clr-namespace:TimeTracker.Controls"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="PastebinPage"
              x:DataType="pastebin:PastebinPageViewModel">
     <VerticalStackLayout>
-        <Button Text="Get Latest paste" Command="{Binding GetLatestPasteCommand}" />
-        <Label Text="{Binding Poem}" LineBreakMode="WordWrap" />
+    <VerticalStackLayout mct:StateContainer.CurrentState="{Binding UserState}">
+        <mct:StateContainer.StateViews>
+            <VerticalStackLayout mct:StateView.StateKey="CLIENT_NOT_INITIALIZED">
+                <Label Text="Not logged in to Pastebin"/>
+                <Entry Text="{Binding PasteBinApiDevKey}"/>
+                <Entry Text="{Binding PastebinUserName}"/>
+                <Entry Text="{Binding PastebinPassword}" />
+                <Button Text="Login to Pastebin" Command="{Binding LoginToPastebinCommand}" />
+                
+            </VerticalStackLayout>
+            <VerticalStackLayout mct:StateView.StateKey="USER_SIGNEDIN">
+                <Label Text="Logged in to Pastebin successful ^_^"   FontSize="17"/>
+                <Button Text="Backup working hours" Command="{Binding CreatePastebinPasteCommand}"/>
+            </VerticalStackLayout>
+        </mct:StateContainer.StateViews>
+        
 
-        <Button Text="Backup working hours" Command="{Binding CreatePastebinPasteCommand}"/>
-        <Label Text="{Binding LastPasteURL}"/>
+        <Button Text="Get Latest paste" Command="{Binding GetLatestPasteCommand}" />
+        
+
+
+        
 
         <Button Text="Load working hours" Command="{Binding LoadFromLastPasteCommand}"/>
+         
         
     </VerticalStackLayout>
+        <controls:ColoredLabel Text="{Binding Message}" IsErrorMessage="{Binding IsErrorMessage}"  FontSize="20"
+                                HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+        <Label Text="{Binding LastPasteURL}"/>
+    </VerticalStackLayout>
+
 </ContentPage>

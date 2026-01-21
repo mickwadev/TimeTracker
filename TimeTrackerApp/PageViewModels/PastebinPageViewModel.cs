@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Database.SQLiteDB;
+using Database.SupabaseDB;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,13 +11,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TimeTracker.Data;
 using TimeTracker.Models;
-using Database.SQLiteDB;
 
 namespace TimeTracker.Pastebin
 {
     public partial class PastebinPageViewModel : ObservableObject
     {
-        private const string DevKey = "RonoRqC9RYzZiR9AGaC0R4RRGFwj8RLeTSrR6fERdD";
+        private const string ApiDevKey = "RXXXonoRqC9RYzZiR9AGaC0R4RRGFwj8RLeTSrR6fERdD";
         private const string Username = "RmiRckwaR";
         private const string Password = "PastebRinPassRwordR";
 
@@ -24,12 +25,60 @@ namespace TimeTracker.Pastebin
         { 
          _db = db;
         }
-         
+
         [ObservableProperty]
-        private string _poem = "Gentle panda in the morning mist,  \r\nChewing bamboo with a sleepy twist.  \r\nBlack and white, a peaceful sight,  \r\nSoft as clouds, yet strong in might.  \r\nThey wander forests calm and deep,  \r\nGuarding secrets trees still keep.  \r\nWith every step the mountains ring,  \r\nA quiet hymn the breezes sing.  \r\nPandas dream where rivers flow,  \r\nIn quiet groves where blossoms grow.  \r\nTheir gentle hearts remind us all,  \r\nEven giants may be small.  \r\nA tender soul in fur so grand,  \r\nA living poem of the land.";
+        private string _pastebinUserName = "mickwa";
+
+        [ObservableProperty]
+        private string _pastebinPassword = "PastebinPassword";
 
         [ObservableProperty]
         private string _lastPasteURL = "";
+
+        [ObservableProperty]
+        private string _PasteBinApiDevKey = "onoqC9YzZi9AGaC04GFwj8LeTSr6fEdD";
+
+        [ObservableProperty]
+        private UserState userState = UserState.CLIENT_NOT_INITIALIZED;
+
+        [ObservableProperty]
+        private string _message = "";
+
+        [ObservableProperty]
+        private bool _isErrorMessage = false;
+
+        private string _userKey = "";
+        private PastebinClient _pbClient;
+
+        [RelayCommand]
+        private async Task LoginToPastebin()
+        {
+            Trace.WriteLine("Testing Pastebin login...");
+            try
+            {
+                _pbClient = new PastebinClient(PasteBinApiDevKey);
+                try
+                {
+                    _userKey = await _pbClient.GetUserKeyAsync(PastebinUserName, PastebinPassword);
+                    Trace.WriteLine($"Login successful. User key: {_userKey}");
+                    UserState = UserState.USER_SIGNEDIN;
+                    Message = "Logged in to Pastebin successful ^_^";
+                    IsErrorMessage = false;
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine($"Login failed: {ex.Message}");
+                    Message = $"Login failed: {ex.Message}";
+                    IsErrorMessage = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Pastebin client error: {ex.Message}");
+                Message = $"Login failed: {ex.Message}";
+                IsErrorMessage = true;
+            }
+        }
 
         [RelayCommand]
         public async Task CreatePastebinPaste()
@@ -45,14 +94,16 @@ namespace TimeTracker.Pastebin
                     DateFormatString = DbConsts.dbDateFormat
                 };
                 serializedJson = JsonConvert.SerializeObject(allEntries, Formatting.Indented, settings);
-                using var pb = new PastebinClient(DevKey.Replace("R", ""));
-                var userKey = await pb.GetUserKeyAsync(Username.Replace("R", ""), Password.Replace("R", ""));
-                var latest = await pb.CreatePasteAsync(serializedJson, $"Enties backup from {DateTime.Now.ToString("G")}",userKey);
+                 
+                
+                var latest = await _pbClient.CreatePasteAsync(serializedJson, $"Enties backup from {DateTime.Now.ToString("G")}", _userKey);
                 LastPasteURL = $"Backup done: {latest}";
             }
             catch (Exception ex) 
             {
                 Trace.WriteLine($"Serialization failed... {ex.Message}");
+                Message = $"Creating backup failed: {ex.Message} (Solution: login to PasteBin and remove some older entries)";
+                IsErrorMessage = true;
                 return;
             }
            
@@ -69,7 +120,7 @@ namespace TimeTracker.Pastebin
         public async Task<string> GetLatestPaste()
         {
             Trace.WriteLine("Get latest paste...");
-            using var pb = new PastebinClient(DevKey.Replace("R", ""));
+            using var pb = new PastebinClient(ApiDevKey.Replace("R", ""));
 
             // 1) login -> user key
             var userKey = await pb.GetUserKeyAsync(Username.Replace("R", ""), Password.Replace("R", ""));
@@ -89,7 +140,7 @@ namespace TimeTracker.Pastebin
             var raw = await pb.GetPasteRawAsync(latest.Key!, userKey); // include userKey for private pastes
             Trace.WriteLine("---- RAW CONTENT ----");
             Trace.WriteLine(raw);
-            Poem = raw;
+             
             return raw;
         }
     }

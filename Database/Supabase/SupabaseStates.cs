@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Database.SupabaseDB;
 
+// this can be user for Pastebin logging also
 public enum UserState
 {
     CLIENT_NOT_INITIALIZED,
