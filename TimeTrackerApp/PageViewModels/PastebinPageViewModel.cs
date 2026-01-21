@@ -16,9 +16,9 @@ namespace TimeTracker.Pastebin
 {
     public partial class PastebinPageViewModel : ObservableObject
     {
-        private const string ApiDevKey = "RXXXonoRqC9RYzZiR9AGaC0R4RRGFwj8RLeTSrR6fERdD";
-        private const string Username = "RmiRckwaR";
-        private const string Password = "PastebRinPassRwordR";
+       // private const string ApiDevKey = "RXXXonoRqC9RYzZiR9AGaC0R4RRGFwj8RLeTSrR6fERdD";
+       // private const string Username = "RmiRckwaR";
+      //  private const string Password = "PastebRinPassRwordR";
 
         private DatabaseFun _db;
         public PastebinPageViewModel(DatabaseFun db)
@@ -120,13 +120,8 @@ namespace TimeTracker.Pastebin
         public async Task<string> GetLatestPaste()
         {
             Trace.WriteLine("Get latest paste...");
-            using var pb = new PastebinClient(ApiDevKey.Replace("R", ""));
-
-            // 1) login -> user key
-            var userKey = await pb.GetUserKeyAsync(Username.Replace("R", ""), Password.Replace("R", ""));
-
-            // 2) latest paste metadata (newest first; we limited to 1)
-            var latest = await pb.GetLatestPasteMetaAsync(userKey);
+             
+            PasteMeta? latest = await _pbClient.GetLatestPasteMetaAsync(_userKey);
             if (latest == null || string.IsNullOrWhiteSpace(latest.Key))
             {
                 Trace.WriteLine("No pastes found.");
@@ -137,7 +132,7 @@ namespace TimeTracker.Pastebin
             Trace.WriteLine(latest.Url);
 
             // 3) (optional) fetch its contents
-            var raw = await pb.GetPasteRawAsync(latest.Key!, userKey); // include userKey for private pastes
+            var raw = await _pbClient.GetPasteRawAsync(latest.Key!, _userKey); // include userKey for private pastes
             Trace.WriteLine("---- RAW CONTENT ----");
             Trace.WriteLine(raw);
              

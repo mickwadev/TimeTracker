@@ -18,21 +18,15 @@
                 <Button Text="Login to Pastebin" Command="{Binding LoginToPastebinCommand}" />
                 
             </VerticalStackLayout>
-            <VerticalStackLayout mct:StateView.StateKey="USER_SIGNEDIN">
-                <Label Text="Logged in to Pastebin successful ^_^"   FontSize="17"/>
-                <Button Text="Backup working hours" Command="{Binding CreatePastebinPasteCommand}"/>
-            </VerticalStackLayout>
+                <VerticalStackLayout mct:StateView.StateKey="USER_SIGNEDIN">
+                    <Button Text="Backup working hours" Command="{Binding CreatePastebinPasteCommand}"/>
+                    <Button Text="Get Latest paste" Command="{Binding GetLatestPasteCommand}" />
+                    <Button Text="Load working hours" Command="{Binding LoadFromLastPasteCommand}"/>
+              </VerticalStackLayout>
         </mct:StateContainer.StateViews>
         
 
-        <Button Text="Get Latest paste" Command="{Binding GetLatestPasteCommand}" />
-        
-
-
-        
-
-        <Button Text="Load working hours" Command="{Binding LoadFromLastPasteCommand}"/>
-         
+       
         
     </VerticalStackLayout>
         <controls:ColoredLabel Text="{Binding Message}" IsErrorMessage="{Binding IsErrorMessage}"  FontSize="20"
