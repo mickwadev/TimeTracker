@@ -9,4 +9,6 @@ public partial class PastebinPage : ContentPage
 		InitializeComponent();
 		BindingContext = model;
 	}
+
+     
 }

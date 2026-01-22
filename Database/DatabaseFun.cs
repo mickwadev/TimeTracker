@@ -301,9 +301,11 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
                 backupID = reader.GetInt32(6),
             };
             Trace.WriteLine($"Parsed times from db: '{wt.StartTime}' '{wt.EndTime}'");
+           
             times.Add(wt);
             // Trace.WriteLine($"Time span from activity: {wt.Duration} ({startTime.ToString(DbConsts.dbDateFormat)} - {endTime.ToString(DbConsts.dbDateFormat)})");
         }
+        Trace.WriteLine($"min max times loaded from db: {times.Select(t => t.StartTime).Min()} {times.Select(t => t.EndTime).Max()}");
         return times;
     }
     public TimeSpan SumTimeSpans(List<WorkTime> todayWorkEntries)

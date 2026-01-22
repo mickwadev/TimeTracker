@@ -47,8 +47,17 @@ namespace TimeTracker.Pastebin
         [ObservableProperty]
         private bool _isErrorMessage = false;
 
+        [ObservableProperty]
+        private bool _storeCredentials = false;
+
         private string _userKey = "";
         private PastebinClient _pbClient;
+
+        [RelayCommand]
+        private void ToggleChanged(ToggledEventArgs e)
+        {
+            Trace.WriteLine($"Toggle changed to: {e.Value}");
+        }
 
         [RelayCommand]
         private async Task LoginToPastebin()

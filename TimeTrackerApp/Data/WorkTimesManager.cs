@@ -80,7 +80,7 @@ namespace TimeTracker.Data
         {
             DateTime start = _workTimes.Min(wt => wt.StartTime);
             DateTime end = _workTimes.Max(wt => wt.StartTime);
-            Trace.WriteLine($"All dates are in range: {start} to {end}");
+            Trace.WriteLine($"All {_workTimes.Count} dates are in range: {start} to {end}");
             return new DateTimeAllHelper(start, end);
         }
 

@@ -15,19 +15,26 @@
                 <Entry Text="{Binding PasteBinApiDevKey}"/>
                 <Entry Text="{Binding PastebinUserName}"/>
                 <Entry Text="{Binding PastebinPassword}" />
+                    <HorizontalStackLayout>
+                        <Label VerticalTextAlignment="Center" Margin="0,0,10,0" Text="Remember me:"/>
+                        <Switch x:Name="RememberSwitch" IsToggled="{Binding StoreCredentials}">
+                            <Switch.Behaviors>
+                                <mct:EventToCommandBehavior 
+                                     EventName="Toggled"
+                                     x:TypeArguments="ToggledEventArgs"
+                                     BindingContext="{Binding Path=BindingContext, Source={x:Reference RememberSwitch}, x:DataType=Switch}"
+                                     Command="{Binding ToggleChangedCommand}" />            
+                            </Switch.Behaviors>
+                        </Switch>
+                    </HorizontalStackLayout>
                 <Button Text="Login to Pastebin" Command="{Binding LoginToPastebinCommand}" />
                 
             </VerticalStackLayout>
                 <VerticalStackLayout mct:StateView.StateKey="USER_SIGNEDIN">
-                    <Button Text="Backup working hours" Command="{Binding CreatePastebinPasteCommand}"/>
-                    <Button Text="Get Latest paste" Command="{Binding GetLatestPasteCommand}" />
-                    <Button Text="Load working hours" Command="{Binding LoadFromLastPasteCommand}"/>
+                    <Button Text="Backup working hours on server" Command="{Binding CreatePastebinPasteCommand}"/>
+                    <Button Text="Load working hours from server. This will override your current working timest!" Command="{Binding LoadFromLastPasteCommand}"/>
               </VerticalStackLayout>
         </mct:StateContainer.StateViews>
-        
-
-       
-        
     </VerticalStackLayout>
         <controls:ColoredLabel Text="{Binding Message}" IsErrorMessage="{Binding IsErrorMessage}"  FontSize="20"
                                 HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
