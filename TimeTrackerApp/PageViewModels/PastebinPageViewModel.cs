@@ -181,7 +181,6 @@ namespace TimeTracker.Pastebin
             Trace.WriteLine($"Latest paste: {latest.Title} ({latest.Key})");
             Trace.WriteLine(latest.Url);
 
-            // 3) (optional) fetch its contents
             var raw = await _pbClient.GetPasteRawAsync(latest.Key!, _userKey); // include userKey for private pastes
             Trace.WriteLine("---- RAW CONTENT ----");
             Trace.WriteLine(raw);
