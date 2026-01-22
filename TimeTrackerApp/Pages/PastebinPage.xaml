@@ -12,7 +12,7 @@
         <mct:StateContainer.StateViews>
             <VerticalStackLayout mct:StateView.StateKey="CLIENT_NOT_INITIALIZED">
                 <Label Text="Not logged in to Pastebin"/>
-                <Entry Text="{Binding PasteBinApiDevKey}"/>
+                <Entry Text="{Binding PastebinApiDevKey}"/>
                 <Entry Text="{Binding PastebinUserName}"/>
                 <Entry Text="{Binding PastebinPassword}" />
                     <HorizontalStackLayout>
@@ -32,7 +32,7 @@
             </VerticalStackLayout>
                 <VerticalStackLayout mct:StateView.StateKey="USER_SIGNEDIN">
                     <Button Text="Backup working hours on server" Command="{Binding CreatePastebinPasteCommand}"/>
-                    <Button Text="Load working hours from server. This will override your current working timest!" Command="{Binding LoadFromLastPasteCommand}"/>
+                    <Button Text="Load working hours from server. WARNING! This will override your current working times!" Command="{Binding LoadFromLastPasteCommand}"/>
               </VerticalStackLayout>
         </mct:StateContainer.StateViews>
     </VerticalStackLayout>

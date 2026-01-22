@@ -16,9 +16,10 @@ namespace TimeTracker.Pastebin
 {
     public partial class PastebinPageViewModel : ObservableObject
     {
-       // private const string ApiDevKey = "RXXXonoRqC9RYzZiR9AGaC0R4RRGFwj8RLeTSrR6fERdD";
-       // private const string Username = "RmiRckwaR";
-      //  private const string Password = "PastebRinPassRwordR";
+         private const string PASTEBIN_API_DEV_KEY = "PASTEBIN_API_DEV_KEY";
+         private const string PASTEBIN_USER_NAME = "PASTEBIN_USER_NAME";
+         private const string PASTEBIN_PASSWORD = "PASTEBIN_PASSWORD";
+        private const string REMEMBER_ME_TOGGLE = "REMEMBER_ME_TOGGLE";
 
         private DatabaseFun _db;
         public PastebinPageViewModel(DatabaseFun db)
@@ -36,7 +37,7 @@ namespace TimeTracker.Pastebin
         private string _lastPasteURL = "";
 
         [ObservableProperty]
-        private string _PasteBinApiDevKey = "onoqC9YzZi9AGaC04GFwj8LeTSr6fEdD";
+        private string _PastebinApiDevKey = "onoqC9YzZi9AGaC04GFwj8LeTSr6fEdD";
 
         [ObservableProperty]
         private UserState userState = UserState.CLIENT_NOT_INITIALIZED;
@@ -57,36 +58,76 @@ namespace TimeTracker.Pastebin
         private void ToggleChanged(ToggledEventArgs e)
         {
             Trace.WriteLine($"Toggle changed to: {e.Value}");
+            Preferences.Set(REMEMBER_ME_TOGGLE, e.Value);
+        }
+
+        public async Task OnAppearing()
+        { 
+            StoreCredentials = Preferences.Get(REMEMBER_ME_TOGGLE, false);
+
+            if (StoreCredentials == false) return;
+
+            var storedUser = await SecureStorage.GetAsync(PASTEBIN_USER_NAME);
+            if (string.IsNullOrWhiteSpace(storedUser) == false)
+            { 
+                PastebinUserName = storedUser;
+            }
+            var storedPassword = await SecureStorage.GetAsync(PASTEBIN_PASSWORD);
+            if (string.IsNullOrWhiteSpace(storedPassword) == false)
+            {
+                PastebinPassword = storedPassword;
+            }
+
+            var storedApiKey = await SecureStorage.GetAsync(PASTEBIN_API_DEV_KEY);
+            if (string.IsNullOrWhiteSpace(storedApiKey) == false)
+            {
+                PastebinApiDevKey = storedApiKey;
+            }
+
         }
 
         [RelayCommand]
         private async Task LoginToPastebin()
         {
             Trace.WriteLine("Testing Pastebin login...");
-            try
+            Preferences.Set(REMEMBER_ME_TOGGLE, StoreCredentials);
+
+            if (StoreCredentials)
             {
-                _pbClient = new PastebinClient(PasteBinApiDevKey);
+                await SecureStorage.SetAsync(PASTEBIN_USER_NAME, PastebinUserName);
+                await SecureStorage.SetAsync(PASTEBIN_API_DEV_KEY, PastebinApiDevKey);
+                await SecureStorage.SetAsync(PASTEBIN_PASSWORD, PastebinPassword);
+            }
+            else
+            {
+                SecureStorage.Remove(PASTEBIN_USER_NAME);
+                SecureStorage.Remove(PASTEBIN_API_DEV_KEY);
+                SecureStorage.Remove(PASTEBIN_PASSWORD);
+            }
                 try
                 {
-                    _userKey = await _pbClient.GetUserKeyAsync(PastebinUserName, PastebinPassword);
-                    Trace.WriteLine($"Login successful. User key: {_userKey}");
-                    UserState = UserState.USER_SIGNEDIN;
-                    Message = "Logged in to Pastebin successful ^_^";
-                    IsErrorMessage = false;
+                    _pbClient = new PastebinClient(PastebinApiDevKey);
+                    try
+                    {
+                        _userKey = await _pbClient.GetUserKeyAsync(PastebinUserName, PastebinPassword);
+                        Trace.WriteLine($"Login successful. User key: {_userKey}");
+                        UserState = UserState.USER_SIGNEDIN;
+                        Message = "Logged in to Pastebin successful ^_^";
+                        IsErrorMessage = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine($"Login failed: {ex.Message}");
+                        Message = $"Login failed: {ex.Message}";
+                        IsErrorMessage = true;
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Trace.WriteLine($"Login failed: {ex.Message}");
+                    Trace.WriteLine($"Pastebin client error: {ex.Message}");
                     Message = $"Login failed: {ex.Message}";
                     IsErrorMessage = true;
                 }
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine($"Pastebin client error: {ex.Message}");
-                Message = $"Login failed: {ex.Message}";
-                IsErrorMessage = true;
-            }
         }
 
         [RelayCommand]
