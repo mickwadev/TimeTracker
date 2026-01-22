@@ -305,8 +305,15 @@ CREATE TABLE IF NOT EXISTS {TimeTable} (
             times.Add(wt);
             // Trace.WriteLine($"Time span from activity: {wt.Duration} ({startTime.ToString(DbConsts.dbDateFormat)} - {endTime.ToString(DbConsts.dbDateFormat)})");
         }
-        Trace.WriteLine($"min max times loaded from db: {times.Select(t => t.StartTime).Min()} {times.Select(t => t.EndTime).Max()}");
-        return times;
+        if (times.Count > 0)
+        {
+            Trace.WriteLine($"min max times loaded from db: {times.Select(t => t.StartTime).Min()} {times.Select(t => t.EndTime).Max()}");
+        }
+        else
+        {
+            Trace.WriteLine("Last paste contains no elements");
+        }
+            return times;
     }
     public TimeSpan SumTimeSpans(List<WorkTime> todayWorkEntries)
     {
