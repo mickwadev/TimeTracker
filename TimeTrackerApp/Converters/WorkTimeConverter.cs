@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace TimeTracker.Converters
 {
+    // This is used in ProgressPage in list of entries.
     internal class WorkTimeConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -21,7 +22,7 @@ namespace TimeTracker.Converters
             {
                 DateTime startTime = (DateTime)values[0];
                 DateTime endTime = (DateTime)values[1];
-                return $"From {TimeOnly.FromDateTime(startTime).ToString("HH:mm:ss")} to {TimeOnly.FromDateTime(endTime).ToString("HH:mm:ss")}";
+                return $"{TimeOnly.FromDateTime(startTime).ToString("HH:mm:ss")} - {TimeOnly.FromDateTime(endTime).ToString("HH:mm:ss")}";
             }
             catch (Exception ex) 
             {
