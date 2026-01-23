@@ -1,8 +1,82 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <path d="m 105.50037,281.60863 c -2.70293,0 -5.00091,-0.90042 -6.893127,-2.70209 -1.892214,-1.84778 -2.837901,-4.04181 -2.837901,-6.58209 0,-2.58722 0.945687,-4.80389 2.837901,-6.65167 1.892217,-1.84778 4.190197,-2.77167 6.893127,-2.77167 2.74819,0 5.06798,0.92389 6.96019,2.77167 1.93749,1.84778 2.90581,4.06445 2.90581,6.65167 0,2.54028 -0.96832,4.73431 -2.90581,6.58209 -1.89221,1.80167 -4.212,2.70209 -6.96019,2.70209 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
-    <path d="M 213.56111,280.08446 H 195.99044 L 149.69953,207.0544 c -1.17121,-1.84778 -2.14037,-3.76515 -2.90581,-5.75126 h -0.40578 c 0.36051,2.12528 0.54076,6.67515 0.54076,13.6496 v 65.13172 h -15.54349 v -99.36009 h 18.71925 l 44.7374,71.29798 c 1.89222,2.95695 3.1087,4.98917 3.64945,6.09751 h 0.26996 c -0.45021,-2.6325 -0.67573,-7.09015 -0.67573,-13.37293 v -64.02256 h 15.47557 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
-    <path d="m 289.25134,280.08446 h -54.40052 v -99.36009 h 52.23835 v 13.99669 h -36.15411 v 28.13085 h 33.31621 v 13.9271 h -33.31621 v 29.37835 h 38.31628 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
-    <path d="M 366.56466,194.72106 H 338.7222 v 85.3634 h -16.08423 v -85.3634 h -27.77455 v -13.99669 h 71.70124 z" style="fill:#ffffff;fill-rule:nonzero;stroke-width:0.838376" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:serif="http://www.serif.com/" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 456 456">
+  <!-- Generator: Adobe Illustrator 29.5.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 137)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: url(#linear-gradient1);
+      }
+
+      .st0, .st1 {
+        stroke-width: 15px;
+      }
+
+      .st0, .st1, .st2, .st3 {
+        stroke: #667eea;
+      }
+
+      .st4 {
+        fill: #fff;
+      }
+
+      .st1, .st2, .st5, .st3 {
+        fill: none;
+        stroke-linecap: round;
+      }
+
+      .st2 {
+        stroke-width: 10px;
+      }
+
+      .st6 {
+        fill: #667eea;
+      }
+
+      .st5 {
+        stroke: #764ba2;
+        stroke-miterlimit: 4;
+        stroke-width: 20px;
+      }
+
+      .st3 {
+        stroke-miterlimit: 4;
+        stroke-width: 15px;
+      }
+
+      .st7 {
+        fill: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="-68.91" y1="648.68" x2="-68.54" y2="648.3" gradientTransform="translate(63463 596837.65) scale(920 -920)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#667eea"/>
+      <stop offset="1" stop-color="#764ba2"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient1" x1="-68.84" y1="648.72" x2="-68.84" y2="648.35" gradientTransform="translate(42913 402320.7) scale(620 -620)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#e0e7ff"/>
+    </linearGradient>
+  </defs>
+  <path class="st4" d="M105.5,281.61c-2.7,0-5-.9-6.89-2.7-1.89-1.85-2.84-4.04-2.84-6.58s.95-4.8,2.84-6.65c1.89-1.85,4.19-2.77,6.89-2.77s5.07.92,6.96,2.77c1.94,1.85,2.91,4.06,2.91,6.65s-.97,4.73-2.91,6.58c-1.89,1.8-4.21,2.7-6.96,2.7Z"/>
+  <path class="st4" d="M213.56,280.08h-17.57l-46.29-73.03c-1.17-1.85-2.14-3.77-2.91-5.75h-.41c.36,2.13.54,6.68.54,13.65v65.13h-15.54v-99.36h18.72l44.74,71.3c1.89,2.96,3.11,4.99,3.65,6.1h.27c-.45-2.63-.68-7.09-.68-13.37v-64.02h15.48v99.36Z"/>
+  <path class="st4" d="M289.25,280.08h-54.4v-99.36h52.24v14h-36.15v28.13h33.32v13.93h-33.32v29.38h38.32v13.93Z"/>
+  <path class="st4" d="M366.56,194.72h-27.84v85.36h-16.08v-85.36h-27.77v-14h71.7v14Z"/>
+  <ellipse class="st7" cx="234.85" cy="226.74" rx="172.04" ry="171.33"/>
+  <ellipse class="st0" cx="234.85" cy="226.74" rx="115.94" ry="115.46"/>
+  <g>
+    <line class="st1" x1="234.85" y1="116.13" x2="234.85" y2="129.16"/>
+    <line class="st1" x1="345.93" y1="226.74" x2="332.84" y2="226.74"/>
+    <line class="st1" x1="234.85" y1="337.36" x2="234.85" y2="324.32"/>
+    <line class="st1" x1="123.77" y1="226.74" x2="136.86" y2="226.74"/>
+    <line class="st2" x1="290.95" y1="135.12" x2="283.47" y2="145.55"/>
+    <line class="st2" x1="326.86" y1="170.88" x2="316.38" y2="178.32"/>
+    <line class="st2" x1="326.86" y1="282.61" x2="316.38" y2="275.16"/>
+    <line class="st2" x1="290.95" y1="318.37" x2="283.47" y2="307.94"/>
+    <line class="st2" x1="178.75" y1="318.37" x2="186.23" y2="307.94"/>
+    <line class="st2" x1="142.85" y1="282.61" x2="153.32" y2="275.16"/>
+    <line class="st2" x1="142.85" y1="170.88" x2="153.32" y2="178.32"/>
+    <line class="st2" x1="178.75" y1="135.12" x2="186.23" y2="145.55"/>
+  </g>
+  <ellipse class="st6" cx="234.85" cy="226.74" rx="9.35" ry="9.31"/>
+  <line class="st5" x1="234.85" y1="226.74" x2="184.29" y2="196.89"/>
+  <line class="st3" x1="234.85" y1="226.74" x2="304.49" y2="186.7"/>
 </svg>
