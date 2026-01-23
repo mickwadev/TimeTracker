@@ -34,7 +34,7 @@
             <VerticalStackLayout Grid.Column="0">
             <Label             Text="Keep up the good work ^_^"            VerticalOptions="Center"             HorizontalOptions="Center" />
         
-            <Button Text="Toggle" Clicked="Button_Clicked"></Button>
+            <!--Button Text="Toggle" Clicked="Button_Clicked"></Button-->
             <HorizontalStackLayout>
                 <Button Text="Previous" Command="{Binding goToPreviousDateRangeCommand}"/>
                 <Button Text="Next" Command="{Binding goToNextDateRangeCommand}"/>
