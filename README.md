@@ -22,10 +22,10 @@ I really like using it, helps me organize my work time :)
 
 ## App features
 <p>Detail summary of weekly, monthly and year time tracking with history:</p>
-<img src="progress-page-1.jpg" alt="progress-page" width="300">
+<img src="readmepics/progress-page-1.jpg" alt="progress-page" width="300">
 
 <p>Built in 1 hour pomodor timer, counting current learning span and whole day:</p>
-<img src="pomodoro-1.jpg" alt="pomodoro" width="300">
+<img src="readmepics/pomodoro-1.jpg" alt="pomodoro" width="300">
 
 
  
