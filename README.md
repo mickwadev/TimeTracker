@@ -7,7 +7,8 @@
 
 🕑Time tracking app written in .net MAUI 
 ![GitHub last commit](https://img.shields.io/github/last-commit/mickwadev/TimeTracker)
-
+I really like using it, helps me organize my work time :)
+## What .net MAUI compoments were used:
 
 <ul>
 <li>MVVM</li>
@@ -18,3 +19,11 @@
 <li>Pomodoro view is made with GraphicsView</li>
 <li>Supabase and SQLite local backup (in progress)</li>
 </ul>
+
+## App features
+<p>Detail summary of weekly, monthly and year time tracking with history:</p>
+<img src="progress-page-1.jpg" alt="progress-page" width="300">
+
+
+ 
+
