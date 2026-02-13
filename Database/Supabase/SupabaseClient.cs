@@ -20,9 +20,9 @@ public class SupabaseClient
     public const string restUrl = url + "/rest/v1/";
     private Supabase.Client _client = null;
    
-    private LoggedUser _loggedUser = null;
+   
 
-    public string GetLoggedUserName => _loggedUser?.UserName ?? DbConsts.NotSetUser;
+     public string GetLoggedUserName => _client.Auth.CurrentUser.Email.Split("@").First() ?? DbConsts.NotSetUser;
     
     public async Task InitSupabaseClient()
     {
@@ -210,6 +210,10 @@ public class SupabaseClient
         }
     }
 
+    /*
+     * This curl works from gitbash, but not from cmd XD. Problem is in ' and " in json body -,-"
+     curl -i -X POST -H "apikey: sb_publishable_RCeEzSqjC_u7cNpF2kYz6Q_rZhxBNJx" -H "Authorization: Bearer <put_token_here>" -H "Content-Type: application/json" -H "Prefer: return=representation" -d '[{"body":"klopzikowanie2"},{"body":"baklazany"}]' "https://baeovtminnahkokhrxnh.supabase.co/rest/v1/banany"
+     */
     public async Task PostgrestTest()
     {
         using var client = new HttpClient();
@@ -220,7 +224,11 @@ public class SupabaseClient
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
         client.DefaultRequestHeaders.Add("Prefer", "return=representation");
 
-        var payload = new { body = $"Happy data from MAUI TimeTracker ^_^ {DateTime.Now}" };
+        var payload = new
+        {
+            body = $"Happy data from MAUI TimeTracker ^_^ {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}",
+            user  = GetLoggedUserName
+        };
         var jsonPayload = JsonConvert.SerializeObject(payload);
         var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
