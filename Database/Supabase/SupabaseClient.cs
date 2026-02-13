@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks; 
 
@@ -12,6 +13,11 @@ namespace Database.SupabaseDB;
 
 public class SupabaseClient 
 {
+    public const string url = "https://baeovtminnahkokhrxnh.supabase.co";   // Project URL
+    public const string anonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhZW92dG1pbm5haGtva2hyeG5oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA0NjkxNTUsImV4cCI6MjA3NjA0NTE1NX0.QN5dK5Yi9aoJcm0tEjsewIEVQZttTwkajG5mDuGzDts";               // anon key (not service role)
+    public const string apiKey = "sb_publishable_RCeEzSqjC_u7cNpF2kYz6Q_rZhxBNJx";
+    // this must end with / to work: >.<
+    public const string restUrl = url + "/rest/v1/";
     private Supabase.Client _client = null;
    
     private LoggedUser _loggedUser = null;
@@ -20,9 +26,6 @@ public class SupabaseClient
     
     public async Task InitSupabaseClient()
     {
-        var url = "https://baeovtminnahkokhrxnh.supabase.co";   // Project URL
-        var anonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhZW92dG1pbm5haGtva2hyeG5oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA0NjkxNTUsImV4cCI6MjA3NjA0NTE1NX0.QN5dK5Yi9aoJcm0tEjsewIEVQZttTwkajG5mDuGzDts";               // anon key (not service role)
-
         var options = new SupabaseOptions
         {
             AutoConnectRealtime = false,
@@ -90,7 +93,8 @@ public class SupabaseClient
         status.User = new LoggedUser()
         {
             UserName = updated.Email.Split("@").First(),
-            UserId = _client.Auth.CurrentSession.User.Id
+            UserId = _client.Auth.CurrentSession.User.Id,
+            AccessToken = _client.Auth.CurrentSession.AccessToken
         };
         return status;
     }
@@ -137,7 +141,8 @@ public class SupabaseClient
         status.User  = new LoggedUser()
         {
             UserName = session.User.Email.Split("@").First(),
-            UserId =_client.Auth.CurrentSession.User.Id
+            UserId =_client.Auth.CurrentSession.User.Id,
+            AccessToken = session.AccessToken
         };
 
         return status;
@@ -203,6 +208,28 @@ public class SupabaseClient
         {
             Trace.WriteLine($"{model.ID}");
         }
+    }
+
+    public async Task PostgrestTest()
+    {
+        using var client = new HttpClient();
+        // rest url must end with / to work: >.<
+        client.BaseAddress = new Uri(restUrl);
+        client.DefaultRequestHeaders.Add("apikey", apiKey);
+        string jwt = _client.Auth.CurrentSession.AccessToken;
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+        client.DefaultRequestHeaders.Add("Prefer", "return=representation");
+
+        var payload = new { body = $"Happy data from MAUI TimeTracker ^_^ {DateTime.Now}" };
+        var jsonPayload = JsonConvert.SerializeObject(payload);
+        var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+        string tableName = "banany";
+        var response = await client.PostAsync(tableName, content);
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        Trace.WriteLine($"Status: {(int)response.StatusCode} {response.ReasonPhrase}");
+        Trace.WriteLine(responseBody);
     }
 
     public async Task<List<WorkTime>> GetData()

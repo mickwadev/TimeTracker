@@ -33,6 +33,7 @@
                         <VerticalStackLayout Spacing="10" mct:StateView.StateKey="USER_SIGNEDIN">
                             <Label Text="{Binding DbFun}"/>
                             <Button Text="Put test data" Command="{Binding PutTestDataCommand}" />
+                            <Button Text="Put test data REST" Command="{Binding PutTestDataRestAPICommand}" />
                             <Button Text="Get test data" Command="{Binding GetDataForUserCommand}" />
                             <Button Text="SignOut user" Command="{Binding SignOutUserCommand}" />
                             <Button Text="Backup" Command="{Binding BackupToSupabaseFromSQLiteCommand}" />

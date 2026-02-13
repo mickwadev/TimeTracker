@@ -95,6 +95,11 @@ namespace TimeTracker.PageViewModels
             InProgress = false;
             
         }
+        [RelayCommand]
+        public async Task PutTestDataRestAPI()
+        { 
+            await client.PostgrestTest();
+        }
 
         [RelayCommand]
         public async Task PutTestData()
