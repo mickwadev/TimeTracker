@@ -224,6 +224,7 @@ public class SupabaseClient
         var jsonPayload = JsonConvert.SerializeObject(payload);
         var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
+        // insert to "resttest" is blocked by RLS policy :/
         string tableName = "banany";
         var response = await client.PostAsync(tableName, content);
         var responseBody = await response.Content.ReadAsStringAsync();
